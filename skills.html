@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Averie Dow - Professional skills and experience timeline.">
+    <title>Dauntless Endeavors | Averie Dow</title>
+
+    <style>
+        /* Typography imports */
+        @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=IM+Fell+English:ital@0;1&display=swap');
+
+        :root {
+            --parchment: #F4EBE1; 
+            --ink: #2C2621;       
+            --accent: #8B261D;    
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--parchment);
+            color: var(--ink);
+            font-family: 'EB Garamond', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+            margin: 0;
+            padding: 3vh 4vw;
+            background-image: radial-gradient(var(--ink) 0.5px, transparent 0.5px);
+            background-size: 100px 100px;
+            overflow: hidden; 
+        }
+
+        /* --- Layout --- */
+        .book-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2vw; 
+            height: 100%;
+            width: 100%;
+            max-width: 1150px;
+        }
+
+        .page-half {
+            position: relative; 
+            width: 50%; 
+            height: 100%;
+            background-color: var(--parchment);
+            border: 2px solid var(--ink);
+            outline: 4px solid var(--ink);
+            outline-offset: 4px;
+            padding: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+
+        .content-wrap {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--ink);
+            padding: 4vh 3vw; 
+            display: flex;
+            flex-direction: column;
+            text-align: left; 
+            overflow-y: auto; 
+            scrollbar-width: thin;
+            scrollbar-color: var(--ink) var(--parchment);
+        }
+
+        /* --- Headers --- */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3vh;
+            border-bottom: 2px double var(--ink);
+            padding-bottom: 2vh;
+        }
+
+        h1.primary-title {
+            font-family: 'IM Fell English', serif;
+            font-size: clamp(1.8rem, 4vmin, 3rem); 
+            font-weight: normal;
+            margin: 0 0 1vh 0;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .sub-heading {
+            font-family: 'IM Fell English', serif;
+            font-size: clamp(1rem, 2vmin, 1.5rem);
+            font-style: italic;
+            margin: 0;
+            color: var(--accent);
+        }
+
+        /* --- Left Page: Skills Ledger --- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2vh 2vw;
+            margin-top: 2vh;
+        }
+
+        .skill-category {
+            margin-bottom: 2vh;
+        }
+
+        .category-title {
+            font-family: 'IM Fell English', serif;
+            font-size: clamp(1.1rem, 2.5vmin, 1.4rem);
+            border-bottom: 1px solid var(--ink);
+            margin: 0 0 1vh 0;
+            padding-bottom: 4px;
+        }
+
+        .skill-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .skill-list li {
+            font-size: clamp(0.85rem, 1.8vmin, 1rem);
+            margin-bottom: 0.8vh;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .skill-list li::before {
+            content: "❧";
+            color: var(--accent);
+            font-size: 0.9em;
+        }
+
+        /* --- Right Page: Accordion Timeline --- */
+        .accordion-group {
+            margin-top: 1vh;
+            border-left: 2px solid var(--ink);
+            padding-left: 2vw;
+            margin-left: 1vw;
+        }
+
+        .accordion-item {
+            position: relative;
+            margin-bottom: 2vh;
+        }
+
+        /* Hide the actual radio buttons */
+        .accordion-item input[type="radio"] {
+            display: none;
+        }
+
+        /* The clickable title */
+        .accordion-label {
+            display: block;
+            cursor: pointer;
+            font-family: 'IM Fell English', serif;
+            font-size: clamp(1.3rem, 3vmin, 1.6rem);
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+
+        /* The diamond icon on the timeline border */
+        .accordion-label::before {
+            content: "◆";
+            position: absolute;
+            left: calc(-2vw - 11px); 
+            top: 0;
+            color: var(--ink);
+            background: var(--parchment);
+            font-size: 1.2rem;
+            line-height: 1.2;
+            transition: color 0.3s ease;
+        }
+
+        .accordion-meta {
+            font-size: clamp(0.85rem, 1.8vmin, 1rem);
+            color: var(--ink);
+            margin: 0.5vh 0 0 0;
+            font-style: italic;
+        }
+
+        .accordion-date {
+            font-variant: small-caps;
+            color: var(--accent);
+            letter-spacing: 1px;
+            font-style: normal;
+        }
+
+        /* Hover and Active states for the labels */
+        .accordion-label:hover {
+            color: var(--accent);
+        }
+
+        .accordion-item input[type="radio"]:checked + .accordion-label {
+            color: var(--accent);
+        }
+
+        .accordion-item input[type="radio"]:checked + .accordion-label::before {
+            color: var(--accent);
+        }
+
+        /* The hidden content that expands */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        /* When the radio is checked, open the content */
+        .accordion-item input[type="radio"]:checked ~ .accordion-content {
+            max-height: 1000px; /* Large enough to fit the content */
+            opacity: 1;
+            margin-top: 1.5vh;
+            margin-bottom: 3vh;
+        }
+
+        /* Styling for the bullet points inside the accordion */
+        .job-bullets {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .job-bullets li {
+            font-size: clamp(0.9rem, 1.8vmin, 1.05rem);
+            line-height: 1.5;
+            margin-bottom: 1.2vh;
+            display: flex;
+            gap: 10px;
+        }
+
+        .job-bullets li::before {
+            content: "•";
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* --- Navigation --- */
+        .back-btn {
+            position: absolute;
+            bottom: -2px; 
+            left: -2px; 
+            background: var(--parchment);
+            color: var(--ink);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--ink);
+            font-family: 'IM Fell English', serif;
+            font-variant: small-caps;
+            font-size: clamp(0.8rem, 1.8vmin, 1rem);
+            letter-spacing: 1px;
+            cursor: pointer;
+            z-index: 10;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--accent);
+            color: var(--parchment);
+            padding-left: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-container">
+        
+        <!-- Left Side: Skills Ledger -->
+        <div class="page-half">
+            <div class="content-wrap">
+                
+                <header class="page-header">
+                    <h1 class="primary-title">Dauntless Endeavors</h1>
+                    <p class="sub-heading">A Ledger of Proficiencies</p>
+                </header>
+
+                <div class="skills-grid">
+                    
+                    <div class="skill-category">
+                        <h2 class="category-title">Design Software</h2>
+                        <ul class="skill-list">
+                            <li>Figma & Miro</li>
+                            <li>Adobe CC (Illustrator, Photoshop, InDesign)</li>
+                            <li>Canva</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h2 class="category-title">Development & Data</h2>
+                        <ul class="skill-list">
+                            <li>HTML, CSS, JavaScript</li>
+                            <li>Python (Pandas, NumPy, Beautiful Soup)</li>
+                            <li>SQL, PowerBI, Tableau</li>
+                            <li>Swift & Xcode</li>
+                            <li>Articulate Rise & Zennerate</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h2 class="category-title">Data-Driven Design</h2>
+                        <ul class="skill-list">
+                            <li>User Research & Usability Testing</li>
+                            <li>WCAG Accessibility Auditing</li>
+                            <li>Design Systems & Information Policy</li>
+                            <li>Data Visualization & KPIs</li>
+                            <li>Instructional Design</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h2 class="category-title">Leadership & Strategy</h2>
+                        <ul class="skill-list">
+                            <li>Cross-Functional Collaboration</li>
+                            <li>End-to-End Project Coordination</li>
+                            <li>Public-Facing Communications</li>
+                            <li>Feedback Integration</li>
+                            <li>Innovative Web Integration</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+<a href="index.html#open" class="back-btn">☜ Return to Catalogue</a>
+            </div>
+        </div>
+
+        <!-- Right Side: The Chronicle (Interactive Accordion) -->
+        <div class="page-half">
+            <div class="content-wrap">
+                
+                <h2 class="primary-title" style="text-align: center; font-size: clamp(1.5rem, 3vmin, 2.2rem); border-bottom: 1px solid var(--ink); padding-bottom: 1vh; margin-bottom: 3vh;">
+                    The Chronicle of Experience
+                </h2>
+
+                <div class="accordion-group">
+                    
+                    <!-- Job 1 -->
+                    <div class="accordion-item">
+                        <input type="radio" name="experience-accordion" id="job1" checked>
+                        <label for="job1" class="accordion-label">Learning Experience Designer</label>
+                        <p class="accordion-meta">Echostar Corporation | <span class="accordion-date">June 2026 — Present</span></p>
+                        
+                        <div class="accordion-content">
+                            <ul class="job-bullets">
+                                <li>Develops four digital instructor-led training (ILT) courses monthly, delivering engaging, learner-centered training for call center agents.</li>
+                                <li>Builds four/month digital modules in Articulate Rise using HTML, CSS, JavaScript, AI-assisted development, and adult learning principles.</li>
+                                <li>Designs company-wide digital signage (five/week) in Canva and Adobe Illustrator for domestic and international employee communications.</li>
+                                <li>Writes training video scripts and internal newsletters, translating complex topics into clear, engaging corporate learning content.</li>
+                                <li>Reviews digital content, web experiences, and visual assets for WCAG accessibility, ensuring inclusive, user-friendly communications.</li>
+                        <li>Engineered a responsive, accessible survey embed template using Gemini and web development to modernize company-wide training; bypassed a legacy tool error to restore embedding capabilities and improve UX by allowing surveys to open in new tabs.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Job 2 -->
+                    <div class="accordion-item">
+                        <input type="radio" name="experience-accordion" id="job2">
+                        <label for="job2" class="accordion-label">User Experience Designer</label>
+                        <p class="accordion-meta">CU Boulder Office of Information Technology | <span class="accordion-date">Aug 2024 — May 2026</span></p>
+                        
+                        <div class="accordion-content">
+                            <ul class="job-bullets">
+                                <li>Produces two high-fidelity design deliverables per month in Figma, supporting campus-wide institutional platforms and offices while managing three concurrent design projects biweekly.</li>
+                                <li>Developed 10+ page high-fidelity prototype in Figma and conducted five usability tests to streamline campus IT ticket creation.</li>
+                                <li>Designed Wi-Fi graphics for CU social media for a digital audience of approximately 250k followers, including students and staff.</li>
+                                                      </ul>
+                        </div>
+                    </div>
+
+                    <!-- Job 3 -->
+                    <div class="accordion-item">
+                        <input type="radio" name="experience-accordion" id="job3">
+                        <label for="job3" class="accordion-label">UX Researcher & Designer</label>
+                        <p class="accordion-meta">ATLAS Institute | <span class="accordion-date">Feb 2024 — May 2026</span></p>
+                        
+                        <div class="accordion-content">
+                            <ul class="job-bullets">
+                                <li>Executes UX research (interviews, usability tests, surveys) to uncover needs, create design improvements, and validate design concepts.</li>
+                                <li>Completes digital accessibility audits and recommends brand-aligned solutions to include users and excel at WCAG standards.</li>
+                                <li>Developed three high-fidelity final prototypes through the iterative design process, including card sorting and mockups.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Job 4 -->
+                    <div class="accordion-item">
+                        <input type="radio" name="experience-accordion" id="job4">
+                        <label for="job4" class="accordion-label">Website Designer</label>
+                        <p class="accordion-meta">Jeans to Jurses (Independent Contract) | <span class="accordion-date">Jan 2026 — Apr 2026</span></p>
+                        
+                        <div class="accordion-content">
+                            <ul class="job-bullets">
+                                <li>Designed a six-page fashion merchandise website, using stakeholder collaboration and CMS administration of existing website.</li>
+                                <li>Transformed previous experience into a streamlined shopping site with clear visual hierarchy, typography, and layout principles.</li>
+                                <li>Created copy for text content to ensure accessibility and understanding for a wide range of potential users.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Job 5 -->
+                    <div class="accordion-item">
+                        <input type="radio" name="experience-accordion" id="job5">
+                        <label for="job5" class="accordion-label">Student Ambassador</label>
+                        <p class="accordion-meta">CU Boulder Office of Admissions | <span class="accordion-date">Oct 2023 — Present</span></p>
+                        
+                        <div class="accordion-content">
+                            <ul class="job-bullets">
+                                <li>Leads up to four weekly 90-minute campus tours, guiding prospective students and families through 12 informational stops per tour.</li>
+                                <li>Presents to 50+ attendees per week, delivering consistent institutional messaging aligned with university brand and visual standards.</li>
+                                <li>Adapts storytelling structure to diverse audiences, reinforcing key admissions information through clear narrative flow and visual cues.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

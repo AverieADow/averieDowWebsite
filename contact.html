@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Averie Dow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        background: '#0a0a0a',
+                        surface: '#171717',
+                        accent: '#ff007f',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+        
+        ::selection {
+            background-color: #ff007f;
+            color: #ffffff;
+        }
+
+        .hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+
+        .hover-underline-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 4px;
+            bottom: -4px;
+            left: 0;
+            background-color: #ff007f;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col">
+
+    <nav class="w-full max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-50">
+        <a href="index.html" class="text-2xl font-black tracking-tighter text-white hover:text-accent transition-colors duration-300">
+            Averie Dow<span class="text-accent">.</span>
+        </a>
+        <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide text-gray-400">
+            <a href="about.html" class="hover:text-white transition-colors duration-300">About</a>
+            <a href="projects.html" class="hover:text-white transition-colors duration-300">Projects</a>
+            <a href="resume.html" class="hover:text-white transition-colors duration-300">Resume</a>
+            <a href="contact.html" class="text-white transition-colors duration-300">Contact</a>
+        </div>
+    </nav>
+
+    <main class="flex-grow w-full max-w-6xl mx-auto px-6 py-12 md:py-24 flex flex-col justify-center">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+            
+            <!-- Left Side: Contact Information -->
+            <div class="space-y-10">
+                <div>
+                    <h1 class="text-6xl md:text-8xl font-black tracking-tighter uppercase leading-[0.9] mb-6">
+                        Let's <br>
+                        <span class="text-accent">Gab.</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl font-medium leading-relaxed text-gray-400 max-w-md">
+                        Have a messy design problem, a freelance project, or just want to chat about creative technology? Send me a message.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Email</p>
+                        <a href="mailto:averie.a.dow@gmail.com" class="text-2xl md:text-3xl font-bold text-white hover:text-accent transition-colors duration-300 hover-underline-animation break-all">averie.a.dow@gmail.com</a>
+                    </div>
+                    
+                    <div>
+                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Phone</p>
+                        <a href="tel:9135266923" class="text-2xl md:text-3xl font-bold text-white hover:text-accent transition-colors duration-300 hover-underline-animation">913.526.6923</a>
+                    </div>
+
+                    <div>
+                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Socials</p>
+                        <a href="https://linkedin.com/in/averiedow" target="_blank" class="text-lg font-bold text-gray-300 hover:text-white transition-colors flex items-center gap-2 group w-max">
+                            LinkedIn
+                            <svg class="w-5 h-5 text-accent opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Contact Form -->
+            <div class="bg-surface p-8 md:p-10 rounded-3xl border border-gray-800/50 relative overflow-hidden">
+                <!-- Decorative background accent -->
+                <div class="absolute -top-24 -right-24 w-48 h-48 bg-accent rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+
+                <form action="https://formsubmit.co/averie.a.dow@gmail.com" method="POST" class="space-y-6 relative z-10">
+                    
+                    <!-- FormSubmit Configuration -->
+                    <input type="hidden" name="_subject" value="New Contact Form Submission - AverieDow.com">
+                    <input type="hidden" name="_template" value="table">
+                    <!-- Redirects user back to contact page after sending instead of showing FormSubmit branding -->
+                    <input type="hidden" name="_next" value="https://averiedow.com/contact.html">
+                    <input type="hidden" name="_captcha" value="false">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="name" class="text-xs font-bold uppercase tracking-widest text-gray-400 pl-2">Name</label>
+                            <input type="text" id="name" name="name" required placeholder="Bill Shakespeare" class="w-full bg-background border border-gray-800 rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300">
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label for="email" class="text-xs font-bold uppercase tracking-widest text-gray-400 pl-2">Email</label>
+                            <input type="email" id="email" name="email" required placeholder="billshakes@gmail.com" class="w-full bg-background border border-gray-800 rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="subject" class="text-xs font-bold uppercase tracking-widest text-gray-400 pl-2">Subject</label>
+                        <input type="text" id="subject" name="subject" required placeholder="UX Design Opportunity" class="w-full bg-background border border-gray-800 rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="message" class="text-xs font-bold uppercase tracking-widest text-gray-400 pl-2">Message</label>
+                        <textarea id="message" name="message" required rows="5" placeholder="Tell me about your project..." class="w-full bg-background border border-gray-800 rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 resize-none"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-accent text-white font-black uppercase tracking-widest text-sm py-5 rounded-xl hover:bg-white hover:text-background transform hover:-translate-y-1 transition-all duration-300 mt-4 flex justify-center items-center gap-3 group">
+                        Send Message
+                        <svg class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="w-full border-t border-surface mt-10">
+        <div class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center text-sm text-gray-600">
+            <p>&copy; AVERIE DOW MADE THIS.</p>
+            <p>It's like you're obsessed with me or something.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Averie Dow - Portfolio of professional works and case studies.">
+    <title>The Repertoire | Averie Dow</title>
+
+    <style>
+        /* Typography imports */
+        @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=IM+Fell+English:ital@0;1&display=swap');
+
+        :root {
+            --parchment: #F4EBE1; 
+            --ink: #2C2621;       
+            --accent: #8B261D;    
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--parchment);
+            color: var(--ink);
+            font-family: 'EB Garamond', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+            margin: 0;
+            padding: 3vh 4vw;
+            background-image: radial-gradient(var(--ink) 0.5px, transparent 0.5px);
+            background-size: 100px 100px;
+            overflow: hidden; 
+        }
+
+        /* THE HIDDEN RADIO BUTTONS */
+        input[type="radio"] {
+            display: none;
+        }
+
+        /* --- Layout --- */
+        .book-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2vw; 
+            height: 100%;
+            width: 100%;
+            max-width: 1150px;
+        }
+
+        .page-half {
+            position: relative; 
+            width: 50%; 
+            height: 100%;
+            background-color: var(--parchment);
+            border: 2px solid var(--ink);
+            outline: 4px solid var(--ink);
+            outline-offset: 4px;
+            padding: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+
+        .content-wrap {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--ink);
+            padding: 4vh 3vw 6vh 3vw; 
+            display: flex;
+            flex-direction: column;
+            text-align: left; 
+            /* This is the magic that allows infinite projects without breaking the book */
+            overflow-y: auto; 
+            scrollbar-width: thin;
+            scrollbar-color: var(--ink) var(--parchment);
+        }
+
+        /* --- Headers --- */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3vh;
+            border-bottom: 2px double var(--ink);
+            padding-bottom: 2vh;
+        }
+
+        h1.primary-title {
+            font-family: 'IM Fell English', serif;
+            font-size: clamp(1.8rem, 4vmin, 3rem); 
+            font-weight: normal;
+            margin: 0 0 1vh 0;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .sub-heading {
+            font-family: 'IM Fell English', serif;
+            font-size: clamp(1rem, 2vmin, 1.5rem);
+            font-style: italic;
+            margin: 0;
+            color: var(--accent);
+        }
+
+        /* --- Table of Contents (Left Page) --- */
+        .toc-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5vh;
+            margin-top: 2vh;
+        }
+
+        .toc-item {
+            display: flex;
+            align-items: baseline;
+            width: 100%;
+            font-size: clamp(0.9rem, 2vmin, 1.2rem);
+            color: var(--ink);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .toc-item:hover {
+            color: var(--accent);
+        }
+
+        .toc-title {
+            flex-shrink: 0;
+            font-variant: small-caps;
+            letter-spacing: 1px;
+        }
+
+        .toc-dots {
+            flex-grow: 1;
+            border-bottom: 2px dotted var(--ink);
+            margin: 0 1vw;
+            opacity: 0.4;
+        }
+
+        .toc-meta {
+            flex-shrink: 0;
+            font-style: italic;
+            font-family: 'IM Fell English', serif;
+            font-size: 0.9em;
+        }
+
+        /* Active State Styling for TOC based on checked radio (Pre-wired up to 8) */
+        #proj1:checked ~ .book-container label[for="proj1"],
+        #proj2:checked ~ .book-container label[for="proj2"],
+        #proj3:checked ~ .book-container label[for="proj3"],
+        #proj4:checked ~ .book-container label[for="proj4"],
+        #proj5:checked ~ .book-container label[for="proj5"],
+        #proj6:checked ~ .book-container label[for="proj6"],
+        #proj7:checked ~ .book-container label[for="proj7"],
+        #proj8:checked ~ .book-container label[for="proj8"] {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* --- Case Study Content (Right Page) --- */
+        .case-study {
+            display: none; 
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Show the correct case study based on radio button (Pre-wired up to 8) */
+        #proj1:checked ~ .book-container .content-1,
+        #proj2:checked ~ .book-container .content-2,
+        #proj3:checked ~ .book-container .content-3,
+        #proj4:checked ~ .book-container .content-4,
+        #proj5:checked ~ .book-container .content-5,
+        #proj6:checked ~ .book-container .content-6,
+        #proj7:checked ~ .book-container .content-7,
+        #proj8:checked ~ .book-container .content-8 {
+            display: block;
+        }
+
+        .project-title {
+            font-family: 'IM Fell English', serif;
+            font-size: clamp(1.6rem, 3.5vmin, 2.2rem);
+            font-weight: normal;
+            margin: 0 0 1vh 0;
+            text-align: center;
+            border-bottom: 1px solid var(--ink);
+            padding-bottom: 1vh;
+        }
+
+        .project-meta {
+            text-align: center;
+            font-size: clamp(0.8rem, 1.8vmin, 1rem);
+            font-variant: small-caps;
+            letter-spacing: 1px;
+            margin: 0 0 3vh 0;
+            color: var(--accent);
+        }
+
+        .project-desc {
+            font-size: clamp(0.95rem, 2vmin, 1.15rem);
+            line-height: 1.6;
+            margin: 0 0 2vh 0;
+            text-align: justify; 
+        }
+
+        /* --- Woodcut Image Frame --- */
+        .woodcut-frame {
+            width: 100%;
+            height: 250px;
+            border: 2px solid var(--ink);
+            padding: 4px;
+            margin: 3vh 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'IM Fell English', serif;
+            font-style: italic;
+            color: var(--ink);
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(44, 38, 33, 0.05) 10px,
+                rgba(44, 38, 33, 0.05) 20px
+            );
+            /* To use a real image, replace the background with an <img> tag inside this div */
+        }
+
+        /* --- Link Buttons --- */
+        .deliverable-link-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5vh; 
+            margin: 4vh 0 2vh 0;
+        }
+
+        .deliverable-link {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--ink);
+            outline: 1px solid var(--ink);
+            outline-offset: 2px;
+            background: var(--parchment);
+            color: var(--ink);
+            font-family: 'IM Fell English', serif;
+            font-variant: small-caps;
+            font-size: clamp(0.9rem, 1.8vmin, 1.1rem);
+            text-decoration: none;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            width: 85%; 
+            text-align: center;
+        }
+
+        .deliverable-link:hover {
+            background: var(--ink);
+            color: var(--parchment);
+            outline-offset: 4px; 
+        }
+
+        /* --- Navigation --- */
+        .back-btn {
+            position: absolute;
+            bottom: -2px; 
+            left: -2px; 
+            background: var(--parchment);
+            color: var(--ink);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--ink);
+            font-family: 'IM Fell English', serif;
+            font-variant: small-caps;
+            font-size: clamp(0.8rem, 1.8vmin, 1rem);
+            letter-spacing: 1px;
+            cursor: pointer;
+            z-index: 10;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--accent);
+            color: var(--parchment);
+            padding-left: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- THE INVISIBLE SWITCHES (Pre-wired up to 8) -->
+    <input type="radio" name="portfolio" id="proj1" checked>
+    <input type="radio" name="portfolio" id="proj2">
+    <input type="radio" name="portfolio" id="proj3">
+    <input type="radio" name="portfolio" id="proj4">
+    <!-- Add up to id="proj8" here if needed -->
+
+    <div class="book-container">
+        
+        <!-- LEFT PAGE (THE CATALOGUE OF WORKS) -->
+        <div class="page-half">
+            <div class="content-wrap">
+                
+                <header class="page-header">
+                    <h1 class="primary-title">The Repertoire</h1>
+                    <p class="sub-heading">A Catalogue of Professional Works</p>
+                </header>
+
+                <!-- 
+                  Because this container has overflow-y: auto, you can add as many 
+                  labels here as you want and the user can just scroll down the list!
+                -->
+                <nav class="toc-container">
+                    <label for="proj1" class="toc-item">
+                        <span class="toc-title">Echostar Training Program</span>
+                        <span class="toc-dots"></span>
+                        <span class="toc-meta">2026</span>
+                    </label>
+
+                    <label for="proj2" class="toc-item">
+                        <span class="toc-title">CU Boulder IT Ticketing</span>
+                        <span class="toc-dots"></span>
+                        <span class="toc-meta">2025</span>
+                    </label>
+
+                    <label for="proj3" class="toc-item">
+                        <span class="toc-title">House Rules Platform</span>
+                        <span class="toc-dots"></span>
+                        <span class="toc-meta">2026</span>
+                    </label>
+
+                    <label for="proj4" class="toc-item">
+                        <span class="toc-title">Jeans to Jurses Website</span>
+                        <span class="toc-dots"></span>
+                        <span class="toc-meta">2026</span>
+                    </label>
+                </nav>
+
+            </div>
+            <!-- Placed outside content-wrap so it anchors to the border -->
+            <a href="index.html#open" class="back-btn">☜ Return to Catalogue</a>
+        </div>
+
+        <!-- RIGHT PAGE (THE CASE STUDIES) -->
+        <div class="page-half">
+            <div class="content-wrap">
+                
+                <!-- CONTENT 1 -->
+                <article class="case-study content-1">
+                    <h2 class="project-title">Echostar Training Program</h2>
+                    <p class="project-meta">Role: Learning Experience Designer ❧ 2026</p>
+                    
+                    <p class="project-desc">
+                        Designed and developed a comprehensive digital training curriculum for call center agents. Utilizing Articulate Rise, HTML, CSS, and AI-assisted tools like Gemini, I built four digital instructor-led training (ILT) courses per month.
+                    </p>
+                    
+                    <div class="woodcut-frame">
+                        [ Screenshot of Articulate Rise Module ]
+                    </div>
+
+                    <p class="project-desc">
+                        A major focus of this project was accessibility and innovation. I created a responsive, accessible survey embed template that allowed users to open surveys in new tabs, successfully bypassing a software error that hindered previous methods. All modules were rigorously audited for WCAG compliance.
+                    </p>
+
+                    <div class="deliverable-link-container">
+                        <a href="#" target="_blank" class="deliverable-link">☞ View Live Module</a>
+                        <a href="#" target="_blank" class="deliverable-link">☞ Read Case Study PDF</a>
+                    </div>
+                </article>
+
+                <!-- CONTENT 2 -->
+                <article class="case-study content-2">
+                    <h2 class="project-title">CU Boulder IT Ticketing</h2>
+                    <p class="project-meta">Role: User Experience Designer ❧ 2025</p>
+                    
+                    <p class="project-desc">
+                        Led the end-to-end redesign of the campus-wide IT ticket creation system. The previous system caused significant friction for students and staff.
+                    </p>
+
+                    <div class="woodcut-frame">
+                        [ High-Fidelity Figma Prototype Image ]
+                    </div>
+
+                    <p class="project-desc">
+                        I developed a 10+ page high-fidelity prototype in Figma and conducted usability tests with target demographics to streamline the workflow. The final deliverable strictly adhered to color contrast and screen-reader requirements.
+                    </p>
+
+                    <div class="deliverable-link-container">
+                        <a href="#" target="_blank" class="deliverable-link">☞ Explore Figma Prototype</a>
+                    </div>
+                </article>
+
+                <!-- CONTENT 3 -->
+                <article class="case-study content-3">
+                    <h2 class="project-title">House Rules Platform</h2>
+                    <p class="project-meta">Role: Product Designer ❧ 2026</p>
+                    
+                    <p class="project-desc">
+                        An independent project dedicated to digitizing paper-based party games while preserving the unique "house rules" and inside jokes of individual friend groups. 
+                    </p>
+
+                    <p class="project-desc">
+                        I leveraged AI models, specifically Claude, to conduct thematic analysis on exploratory user research regarding social gaming behaviors. This accelerated the development of a highly personalized, user-centered interface.
+                    </p>
+
+                    <div class="deliverable-link-container">
+                        <a href="#" target="_blank" class="deliverable-link">☞ View UX Research Brief</a>
+                        <a href="#" target="_blank" class="deliverable-link">☞ See UI Mockups</a>
+                    </div>
+                </article>
+                
+                <!-- CONTENT 4 -->
+                <article class="case-study content-4">
+                    <h2 class="project-title">Jeans to Jurses Website</h2>
+                    <p class="project-meta">Role: Website Designer ❧ 2026</p>
+                    
+                    <p class="project-desc">
+                        Contracted to transform an existing digital footprint into a streamlined, six-page fashion merchandise website.
+                    </p>
+
+                    <div class="woodcut-frame">
+                        [ Final Website Homepage Screenshot ]
+                    </div>
+
+                    <p class="project-desc">
+                        Through direct stakeholder collaboration, I established a clear visual hierarchy, updated typography, and rewrote the copy to ensure immediate understanding for a diverse user base, handing off a fully functional CMS administration dashboard.
+                    </p>
+
+                    <div class="deliverable-link-container">
+                        <a href="#" target="_blank" class="deliverable-link">☞ Visit Live Website</a>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

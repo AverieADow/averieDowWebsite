@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Tea App Ethical Audit - Averie Dow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        background: '#0a0a0a',
+                        surface: '#171717',
+                        accent: '#ff007f', /* Neon Pink */
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+        
+        ::selection {
+            background-color: #ff007f;
+            color: #ffffff;
+        }
+
+        .hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+
+        .hover-underline-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 4px;
+            bottom: -4px;
+            left: 0;
+            background-color: #ff007f;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col overflow-x-hidden">
+
+    <nav class="w-full max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-50">
+        <a href="index.html" class="text-2xl font-black tracking-tighter text-white hover:text-accent transition-colors duration-300">
+            Averie Dow<span class="text-accent">.</span>
+        </a>
+        <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide text-gray-400">
+            <a href="index.html" class="hover:text-white transition-colors duration-300">Home</a>
+            <a href="about.html" class="hover:text-white transition-colors duration-300">About</a>
+            <a href="projects.html" class="text-white transition-colors duration-300">Projects</a>
+            <a href="contact.html" class="hover:text-white transition-colors duration-300">Contact</a>
+        </div>
+    </nav>
+
+    <main class="flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col justify-center">
+        
+        <section class="pt-12 pb-16 md:pt-20 md:pb-16">
+            <h1 class="text-5xl md:text-7xl lg:text-9xl font-black tracking-tighter leading-[0.9] uppercase break-words hyphens-auto mb-8">
+                The Tea App <br>
+                <span class="text-accent">Ethical Audit.</span>
+            </h1>
+            
+            <div class="mt-8 pt-8 border-t border-surface flex flex-col md:flex-row gap-6 justify-between items-start md:items-end">
+                <div>
+                    <p class="text-accent font-bold text-xs tracking-widest uppercase mb-2">Role</p>
+                    <p class="text-white font-black tracking-widest text-sm md:text-base uppercase flex flex-wrap gap-2 items-center">
+                        Researcher <span class="text-surface">/</span> Data Analyst <span class="text-surface">/</span> Policy Designer
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="pb-20">
+            <div class="w-full aspect-video bg-surface rounded-none border border-gray-800 overflow-hidden relative group">
+                <img src="assets/Tea App - Travia & Dow (2)/1.png" alt="Hero Placeholder" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            </div>
+        </section>
+
+        <section class="py-20 border-t border-surface">
+            <div class="flex flex-col lg:flex-row gap-12 lg:gap-24">
+                <div class="lg:w-1/2">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-8">The Problem</h2>
+                    <p class="text-2xl md:text-3xl font-medium leading-relaxed text-gray-300">
+                        The Tea App emerged as a dating safety platform allowing women to share information and assign "red flags" to men they have dated, rapidly growing to over 11 million users. 
+                    </p>
+                    <p class="text-xl md:text-2xl font-medium leading-relaxed text-gray-400 mt-6">
+                        While initially designed for empowerment and mutual protection, the platform quickly ignited ethical, social, and political debates due to unverified claims, cyberbullying, and doxxing. 
+                    </p>
+                    <div class="mt-8 p-6 md:p-8 bg-surface border-l-4 border-accent">
+                        <p class="text-lg md:text-xl font-bold text-white">
+                            The core design problem was a severe tension between promoting physical community safety for women and violating the data privacy, consent, and dignity of the individuals being posted about. 
+                        </p>
+                        <p class="text-gray-400 mt-4">
+                            This ethical instability culminated in a massive data breach that exposed users' sensitive personal information, including driver's licenses.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2 flex flex-col gap-8 justify-center">
+                    <div class="w-full aspect-video bg-surface rounded-none border border-gray-800 overflow-hidden relative group">
+                        <img src="assets/Tea App - Travia & Dow (2)/2.png" alt="Context Image 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    </div>
+                    <div class="w-full aspect-video bg-surface rounded-none border border-gray-800 overflow-hidden relative group">
+                        <img src="assets/Tea App - Travia & Dow (2)/3.png" alt="Context Image 2" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 border-t border-surface">
+            <div class="max-w-6xl">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-12">Core Metrics for Evidence</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    <div class="space-y-8 text-lg text-gray-400 leading-relaxed">
+                        <p>To understand user sentiment and the root causes of the app's ethical failures, our team employed a mixed-methods research approach.</p>
+                        
+                        <div class="pt-4">
+                            <h3 class="text-2xl font-bold text-white mb-3">Thematic Analysis</h3>
+                            <p>We gathered user comments from Reddit and online forums, mitigating algorithmic bias by varying search criteria, and conducted manual qualitative coding. We then used AI-assisted thematic analysis (via ChatGPT) to map out primary themes and subthemes.</p>
+                        </div>
+                        
+                        <div class="pt-4">
+                            <h3 class="text-2xl font-bold text-white mb-3">Survey Data Deployment</h3>
+                            <p>Identifying data privacy as the dominant theme, we designed and deployed a Qualtrics survey focusing on doxxing, safety, and privacy.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-surface p-8 md:p-12 border border-gray-800 flex flex-col justify-center">
+                        <h3 class="text-sm font-bold uppercase tracking-widest text-accent mb-8">Hover to Reveal Survey Findings</h3>
+                        
+                        <div class="space-y-8">
+                            <div class="group cursor-default">
+                                <div class="flex justify-between items-end mb-2">
+                                    <span class="text-white font-bold">Men should be notified</span>
+                                    <span class="text-accent font-black text-2xl">39%</span>
+                                </div>
+                                <div class="w-full bg-[#222] h-2">
+                                    <div class="bg-accent h-2 w-0 group-hover:w-[39%] transition-all duration-1000 ease-out"></div>
+                                </div>
+                            </div>
+
+                            <div class="group cursor-default">
+                                <div class="flex justify-between items-end mb-2">
+                                    <span class="text-white font-bold">Would consider notification policy</span>
+                                    <span class="text-accent font-black text-2xl">43%</span>
+                                </div>
+                                <div class="w-full bg-[#222] h-2">
+                                    <div class="bg-accent h-2 w-0 group-hover:w-[43%] transition-all duration-1000 ease-out"></div>
+                                </div>
+                            </div>
+
+                            <div class="group cursor-default">
+                                <div class="flex justify-between items-end mb-2">
+                                    <span class="text-white font-bold">Firmly believe men should NOT be notified</span>
+                                    <span class="text-accent font-black text-2xl">18%</span>
+                                </div>
+                                <div class="w-full bg-[#222] h-2">
+                                    <div class="bg-accent h-2 w-0 group-hover:w-[18%] transition-all duration-1000 ease-out"></div>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-gray-500 mt-6 pt-6 border-t border-gray-800">
+                                The survey revealed highly divided views on consent and anonymity across the user base.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 border-t border-surface">
+            <div class="max-w-6xl">
+                <div class="mb-12 max-w-2xl">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-4">Iterative Ideation</h2>
+                    <p class="text-lg text-gray-400">
+                        We evaluated the platform's mechanics through multiple ethical lenses—specifically Utilitarianism and Deontology—to balance the real-world safety benefits for women against the platform's violations of individual rights. During our ideation and analysis, we identified key UI/UX and branding failures.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Fixed Height Card 1 -->
+                    <div class="group relative bg-surface border border-gray-800 p-8 h-[350px] overflow-hidden transition-colors hover:border-accent hover:bg-[#1f1f1f] cursor-default">
+                        <h3 class="text-2xl lg:text-3xl font-black uppercase tracking-tight text-white mb-4 relative z-10">Incentivizing Misinformation</h3>
+                        <div class="absolute bottom-8 left-8 right-8 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none">
+                            <p class="text-gray-400 border-t border-gray-800 pt-4 text-base md:text-sm lg:text-base">
+                                The arbitrary "flag" functionality allowed users to mark individuals without providing reasoning, which promoted uninformed reporting and inaccuracies.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Fixed Height Card 2 -->
+                    <div class="group relative bg-surface border border-gray-800 p-8 h-[350px] overflow-hidden transition-colors hover:border-accent hover:bg-[#1f1f1f] cursor-default">
+                        <h3 class="text-2xl lg:text-3xl font-black uppercase tracking-tight text-white mb-4 relative z-10">Problematic Branding</h3>
+                        <div class="absolute bottom-8 left-8 right-8 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none">
+                            <p class="text-gray-400 border-t border-gray-800 pt-4 text-base md:text-sm lg:text-base">
+                                Naming the application "Tea" fundamentally encouraged a culture of casual gossip and negativity rather than thoughtful, accurate reporting.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Fixed Height Card 3 -->
+                    <div class="group relative bg-surface border border-gray-800 p-8 h-[350px] overflow-hidden transition-colors hover:border-accent hover:bg-[#1f1f1f] cursor-default">
+                        <h3 class="text-2xl lg:text-3xl font-black uppercase tracking-tight text-white mb-4 relative z-10">Systemic Failure</h3>
+                        <div class="absolute bottom-8 left-8 right-8 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none">
+                            <p class="text-gray-400 border-t border-gray-800 pt-4 text-base md:text-sm lg:text-base">
+                                Any system encouraging privacy violations, even with good intentions, is ethically unstable, a reality confirmed when the app was removed from the App Store in October 2025 for failing Apple's data privacy regulations.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="py-20 border-t border-surface">
+            <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-12">Solution Architecture Previews</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Ensure all images are aspect-video strictly -->
+                <div class="group relative overflow-hidden bg-surface border border-gray-800 w-full aspect-video">
+                    <img src="assets/Tea App - Travia & Dow (2)/5.png" alt="Architecture Preview 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+                <div class="group relative overflow-hidden bg-surface border border-gray-800 w-full aspect-video">
+                    <img src="assets/Tea App - Travia & Dow (2)/6.png" alt="Architecture Preview 2" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+                <div class="group relative overflow-hidden bg-surface border border-gray-800 w-full aspect-video md:col-span-2">
+                    <img src="assets/Tea App - Travia & Dow (2)/7.png" alt="Architecture Preview 3" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 border-t border-surface">
+            <div class="max-w-4xl">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-6">Final Recommendations & Thoughts</h2>
+                <p class="text-xl text-white font-medium mb-12 leading-relaxed">
+                    To resolve the tension between safety and privacy, I recommended a complete pivot away from user-generated doxxing toward a regulated, verified safety tool.
+                </p>
+                
+                <div class="space-y-12">
+                    <div class="group border-l-4 border-transparent hover:border-accent pl-6 md:pl-10 transition-colors duration-300">
+                        <h3 class="text-2xl md:text-4xl font-black uppercase tracking-tight mb-4">
+                            <span class="text-gray-600 mr-4">01</span>Location-Based Verification
+                        </h3>
+                        <p class="text-lg text-gray-400">
+                            Instead of allowing users to manually add individuals to a database, the proposed application relies on local, verified sex offender and crime registries.
+                        </p>
+                    </div>
+
+                    <div class="group border-l-4 border-transparent hover:border-accent pl-6 md:pl-10 transition-colors duration-300">
+                        <h3 class="text-2xl md:text-4xl font-black uppercase tracking-tight mb-4">
+                            <span class="text-gray-600 mr-4">02</span>Private, Opt-in Communication
+                        </h3>
+                        <p class="text-lg text-gray-400">
+                            Users viewing the verified map can select "I know this person" to open themselves up to private messaging from other users, allowing women to communicate about local dangers without publicly doxxing anyone.
+                        </p>
+                    </div>
+
+                    <div class="group border-l-4 border-transparent hover:border-accent pl-6 md:pl-10 transition-colors duration-300">
+                        <h3 class="text-2xl md:text-4xl font-black uppercase tracking-tight mb-4">
+                            <span class="text-gray-600 mr-4">03</span>Direct Support Integration
+                        </h3>
+                        <p class="text-lg text-gray-400">
+                            The platform would also allow women to submit direct inquiries to local police departments for low-profile, safe assistance.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-20 p-8 md:p-12 bg-accent/10 border border-accent">
+                    <h3 class="text-accent font-black text-2xl uppercase mb-4">Final Takeaway</h3>
+                    <p class="text-xl text-white font-medium leading-relaxed">
+                        Moving forward, digital designers and policymakers must collaborate to establish clear regulations for online consent, finding innovative ways to create safe digital spaces for targeted groups that do not rely on ethically compromised data practices.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 border-t border-surface">
+            <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-8">Project Assets</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="assets/Tea App - Dow, Travia, Cariveau.pdf" download class="group bg-surface border border-gray-800 p-6 flex justify-between items-center transition-colors hover:border-accent hover:bg-[#1f1f1f]">
+                    <span class="text-lg font-bold text-white group-hover:text-accent transition-colors">Audit Report (PDF)</span>
+                    <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                </a>
+                
+                <a href="assets/Codebook Analysis Travia, Dow, Cariveau - Codebook (Compilation Themes).csv" download class="group bg-surface border border-gray-800 p-6 flex justify-between items-center transition-colors hover:border-accent hover:bg-[#1f1f1f]">
+                    <span class="text-lg font-bold text-white group-hover:text-accent transition-colors">Survey Data Toplines (CSV)</span>
+                    <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                </a>
+
+                <a href="https://www.canva.com/design/DAG0qem1vOo/XTF-RcK8z4iU1rxNymhzPA/edit?utm_content=DAG0qem1vOo&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" download class="group bg-surface border border-gray-800 p-6 flex justify-between items-center transition-colors hover:border-accent hover:bg-[#1f1f1f]">
+                    <span class="text-lg font-bold text-white group-hover:text-accent transition-colors">Ideation Slide Deck</span>
+                    <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="w-full border-t border-surface mt-10">
+        <div class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center text-sm text-gray-600">
+            <p>&copy; AVERIE DOW MADE THIS.</p>
+            <p>It's like you're obsessed with me or something.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

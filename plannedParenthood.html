@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planned Parenthood UX Audit - Averie Dow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        background: '#0a0a0a',
+                        surface: '#171717',
+                        accent: '#ff007f', /* Neon Pink */
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+        
+        ::selection {
+            background-color: #ff007f;
+            color: #ffffff;
+        }
+
+        .hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+
+        .hover-underline-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 4px;
+            bottom: -4px;
+            left: 0;
+            background-color: #ff007f;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        
+        /* Hidden scrollbar for overflow areas */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* True document flow fade animation for tabs */
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col overflow-x-hidden">
+
+    <nav class="w-full max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-50">
+        <a href="index.html" class="text-2xl font-black tracking-tighter text-white hover:text-accent transition-colors duration-300">
+            Averie Dow<span class="text-accent">.</span>
+        </a>
+        <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide text-gray-400">
+            <a href="about.html" class="hover:text-white transition-colors duration-300">About</a>
+            <a href="projects.html" class="hover:text-white transition-colors duration-300">Projects</a>
+            <a href="resume.html" class="hover:text-white transition-colors duration-300">Resume</a>
+            <a href="contact.html" class="hover:text-white transition-colors duration-300">Contact</a>
+        </div>
+    </nav>
+
+    <main class="flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col justify-center">
+        
+        <section class="pt-12 pb-20 md:pt-20 md:pb-32">
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1] uppercase break-words hyphens-auto mb-12">
+                Planned Parenthood <br>
+                <span class="text-accent">UX Audit.</span>
+            </h1>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-surface pt-10">
+                <div>
+                    <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Role</p>
+                    <p class="text-white font-medium">UX Researcher & Designer</p>
+                </div>
+                <div>
+                    <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Timeline</p>
+                    <p class="text-white font-medium">4 Weeks</p>
+                </div>
+                <div>
+                    <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Platform</p>
+                    <p class="text-white font-medium">Web Desktop & Mobile</p>
+                </div>
+                <div>
+                    <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Methods</p>
+                    <p class="text-white font-medium">WCAG, Heuristics, Card Sorting</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 border-t border-surface">
+            <div class="max-w-3xl">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-8">The Problem</h2>
+                <p class="text-2xl md:text-3xl font-medium leading-relaxed text-gray-300">
+                    Planned Parenthood’s platform serves women, parents, and LGBTQ+ individuals who need to quickly find time-sensitive health information and easily schedule appointments. While the site appears professional and trustworthy, users currently experience <span class="text-white font-black underline decoration-accent decoration-4 underline-offset-4">severe decision friction</span>.
+                </p>
+                <p class="text-lg md:text-xl font-medium leading-relaxed text-gray-400 mt-6">
+                    This is caused by disorganized information architecture, an overly tedious third-party booking flow, and critical accessibility barriers that block inclusive navigation.
+                </p>
+            </div>
+        </section>
+
+        <section class="py-20 border-t border-surface">
+            <div class="max-w-6xl">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-12">The Audit & Metrics</h2>
+                
+                <div class="flex flex-col md:flex-row gap-12 lg:gap-24">
+                    
+                    <!-- Tab Buttons -->
+                    <div class="flex flex-row flex-wrap md:flex-col gap-4 md:gap-6 md:w-1/3 border-b md:border-b-0 md:border-l-2 border-surface md:pl-6 pb-6 md:pb-0">
+                        <button onclick="switchTab('tab1')" id="btn-tab1" class="tab-btn text-left text-lg md:text-2xl font-black tracking-tight text-accent border-b-2 md:border-b-0 md:border-l-2 border-accent pb-2 md:pb-0 md:-ml-[26px] md:pl-[26px] transition-all break-words">
+                            01 / Persona Analysis
+                        </button>
+                        <button onclick="switchTab('tab2')" id="btn-tab2" class="tab-btn text-left text-lg md:text-2xl font-black tracking-tight text-gray-600 hover:text-gray-300 border-b-2 md:border-b-0 md:border-l-2 border-transparent pb-2 md:pb-0 md:-ml-[26px] md:pl-[26px] transition-all break-words">
+                            02 / Information Architecture
+                        </button>
+                        <button onclick="switchTab('tab3')" id="btn-tab3" class="tab-btn text-left text-lg md:text-2xl font-black tracking-tight text-gray-600 hover:text-gray-300 border-b-2 md:border-b-0 md:border-l-2 border-transparent pb-2 md:pb-0 md:-ml-[26px] md:pl-[26px] transition-all break-words">
+                            03 / User Journey Mapping
+                        </button>
+                        <button onclick="switchTab('tab4')" id="btn-tab4" class="tab-btn text-left text-lg md:text-2xl font-black tracking-tight text-gray-600 hover:text-gray-300 border-b-2 md:border-b-0 md:border-l-2 border-transparent pb-2 md:pb-0 md:-ml-[26px] md:pl-[26px] transition-all break-words">
+                            04 / Accessibility Eval
+                        </button>
+                        <button onclick="switchTab('tab5')" id="btn-tab5" class="tab-btn text-left text-lg md:text-2xl font-black tracking-tight text-gray-600 hover:text-gray-300 border-b-2 md:border-b-0 md:border-l-2 border-transparent pb-2 md:pb-0 md:-ml-[26px] md:pl-[26px] transition-all break-words">
+                            05 / Heuristics & Visual Design
+                        </button>
+                    </div>
+
+                    <!-- Tab Content Area (Document Flow) -->
+                    <div class="md:w-2/3">
+                        
+                        <!-- Tab 1 -->
+                        <div id="tab1" class="tab-pane block fade-in w-full">
+                            <h3 class="text-3xl font-bold mb-6 text-white">Persona Analysis</h3>
+                            <div class="space-y-6 text-lg text-gray-300 leading-relaxed max-w-2xl">
+                                <p>Evaluated the site through "Lana Rey," a 22-year-old, highly efficient, tech-savvy user.</p>
+                                <div class="bg-surface p-6 border-l-4 border-accent">
+                                    <h4 class="text-sm font-bold uppercase tracking-widest text-accent mb-2">Insight:</h4>
+                                    <p class="text-white">Lana would face frustration due to a lack of visual side-by-side clinic comparisons and a tedious third-party scheduling flow.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab 2 -->
+                        <div id="tab2" class="tab-pane hidden w-full">
+                            <h3 class="text-3xl font-bold mb-6 text-white">Information Architecture</h3>
+                            <div class="space-y-6 text-lg text-gray-300 leading-relaxed max-w-2xl">
+                                <p>Conducted an open card-sorting exercise to test how users group personal health topics.</p>
+                                <div class="bg-surface p-6 border-l-4 border-accent">
+                                    <h4 class="text-sm font-bold uppercase tracking-widest text-accent mb-2">Insight:</h4>
+                                    <p class="text-white">While top-level navigation is intuitive, the "Learn" subcategory is far too broad, causing users to struggle with categorizing information.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab 3 -->
+                        <div id="tab3" class="tab-pane hidden w-full">
+                            <h3 class="text-3xl font-bold mb-6 text-white">User Journey Mapping</h3>
+                            <div class="space-y-6 text-lg text-gray-300 leading-relaxed max-w-2xl">
+                                <p>Mapped the ideal route for scheduling an appointment to locate specific drop-off points (The Golden Path).</p>
+                                <div class="bg-surface p-6 border-l-4 border-accent">
+                                    <h4 class="text-sm font-bold uppercase tracking-widest text-accent mb-2">Insight:</h4>
+                                    <p class="text-white">Auto-filled form fields (based on a user's prior browsing history) actively disorient users and yield inaccurate search results. Available appointments are also displayed in a tedious, difficult-to-scan vertical column.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab 4 -->
+                        <div id="tab4" class="tab-pane hidden w-full">
+                            <h3 class="text-3xl font-bold mb-6 text-white">Accessibility Evaluation</h3>
+                            <div class="space-y-6 text-lg text-gray-300 leading-relaxed max-w-2xl">
+                                <p>Utilized tools like Silktide to evaluate disability-friendly design based on WCAG standards.</p>
+                                <div class="bg-surface p-6 border-l-4 border-accent">
+                                    <h4 class="text-sm font-bold uppercase tracking-widest text-accent mb-2">Insight:</h4>
+                                    <p class="text-white">The site suffers from an extreme lack of Alternative ('Alt') Text for images, leaving screen-reader users without vital context.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tab 5 -->
+                        <div id="tab5" class="tab-pane hidden w-full">
+                            <h3 class="text-3xl font-bold mb-6 text-white">Heuristics & Visual Design</h3>
+                            <div class="space-y-6 text-lg text-gray-300 leading-relaxed max-w-2xl">
+                                <p>Assessed using Jakob Nielsen’s 10 Usability Heuristics.</p>
+                                <div class="bg-surface p-6 border-l-4 border-accent">
+                                    <h4 class="text-sm font-bold uppercase tracking-widest text-accent mb-2">Insight:</h4>
+                                    <p class="text-white">Massive "Hero Images" span the entire screen, pushing crucial content and Call-To-Action (CTA) buttons too far down the page where they are easily missed.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 border-t border-surface">
+            <div class="max-w-4xl">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-12">Comprehensive Results & Design Solutions</h2>
+                
+                <div class="space-y-16">
+                    
+                    <!-- Solution 1 -->
+                    <div class="group border-l-4 border-transparent hover:border-accent pl-6 md:pl-10 transition-colors duration-300">
+                        <h3 class="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
+                            <span class="text-gray-600 mr-4">01</span>Streamline Appointment Scheduling
+                        </h3>
+                        <div class="space-y-6 text-lg text-gray-400">
+                            <p><strong class="text-white">Redesign the Booking UI:</strong> Replace the tedious vertical column of appointments with side-by-side comparative layouts or drop-down filters to accelerate decision-making.</p>
+                            <p><strong class="text-white">Remove Auto-Fill Traps:</strong> Disable default search parameters (like "Birth Control") that auto-populate based on browsing history, eliminating user confusion during the booking flow.</p>
+                            <p><strong class="text-white">Fix Ambiguous Form Elements:</strong> Remove confusing buttons (like "Select another provider") and redesign fields like "Annual Wellness exam"—which currently looks like a search bar—into clear, visual lists.</p>
+                        </div>
+                    </div>
+
+                    <!-- Solution 2 -->
+                    <div class="group border-l-4 border-transparent hover:border-accent pl-6 md:pl-10 transition-colors duration-300">
+                        <h3 class="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
+                            <span class="text-gray-600 mr-4">02</span>Simplify Architecture & Standardize CTAs
+                        </h3>
+                        <div class="space-y-6 text-lg text-gray-400">
+                            <p><strong class="text-white">Restructure the "Learn" Menu:</strong> Break the massive "Learn" drop-down into two easily scannable sections: "Topics" (e.g., Abortion, Birth Control) and "Audiences" (e.g., Teens, Parents).</p>
+                            <p><strong class="text-white">Standardize Action-Oriented CTAs:</strong> Ensure button verbs consistently tell the user what will happen next (e.g., updating a vague "Abortion" button to "See abortion options").</p>
+                            <p><strong class="text-white">Optimize Information Density:</strong> Reduce the height of full-screen Hero Images to minimize unnecessary scrolling and bring crucial CTA buttons higher up the page.</p>
+                        </div>
+                    </div>
+
+                    <!-- Solution 3 -->
+                    <div class="group border-l-4 border-transparent hover:border-accent pl-6 md:pl-10 transition-colors duration-300">
+                        <h3 class="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
+                            <span class="text-gray-600 mr-4">03</span>Prioritize Accessibility & User Safety
+                        </h3>
+                        <div class="space-y-6 text-lg text-gray-400">
+                            <p><strong class="text-white">Implement Descriptive Alt-Text:</strong> Provide thorough alternate text for all images and informational card displays so visually impaired users have full context via screen readers.</p>
+                            <p><strong class="text-white">Fix WCAG AA Color Contrast:</strong> Update the color palette to fix contrast issues, specifically targeting light blue text on white backgrounds.</p>
+                            <p><strong class="text-white">Add a "Quick Exit" Safety Button:</strong> Implement a highly visible "Escape" button (similar to those on domestic violence support sites) allowing users in monitored or unsafe situations to leave the site immediately with one click.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- UPDATED WIREFRAMES SECTION -->
+        <section class="py-20 border-t border-surface">
+            <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-12">Wireframes & Interface Previews</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Large Item (Full Width) -->
+                <div class="group relative overflow-hidden bg-surface border border-gray-800 md:col-span-2 aspect-video">
+                    <img src="assets/PP_Slides/20.png" alt="Wireframe 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+
+                <!-- Left Item (Half Width) -->
+                <div class="group relative overflow-hidden bg-surface border border-gray-800 aspect-video">
+                    <img src="assets/PP_Slides/21.png" alt="Wireframe 2" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+
+                <!-- Right Item (Half Width) -->
+                <div class="group relative overflow-hidden bg-surface border border-gray-800 aspect-video">
+                    <img src="assets/PP_Slides/19.png" alt="Wireframe 3" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer id="contact" class="w-full border-t border-surface mt-10">
+        <div class="max-w-6xl mx-auto px-6 py-20 flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
+            <div>
+                <h2 class="text-5xl md:text-7xl font-black tracking-tighter mb-4">Let's Gab.</h2>
+                <a href="mailto:averie.a.dow@gmail.com" class="text-2xl text-gray-400 hover:text-white transition-colors duration-300 hover-underline-animation">averie.a.dow@gmail.com</a>
+            </div>
+            
+            <div class="flex flex-col gap-4 text-right w-full md:w-auto">
+                <a href="https://www.linkedin.com/in/averiedow/" target="_blank" class="text-xl font-bold text-gray-400 hover:text-accent transition-colors duration-300 flex items-center justify-start md:justify-end gap-2 group">
+                    LinkedIn
+                    <svg class="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </a>
+            </div>
+        </div>
+        
+        <div class="w-full max-w-6xl mx-auto px-6 py-6 border-t border-surface flex justify-between items-center text-sm text-gray-600">
+            <p>&copy; AVERIE DOW MADE THIS.</p>
+            <p>It's like you're obsessed with me or something.</p>
+        </div>
+    </footer>
+
+    <script>
+        function switchTab(tabId) {
+            // Get all panes and buttons
+            const allPanes = document.querySelectorAll('.tab-pane');
+            const allBtns = document.querySelectorAll('.tab-btn');
+
+            // Hide all panes and remove active styling from buttons
+            allPanes.forEach(pane => {
+                pane.classList.remove('block', 'fade-in');
+                pane.classList.add('hidden');
+            });
+            
+            allBtns.forEach(btn => {
+                btn.classList.remove('text-accent', 'border-accent');
+                btn.classList.add('text-gray-600', 'border-transparent');
+            });
+
+            // Show selected pane
+            const selectedPane = document.getElementById(tabId);
+            selectedPane.classList.remove('hidden');
+            selectedPane.classList.add('block');
+            
+            // Trigger reflow to restart CSS animation
+            void selectedPane.offsetWidth;
+            selectedPane.classList.add('fade-in');
+
+            // Highlight selected button
+            const selectedBtn = document.getElementById('btn-' + tabId);
+            selectedBtn.classList.remove('text-gray-600', 'border-transparent');
+            selectedBtn.classList.add('text-accent', 'border-accent');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Averie Dow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        background: '#0a0a0a',
+                        surface: '#171717',
+                        accent: '#ff007f', /* Neon Pink */
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+        
+        ::selection {
+            background-color: #ff007f;
+            color: #ffffff;
+        }
+
+        .hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+
+        .hover-underline-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 4px;
+            bottom: -4px;
+            left: 0;
+            background-color: #ff007f;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col">
+
+    <nav class="w-full max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-50">
+        <a href="index.html" class="text-2xl font-black tracking-tighter text-white hover:text-accent transition-colors duration-300">
+            Averie Dow<span class="text-accent">.</span>
+        </a>
+        <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide text-gray-400">
+            <a href="about.html" class="hover:text-white transition-colors duration-300">About</a>
+            <a href="projects.html" class="text-white transition-colors duration-300">Projects</a>
+            <a href="resume.html" class="hover:text-white transition-colors duration-300">Resume</a>
+            <a href="contact.html" class="hover:text-white transition-colors duration-300">Contact</a>
+        </div>
+    </nav>
+
+    <main class="flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col py-12 md:py-20">
+        
+        <header class="mb-16 md:mb-24">
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] uppercase mb-6">
+                All <br>
+                <span class="text-accent">Projects.</span>
+            </h1>
+            <p class="text-xl md:text-2xl font-medium leading-relaxed text-gray-400 max-w-2xl">
+                A comprehensive archive of my work spanning UX research, accessibility audits, and ethical tech policy design.
+            </p>
+        </header>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            
+            <!-- Main Project 1: Planned Parenthood -->
+            <a href="plannedParenthood.html" class="group block overflow-hidden rounded-2xl bg-surface transition-transform duration-500 hover:-translate-y-2 border border-transparent hover:border-accent/50 flex flex-col">
+                <div class="w-full aspect-video overflow-hidden bg-[#222]">
+                    <img src="assets/plannedParenthood.jpeg" alt="Planned Parenthood Project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+                <div class="p-8 flex flex-col gap-3 flex-grow">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-3xl font-bold text-white">Planned Parenthood Usability Audit</h3>
+                        <svg class="w-8 h-8 text-gray-500 group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </div>
+                    <p class="text-gray-400 group-hover:text-gray-200 transition-colors">A comprehensive UX audit to reduce decision friction and improve accessibility.</p>
+                </div>
+            </a>
+
+            <!-- Main Project 2: The Tea App -->
+            <a href="project-tea.html" class="group block overflow-hidden rounded-2xl bg-surface transition-transform duration-500 hover:-translate-y-2 border border-transparent hover:border-accent/50 flex flex-col">
+                <div class="w-full aspect-video overflow-hidden bg-[#222]">
+                    <img src="assets/tea.webp" alt="The Tea App Project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+                <div class="p-8 flex flex-col gap-3 flex-grow">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-3xl font-bold text-white">The Tea App and Data Ethics</h3>
+                        <svg class="w-8 h-8 text-gray-500 group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </div>
+                    <p class="text-gray-400 group-hover:text-gray-200 transition-colors">A comprehensive policy review on the women's safety app turned doxxing platform.</p>
+                </div>
+            </a>
+
+            <!-- Main Project 3: Sephora -->
+            <a href="project-sephora.html" class="group block overflow-hidden rounded-2xl bg-surface transition-transform duration-500 hover:-translate-y-2 border border-transparent hover:border-accent/50 flex flex-col">
+                <div class="w-full aspect-video overflow-hidden bg-[#222]">
+                    <img src="assets/4871 - Sephora WCAG AAA Audit/1.png" alt="Sephora WCAG Audit Project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+                <div class="p-8 flex flex-col gap-3 flex-grow">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-3xl font-bold text-white">Sephora WCAG AAA Accessibility Audit</h3>
+                        <svg class="w-8 h-8 text-gray-500 group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </div>
+                    <p class="text-gray-400 group-hover:text-gray-200 transition-colors">An exhaustive evaluation of the Sephora checkout flow against strict WCAG 2.2 AAA standards.</p>
+                </div>
+            </a>
+
+            
+            <!-- Custom Placeholder 1 -->
+            <div class="group block overflow-hidden rounded-2xl bg-surface flex flex-col border border-gray-800 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-not-allowed">
+                <div class="w-full aspect-video overflow-hidden bg-[#111] flex items-center justify-center p-6 text-center relative">
+                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+                    <span class="font-black text-gray-700 uppercase tracking-widest text-sm relative z-10">Locked File</span>
+                </div>
+                <div class="p-8 flex flex-col gap-3 flex-grow justify-center border-t border-gray-800/50">
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-400 leading-tight">trying to find something from work i can share</h3>
+                </div>
+            </div>
+
+            <!-- Custom Placeholder 2 -->
+            <div class="group block overflow-hidden rounded-2xl bg-surface flex flex-col border border-gray-800 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-not-allowed">
+                <div class="w-full aspect-video overflow-hidden bg-[#111] flex items-center justify-center p-6 text-center relative">
+                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+                    <span class="font-black text-gray-700 uppercase tracking-widest text-sm relative z-10">In Development</span>
+                </div>
+                <div class="p-8 flex flex-col gap-3 flex-grow justify-center border-t border-gray-800/50">
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-400 leading-tight">everything I did for CU Boulder UX coming soon</h3>
+                </div>
+            </div>
+
+            <!-- Custom Placeholder 3 -->
+            <div class="group block overflow-hidden rounded-2xl bg-surface flex flex-col border border-gray-800 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-not-allowed">
+                <div class="w-full aspect-video overflow-hidden bg-[#111] flex items-center justify-center p-6 text-center relative">
+                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+                    <span class="font-black text-gray-700 uppercase tracking-widest text-sm relative z-10">Compiling Assets</span>
+                </div>
+                <div class="p-8 flex flex-col gap-3 flex-grow justify-center border-t border-gray-800/50">
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-400 leading-tight">a REALLY good graphic design gallery goes here</h3>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 mt-8 rounded-2xl bg-gradient-to-br from-surface to-[#0a0a0a] border border-gray-800 p-12 md:p-20 flex flex-col items-center justify-center text-center relative overflow-hidden group">
+                <div class="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                
+                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight mb-6 relative z-10">
+                    I'm Working on it.
+                </h2>
+                <p class="text-lg md:text-2xl text-gray-400 mb-8 relative z-10">
+                    View my other projects, work history, and career updated on LinkedIn.
+                </p>
+                
+                <a href="https://www.linkedin.com/in/averiedow/" target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-3 px-8 py-4 bg-accent text-white font-bold text-sm md:text-base uppercase tracking-widest hover:bg-white hover:text-background transition-colors duration-300 rounded-full">
+                    <span>Connect on LinkedIn</span>
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="w-full border-t border-surface mt-10">
+        <div class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center text-sm text-gray-600">
+            <p>&copy; AVERIE DOW MADE THIS.</p>
+            <p>It's like you're obsessed with me or something.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sephora Accessibility Audit & Redesign - Averie Dow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        background: '#0a0a0a',
+                        surface: '#171717',
+                        accent: '#ff007f', /* Neon Pink */
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+        
+        ::selection {
+            background-color: #ff007f;
+            color: #ffffff;
+        }
+
+        .hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+
+        .hover-underline-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 4px;
+            bottom: -4px;
+            left: 0;
+            background-color: #ff007f;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col overflow-x-hidden">
+
+    <nav class="w-full max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-50">
+        <a href="index.html" class="text-2xl font-black tracking-tighter text-white hover:text-accent transition-colors duration-300">
+            Averie Dow<span class="text-accent">.</span>
+        </a>
+        <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide text-gray-400">
+            <a href="index.html" class="hover:text-white transition-colors duration-300">Home</a>
+            <a href="about.html" class="hover:text-white transition-colors duration-300">About</a>
+            <a href="index.html#projects" class="text-white transition-colors duration-300">Projects</a>
+            <a href="#contact" class="hover:text-white transition-colors duration-300">Contact</a>
+        </div>
+    </nav>
+
+    <main class="flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col justify-center">
+        
+        <section class="pt-12 pb-16 md:pt-20 md:pb-16">
+            <h1 class="text-5xl md:text-7xl lg:text-9xl font-black tracking-tighter leading-[0.9] uppercase break-words hyphens-auto mb-8">
+                Sephora <br>
+                <span class="text-accent">Accessibility</span> Audit.
+            </h1>
+            
+            <div class="mt-8 pt-8 border-t border-surface grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div>
+                    <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Role</p>
+                    <p class="text-white font-bold text-sm md:text-base">Lead Accessibility Analyst</p>
+                </div>
+                <div>
+                    <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Standard</p>
+                    <p class="text-white font-bold text-sm md:text-base">High-Contrast AAA (7:1)</p>
+                </div>
+                <div>
+                    <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Scope</p>
+                    <p class="text-white font-bold text-sm md:text-base">E-Commerce Checkout Flow</p>
+                </div>
+                <div>
+                    <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Impact</p>
+                    <p class="text-white font-bold text-sm md:text-base">101 Issues Remediated</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="pb-20">
+            <div class="w-full aspect-video bg-surface border border-gray-800 overflow-hidden relative group">
+                <img src="assets/4871 - Sephora WCAG AAA Audit/2.png" alt="Sephora Audit Hero" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            </div>
+        </section>
+
+        <section class="py-20 border-t border-surface">
+            <div class="max-w-4xl">
+                <h2 class="text-3xl md:text-5xl font-black text-white uppercase tracking-tight mb-8">
+                    Beyond Minimum Compliance
+                </h2>
+                <p class="text-2xl md:text-3xl font-medium leading-relaxed text-gray-300 mb-6">
+                    While major e-commerce platforms often settle for bare-minimum compliance (following milestones like <span class="text-white underline decoration-accent decoration-2">Lucia Marett v. Sephora Inc.</span>), they frequently contain structural barriers that block independent shopping.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+                    <div class="bg-surface p-6 border-l-4 border-accent">
+                        <h3 class="text-white font-bold text-lg mb-2">The Old Mindset</h3>
+                        <p class="text-gray-400 text-sm">Treating accessibility as an afterthought, temporary fix, or reactive legal accommodation.</p>
+                    </div>
+                    <div class="bg-surface p-6 border-l-4 border-accent">
+                        <h3 class="text-white font-bold text-lg mb-2">Our Approach</h3>
+                        <p class="text-gray-400 text-sm">Engineering a robust, inclusive e-commerce system seamlessly from the ground up.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 border-t border-surface">
+            <div class="max-w-6xl">
+                <h2 class="text-3xl md:text-5xl font-black text-white uppercase tracking-tight mb-6">
+                    Foundational POUR Principles
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mb-12">
+                    Click each tab below to explore how we evaluated Sephora's checkout flow against strict accessibility benchmarks.
+                </p>
+
+                <!-- Interactive POUR Buttons -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <button onclick="switchPour('perceivable')" id="btn-perceivable" class="pour-btn p-6 bg-surface border-2 border-accent text-left transition-all cursor-pointer">
+                        <span class="text-accent font-bold text-xs uppercase tracking-widest block mb-1">Pillar 01</span>
+                        <h3 class="text-2xl font-black text-white uppercase">Perceivable</h3>
+                    </button>
+                    <button onclick="switchPour('operable')" id="btn-operable" class="pour-btn p-6 bg-surface border-2 border-gray-800 text-left transition-all cursor-pointer hover:border-gray-600">
+                        <span class="text-gray-500 font-bold text-xs uppercase tracking-widest block mb-1">Pillar 02</span>
+                        <h3 class="text-2xl font-black text-gray-400 uppercase">Operable</h3>
+                    </button>
+                    <button onclick="switchPour('understandable')" id="btn-understandable" class="pour-btn p-6 bg-surface border-2 border-gray-800 text-left transition-all cursor-pointer hover:border-gray-600">
+                        <span class="text-gray-500 font-bold text-xs uppercase tracking-widest block mb-1">Pillar 03</span>
+                        <h3 class="text-2xl font-black text-gray-400 uppercase">Understandable</h3>
+                    </button>
+                    <button onclick="switchPour('robust')" id="btn-robust" class="pour-btn p-6 bg-surface border-2 border-gray-800 text-left transition-all cursor-pointer hover:border-gray-600">
+                        <span class="text-gray-500 font-bold text-xs uppercase tracking-widest block mb-1">Pillar 04</span>
+                        <h3 class="text-2xl font-black text-gray-400 uppercase">Robust</h3>
+                    </button>
+                </div>
+
+                <!-- POUR Content Display Card -->
+                <div class="bg-surface border border-gray-800 p-8 md:p-12 min-h-[260px] flex flex-col justify-center">
+                    <div id="pour-perceivable" class="pour-pane block space-y-4">
+                        <span class="text-accent font-bold uppercase tracking-widest text-xs">Visual Clarity Focus</span>
+                        <h4 class="text-3xl font-black text-white">Information and interface elements must be easily perceivable.</h4>
+                        <p class="text-lg text-gray-300 leading-relaxed">
+                            We verified that promotional graphics met strict contrast thresholds and replaced rasterized promo banner text with clean HTML layers and descriptive alternative text.
+                        </p>
+                    </div>
+                    <div id="pour-operable" class="pour-pane hidden space-y-4">
+                        <span class="text-accent font-bold uppercase tracking-widest text-xs">Navigation Control Focus</span>
+                        <h4 class="text-3xl font-black text-white">Interface components and navigation must be fully operable.</h4>
+                        <p class="text-lg text-gray-300 leading-relaxed">
+                            Engineered robust keyboard navigation pathways by introducing high-contrast focus perimeters and ensuring link text explicitly communicates its destination out of context.
+                        </p>
+                    </div>
+                    <div id="pour-understandable" class="pour-pane hidden space-y-4">
+                        <span class="text-accent font-bold uppercase tracking-widest text-xs">Clarity & Predictability Focus</span>
+                        <h4 class="text-3xl font-black text-white">Content and UI operation must be completely understandable.</h4>
+                        <p class="text-lg text-gray-300 leading-relaxed">
+                            Replaced disappearing input placeholders with persistent floating labels and tied inline error validation directly to form controls for seamless screen reader announcements.
+                        </p>
+                    </div>
+                    <div id="pour-robust" class="pour-pane hidden space-y-4">
+                        <span class="text-accent font-bold uppercase tracking-widest text-xs">Assistive Tech Compatibility Focus</span>
+                        <h4 class="text-3xl font-black text-white">Content must be robust enough for diverse assistive technologies.</h4>
+                        <p class="text-lg text-gray-300 leading-relaxed">
+                            Evaluated dynamic cart drawers and modal updates to ensure stable semantic DOM behavior across multiple browsers and screen reader software engines.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 border-t border-surface">
+            <div class="max-w-6xl">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                    <div>
+                        <h2 class="text-3xl md:text-5xl font-black text-white uppercase tracking-tight mb-6">Multi-Step Evaluation Pipeline</h2>
+                        <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                            We audited Sephora's complete checkout flow (cart, sign-in, shipping, payment, and confirmation) using an intensive, 4-stage testing protocol:
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <span class="bg-accent text-black font-black px-2 py-0.5 text-xs">01</span>
+                                <p class="text-gray-300"><strong class="text-white">Tooling:</strong> WebAim checklists, Silktide extensions, and Lighthouse audits.</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="bg-accent text-black font-black px-2 py-0.5 text-xs">02</span>
+                                <p class="text-gray-300"><strong class="text-white">Matrix Logging:</strong> Documented 101 distinct accessibility friction points.</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="bg-accent text-black font-black px-2 py-0.5 text-xs">03</span>
+                                <p class="text-gray-300"><strong class="text-white">Figma Prototyping:</strong> Visualizing heading hierarchies and focus rings.</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="bg-accent text-black font-black px-2 py-0.5 text-xs">04</span>
+                                <p class="text-gray-300"><strong class="text-white">Expert Review:</strong> Cross-referencing fixes with external accessibility specialists.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Methodology 16:9 Image Placeholder -->
+                    <div class="w-full aspect-video bg-surface border border-gray-800 overflow-hidden relative group">
+                        <img src="assets/4871 - Sephora WCAG AAA Audit/4.png" alt="Audit Workflow" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    </div>
+                </div>
+
+                <!-- Statistical Distribution of 101 Issues -->
+                <h3 class="text-3xl font-black text-white uppercase tracking-tight mb-8">Statistical Distribution of 101 Logged Issues</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                    <div class="bg-surface border border-gray-800 p-8 flex flex-col justify-between">
+                        <div>
+                            <span class="text-accent font-black text-4xl md:text-5xl block mb-2">33.7%</span>
+                            <h4 class="text-xl font-bold text-white mb-3">📸 Alt Text & Captions</h4>
+                            <p class="text-gray-400 text-sm">Product imagery missing alt tags and digital banners with embedded text lacking captions.</p>
+                        </div>
+                        <div class="w-full bg-[#222] h-2 mt-6"><div class="bg-accent h-2 w-[33.7%]"></div></div>
+                    </div>
+
+                    <div class="bg-surface border border-gray-800 p-8 flex flex-col justify-between">
+                        <div>
+                            <span class="text-accent font-black text-4xl md:text-5xl block mb-2">14.9%</span>
+                            <h4 class="text-xl font-bold text-white mb-3">🔗 Link Navigation</h4>
+                            <p class="text-gray-400 text-sm">Ambiguous link text lacking explicit destination context.</p>
+                        </div>
+                        <div class="w-full bg-[#222] h-2 mt-6"><div class="bg-accent h-2 w-[14.9%]"></div></div>
+                    </div>
+
+                    <div class="bg-surface border border-gray-800 p-8 flex flex-col justify-between">
+                        <div>
+                            <span class="text-accent font-black text-4xl md:text-5xl block mb-2">12.9%</span>
+                            <h4 class="text-xl font-bold text-white mb-3">⌨️ Focus Indicators</h4>
+                            <p class="text-gray-400 text-sm">Default browser focus states lacking high-contrast visual perimeters.</p>
+                        </div>
+                        <div class="w-full bg-[#222] h-2 mt-6"><div class="bg-accent h-2 w-[12.9%]"></div></div>
+                    </div>
+                </div>
+
+                <!-- Before/After 16:9 Image Placeholder -->
+                <div class="w-full aspect-video bg-surface border border-gray-800 overflow-hidden relative group">
+                    <img src="assets/4871 - Sephora WCAG AAA Audit/11.png" alt="Before and After Redesign" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 border-t border-surface">
+            <div class="max-w-6xl">
+                <h2 class="text-3xl md:text-5xl font-black text-white uppercase tracking-tight mb-8">
+                    Interactive Remediation Matrix
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mb-12">
+                    Click each category below to examine the specific design systems solutions implemented across Sephora's checkout.
+                </p>
+
+                <!-- Solution Buttons -->
+                <div class="flex flex-wrap gap-4 mb-8">
+                    <button onclick="switchSolution('alt')" id="btn-sol-alt" class="sol-btn px-6 py-3 bg-accent text-black font-bold uppercase tracking-wider text-sm transition-all cursor-pointer">
+                        Alt Text & Banners
+                    </button>
+                    <button onclick="switchSolution('focus')" id="btn-sol-focus" class="sol-btn px-6 py-3 bg-surface text-gray-400 border border-gray-800 font-bold uppercase tracking-wider text-sm transition-all cursor-pointer hover:border-gray-600">
+                        Keyboard Focus
+                    </button>
+                    <button onclick="switchSolution('links')" id="btn-sol-links" class="sol-btn px-6 py-3 bg-surface text-gray-400 border border-gray-800 font-bold uppercase tracking-wider text-sm transition-all cursor-pointer hover:border-gray-600">
+                        Clear Links & Labels
+                    </button>
+                    <button onclick="switchSolution('contrast')" id="btn-sol-contrast" class="sol-btn px-6 py-3 bg-surface text-gray-400 border border-gray-800 font-bold uppercase tracking-wider text-sm transition-all cursor-pointer hover:border-gray-600">
+                        Visual Contrast
+                    </button>
+                </div>
+
+                <!-- Solution Panel -->
+                <div class="bg-surface border border-gray-800 p-8 md:p-12 min-h-[220px] flex flex-col justify-center">
+                    <div id="sol-alt" class="sol-pane block space-y-3">
+                        <span class="text-accent font-bold uppercase tracking-widest text-xs">Perceivable Remediation</span>
+                        <h3 class="text-2xl md:text-3xl font-black text-white">Descriptive Alt Text & Promotional Captions</h3>
+                        <p class="text-lg text-gray-300 leading-relaxed">
+                            Equipped all product thumbnails with detailed alt descriptions covering color, brand, and finish. Embedded promotional ad text was paired with explicit HTML caption layers so screen reader users never miss key sale terms.
+                        </p>
+                    </div>
+                    <div id="sol-focus" class="sol-pane hidden space-y-3">
+                        <span class="text-accent font-bold uppercase tracking-widest text-xs">Operable Remediation</span>
+                        <h3 class="text-2xl md:text-3xl font-black text-white">High-Contrast Focus Rings</h3>
+                        <p class="text-lg text-gray-300 leading-relaxed">
+                            Injected a bold 3px hot-pink perimeter (`#ff007f`) with offset drop shadows for all interactive states, empowering keyboard-only users to track precise navigation across payment modals and drawer items instantly.
+                        </p>
+                    </div>
+                    <div id="sol-links" class="sol-pane hidden space-y-3">
+                        <span class="text-accent font-bold uppercase tracking-widest text-xs">Understandable Remediation</span>
+                        <h3 class="text-2xl md:text-3xl font-black text-white">Explicit Link Text & Floating Labels</h3>
+                        <p class="text-lg text-gray-300 leading-relaxed">
+                            Expanded ambiguous order reference numbers into complete descriptive text (e.g., "View order details for #94821"). Replaced disappearing input placeholders with persistent floating labels and added supporting text to payment icons.
+                        </p>
+                    </div>
+                    <div id="sol-contrast" class="sol-pane hidden space-y-3">
+                        <span class="text-accent font-bold uppercase tracking-widest text-xs">High Contrast Compliance</span>
+                        <h3 class="text-2xl md:text-3xl font-black text-white">Rigorous 7:1 Luminance Ratios</h3>
+                        <p class="text-lg text-gray-300 leading-relaxed">
+                            Darkened purple promotional backgrounds behind white text and converted low-contrast blue hyperlinks to solid black (`#000000`), successfully securing the strict 7:1 ratio required for AAA compliance.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 border-t border-surface">
+            <div class="max-w-4xl">
+                <h2 class="text-3xl md:text-5xl font-black text-white uppercase tracking-tight mb-6">
+                    Accessibility Knowledge Check
+                </h2>
+                <p class="text-lg text-gray-300 mb-8">
+                    Read the e-commerce accessibility scenario below and select the correct remediation strategy to pass the challenge.
+                </p>
+
+                <!-- Challenge Card -->
+                <div class="bg-surface border border-gray-800 p-8 md:p-12 relative overflow-hidden">
+                    <div id="quiz-container">
+                        <span class="text-accent font-bold text-xs uppercase tracking-widest block mb-2">Scenario 01 of 01</span>
+                        <h3 class="text-2xl font-bold text-white mb-6">
+                            "A promotional banner on Sephora's checkout page features white text overlaid on a light pastel purple background, failing the 7:1 contrast requirement."
+                        </h3>
+                        
+                        <p class="text-gray-400 font-medium mb-6">Which action achieves full compliance?</p>
+
+                        <div class="space-y-4 mb-8">
+                            <button onclick="handleQuizAnswer(false, this)" class="quiz-option w-full text-left p-4 bg-[#222] border border-gray-800 text-gray-200 hover:border-accent transition-colors">
+                                A) Increase the font size of the text to bold 18pt so contrast requirements are relaxed.
+                            </button>
+                            <button onclick="handleQuizAnswer(true, this)" class="quiz-option w-full text-left p-4 bg-[#222] border border-gray-800 text-gray-200 hover:border-accent transition-colors">
+                                B) Darken the purple background and adjust text weight to ensure a verified 7:1 luminance contrast ratio.
+                            </button>
+                            <button onclick="handleQuizAnswer(false, this)" class="quiz-option w-full text-left p-4 bg-[#222] border border-gray-800 text-gray-200 hover:border-accent transition-colors">
+                                C) Add a subtle drop shadow behind the white text to make it stand out against the pastel background.
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Feedback Box -->
+                    <div id="quiz-feedback" class="hidden p-6 mt-4 border-l-4">
+                        <h4 id="feedback-title" class="text-lg font-bold mb-2"></h4>
+                        <p id="feedback-text" class="text-gray-300 text-sm md:text-base mb-6"></p>
+                        <button onclick="resetQuiz()" class="px-6 py-2 bg-accent text-black font-bold text-xs uppercase tracking-widest cursor-pointer">
+                            Reset Simulator
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 border-t border-surface">
+            <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-8">Project Training Assets & Downloads</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <a href="assets/Sephora WCAG 2.2 AAA Page Audits.xlsx" download class="group bg-surface border border-gray-800 p-6 flex justify-between items-center transition-colors hover:border-accent hover:bg-[#1f1f1f]">
+                    <div>
+                        <span class="text-lg font-bold text-white group-hover:text-accent transition-colors block">Audit (CSV)</span>
+                        <span class="text-xs text-gray-500">All 101 Logged Issues</span>
+                    </div>
+                    <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                </a>
+                
+                <a href="assets/4871-Sephora-WCAG-AAA-Audit.pdf" download class="group bg-surface border border-gray-800 p-6 flex justify-between items-center transition-colors hover:border-accent hover:bg-[#1f1f1f]">
+                    <div>
+                        <span class="text-lg font-bold text-white group-hover:text-accent transition-colors block">Final Presentation</span>
+                        <span class="text-xs text-gray-500">.pdf of presentation slides</span>
+                    </div>
+                    <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                </a>
+
+                <a href="https://www.figma.com/design/cgJbJEKoeuYfMsdVrJsPYi/Sephora-Accessibility-Audit?node-id=2003-17948&t=wuebCNz8cjkzPq1B-1" download class="group bg-surface border border-gray-800 p-6 flex justify-between items-center transition-colors hover:border-accent hover:bg-[#1f1f1f]">
+                    <div>
+                        <span class="text-lg font-bold text-white group-hover:text-accent transition-colors block">Audit Figma File</span>
+                        <span class="text-xs text-gray-500">Figma Link</span>
+                    </div>
+                    <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                </a>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer id="contact" class="w-full border-t border-surface mt-10">
+        <div class="max-w-6xl mx-auto px-6 py-20 flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
+            <div class="w-full md:w-auto overflow-hidden">
+                <h2 class="text-5xl md:text-7xl font-black tracking-tighter mb-4">Let's Gab.</h2>
+                <a href="mailto:averie.a.dow@gmail.com" class="text-xl md:text-2xl text-gray-400 hover:text-white transition-colors duration-300 hover-underline-animation break-all">averie.a.dow@gmail.com</a>
+                <br>
+                <a href="tel:9135266923" class="text-xl md:text-2xl text-gray-400 hover:text-white transition-colors duration-300 hover-underline-animation mt-2 inline-block break-words">913.526.6923</a>
+            </div>
+            
+            <div class="flex flex-col gap-4 text-left md:text-right w-full md:w-auto">
+                <a href="https://www.linkedin.com/in/averiedow/" target="_blank" class="text-xl font-bold text-gray-400 hover:text-accent transition-colors duration-300 flex items-center justify-start md:justify-end gap-2 group">
+                    LinkedIn
+                    <svg class="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </a>
+            </div>
+        </div>
+        
+        <div class="w-full max-w-6xl mx-auto px-6 py-6 border-t border-surface flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-sm text-gray-600">
+            <p>&copy; AVERIE DOW MADE THIS.</p>
+            <p>It's like you're obsessed with me or something.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        // POUR Principles Tab Switcher
+        function switchPour(pillar) {
+            const panes = document.querySelectorAll('.pour-pane');
+            panes.forEach(pane => pane.classList.add('hidden'));
+
+            const buttons = document.querySelectorAll('.pour-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('border-accent');
+                btn.classList.add('border-gray-800');
+                const title = btn.querySelector('h3');
+                const subtitle = btn.querySelector('span');
+                title.classList.remove('text-white');
+                title.classList.add('text-gray-400');
+                subtitle.classList.remove('text-accent');
+                subtitle.classList.add('text-gray-500');
+            });
+
+            const targetPane = document.getElementById('pour-' + pillar);
+            if (targetPane) targetPane.classList.remove('hidden');
+
+            const targetBtn = document.getElementById('btn-' + pillar);
+            if (targetBtn) {
+                targetBtn.classList.remove('border-gray-800');
+                targetBtn.classList.add('border-accent');
+                const title = targetBtn.querySelector('h3');
+                const subtitle = targetBtn.querySelector('span');
+                title.classList.remove('text-gray-400');
+                title.classList.add('text-white');
+                subtitle.classList.remove('text-gray-500');
+                subtitle.classList.add('text-accent');
+            }
+        }
+
+        // Solutions Explorer
+        function switchSolution(category) {
+            const panes = document.querySelectorAll('.sol-pane');
+            panes.forEach(pane => pane.classList.add('hidden'));
+
+            const buttons = document.querySelectorAll('.sol-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-accent', 'text-black');
+                btn.classList.add('bg-surface', 'text-gray-400', 'border', 'border-gray-800');
+            });
+
+            const targetPane = document.getElementById('sol-' + category);
+            if (targetPane) targetPane.classList.remove('hidden');
+
+            const targetBtn = document.getElementById('btn-sol-' + category);
+            if (targetBtn) {
+                targetBtn.classList.remove('bg-surface', 'text-gray-400', 'border', 'border-gray-800');
+                targetBtn.classList.add('bg-accent', 'text-black');
+            }
+        }
+
+        // Quiz Simulator
+        function handleQuizAnswer(isCorrect, buttonEl) {
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.disabled = true);
+
+            const feedbackBox = document.getElementById('quiz-feedback');
+            const feedbackTitle = document.getElementById('feedback-title');
+            const feedbackText = document.getElementById('feedback-text');
+
+            feedbackBox.classList.remove('hidden');
+
+            if (isCorrect) {
+                buttonEl.classList.add('border-green-500', 'bg-green-950/30');
+                feedbackBox.classList.add('border-green-500', 'bg-green-950/20');
+                feedbackBox.classList.remove('border-accent');
+                feedbackTitle.textContent = "Correct! Excellent Analytical Thinking.";
+                feedbackTitle.className = "text-lg font-bold text-green-400 mb-2";
+                feedbackText.textContent = "Standard text requires a strict 7:1 luminance contrast ratio. Adjusting the background tone and text weight ensures true, compliant readability without relying on relaxed sizing rules or drop-shadow hacks.";
+            } else {
+                buttonEl.classList.add('border-red-500', 'bg-red-950/30');
+                feedbackBox.classList.add('border-red-500', 'bg-red-950/20');
+                feedbackBox.classList.remove('border-green-500');
+                feedbackTitle.textContent = "Incorrect. Review High-Contrast Standards.";
+                feedbackTitle.className = "text-lg font-bold text-red-400 mb-2";
+                feedbackText.textContent = "Drop shadows and relaxed large-text rules do not satisfy the stringent 7:1 contrast standard required for guaranteed accessibility across varied user display screens.";
+            }
+        }
+
+        function resetQuiz() {
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(opt => {
+                opt.disabled = false;
+                opt.classList.remove('border-green-500', 'bg-green-950/30', 'border-red-500', 'bg-red-950/30');
+            });
+            const feedbackBox = document.getElementById('quiz-feedback');
+            feedbackBox.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

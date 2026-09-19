@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews & Interviews - Averie Dow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        background: '#0a0a0a',
+                        surface: '#171717',
+                        accent: '#ff007f',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+        
+        ::selection {
+            background-color: #ff007f;
+            color: #ffffff;
+        }
+
+        .hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+
+        .hover-underline-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 4px;
+            bottom: -4px;
+            left: 0;
+            background-color: #ff007f;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        
+        /* Masonry Grid Setup */
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 2rem;
+        }
+        @media (min-width: 768px) { .masonry-grid { column-count: 2; } }
+        
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col">
+
+    <nav class="w-full max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-50">
+        <a href="index.html" class="text-2xl font-black tracking-tighter text-white hover:text-accent transition-colors duration-300">
+            Averie Dow<span class="text-accent">.</span>
+        </a>
+        <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide text-gray-400">
+            <a href="about.html" class="hover:text-white transition-colors duration-300">About</a>
+            <a href="projects.html" class="hover:text-white transition-colors duration-300">Projects</a>
+            <a href="reviews.html" class="text-white transition-colors duration-300">Reviews</a>
+            <a href="resume.html" class="hover:text-white transition-colors duration-300">Resume</a>
+            <a href="contact.html" class="hover:text-white transition-colors duration-300">Contact</a>
+        </div>
+    </nav>
+
+    <main class="flex-grow w-full max-w-6xl mx-auto px-6 py-12 md:py-20 flex flex-col">
+        
+        <header class="mb-16 md:mb-24">
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] uppercase mb-6">
+                Word on <br>
+                the <span class="text-accent">Street.</span>
+            </h1>
+            <p class="text-xl md:text-2xl font-medium leading-relaxed text-gray-400 max-w-2xl">
+                A collection of feedback, recommendations, and press features from people who have survived working with me.
+            </p>
+        </header>
+
+        <!-- Reviews & Interviews Masonry Grid -->
+        <section class="masonry-grid">
+            
+            <!-- Review Card 1 (Courtney Page Fell) -->
+            <div class="masonry-item bg-surface p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent/50 transition-colors">
+                <svg class="w-10 h-10 text-accent mb-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                <p class="text-xl font-bold text-white leading-relaxed mb-8">
+                    "Your public-speaking skills and your ability to communicate the nuance about the student feedback on this experience were out of this world! 🚀<br><br>If anyone is in need of a junior UX Designer who has great presentation and public-speaking skills and who is also a fabulous human being... look no further!"
+                </p>
+                <div class="flex items-center gap-4 border-t border-gray-800 pt-6">
+                    <div>
+                        <h4 class="text-white font-bold uppercase tracking-widest text-sm">Courtney Page Fell</h4>
+                        <p class="text-accent text-xs uppercase tracking-widest mt-1">Associate Director of User Experience at CU Boulder</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Press Card 1 -->
+            <a href="https://www.colorado.edu/cmdinow/2026/03/09/if-you-generate-it" target="_blank" class="group block masonry-item bg-gradient-to-br from-[#171717] to-[#0a0a0a] p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent transition-all transform hover:-translate-y-1">
+                <div class="flex justify-between items-start mb-6">
+                    <span class="px-3 py-1 bg-accent/10 text-accent border border-accent/20 rounded-full text-xs font-bold uppercase tracking-widest">Press</span>
+                    <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </div>
+                <h3 class="text-2xl md:text-3xl font-black text-white mb-4 leading-tight group-hover:text-accent transition-colors">If You Generate It...</h3>
+                <p class="text-gray-400 mb-8 leading-relaxed">Read my featured interview on CMDI Now.</p>
+                <div class="border-t border-gray-800 pt-6">
+                    <h4 class="text-white font-bold uppercase tracking-widest text-sm">CU Boulder CMDI Now</h4>
+                    <p class="text-gray-500 text-xs uppercase tracking-widest mt-1">March 09, 2026</p>
+                </div>
+            </a>
+
+            <!-- Review Card 2 (Hana Leigh) -->
+            <div class="masonry-item bg-surface p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent/50 transition-colors">
+                <svg class="w-10 h-10 text-accent mb-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                <p class="text-base md:text-lg font-medium text-gray-300 leading-relaxed mb-8">
+                    "To have Averie on your team is to have a highly reliable, organized, skilled, and talented individual who will contribute to the greater good of any organization!"
+                </p>
+                <div class="flex items-center gap-4 border-t border-gray-800 pt-6">
+                    <div>
+                        <h4 class="text-white font-bold uppercase tracking-widest text-sm">Hana Leigh</h4>
+                        <p class="text-accent text-xs uppercase tracking-widest mt-1">Graduate Recruitment Coordinator | Brown University</p>
+                        <p class="text-gray-500 text-xs mt-1">Managed Averie directly at CU Boulder</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Press Card 2 -->
+            <a href="https://www.colorado.edu/cmdinow/2026/04/21/2-minutes-averie-dow" target="_blank" class="group block masonry-item bg-gradient-to-br from-[#171717] to-[#0a0a0a] p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent transition-all transform hover:-translate-y-1">
+                <div class="flex justify-between items-start mb-6">
+                    <span class="px-3 py-1 bg-accent/10 text-accent border border-accent/20 rounded-full text-xs font-bold uppercase tracking-widest">Interview</span>
+                    <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </div>
+                <h3 class="text-2xl md:text-3xl font-black text-white mb-4 leading-tight group-hover:text-accent transition-colors">2 Minutes with Averie Dow</h3>
+                <p class="text-gray-400 mb-8 leading-relaxed">A quick-fire interview detailing my process and journey into creative technology.</p>
+                <div class="border-t border-gray-800 pt-6">
+                    <h4 class="text-white font-bold uppercase tracking-widest text-sm">CU Boulder CMDI Now</h4>
+                    <p class="text-gray-500 text-xs uppercase tracking-widest mt-1">April 21, 2026</p>
+                </div>
+            </a>
+
+        </section>
+
+    </main>
+
+    <footer class="w-full border-t border-surface mt-10">
+        <div class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center text-sm text-gray-600">
+            <p>&copy; AVERIE DOW MADE THIS.</p>
+            <p>It's like you're obsessed with me or something.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Professional Repertoire of Averie Dow - Digital Strategist & Architect.">
+    <meta name="author" content="Averie Dow">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Averie Dow | Professional Portfolio">
+    <meta property="og:description" content="The Professional Repertoire and Dauntless Endeavors of Averie Dow.">
+    <meta property="og:type" content="website">
+    
+    <title>Averie Dow | Professional Portfolio</title>
+
+    <style>
+        /* Typography imports */
+        @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=IM+Fell+English:ital@0;1&display=swap');
+
+        :root {
+            --parchment: #F4EBE1; 
+            --ink: #2C2621;       
+            --accent: #8B261D;    
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--parchment);
+            color: var(--ink);
+            font-family: 'EB Garamond', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+            margin: 0;
+            padding: 3vh 4vw;
+            background-image: radial-gradient(var(--ink) 0.5px, transparent 0.5px);
+            background-size: 100px 100px;
+            overflow: hidden; 
+        }
+
+        /* THE HIDDEN TOGGLE */
+        #book-toggle {
+            display: none;
+        }
+
+        /* --- Layout --- */
+        .book-spread {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0; 
+            height: 100%;
+            width: 100%;
+            max-width: 1150px;
+            transition: gap 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .folio-page {
+            position: relative; 
+            width: 45vw; 
+            max-width: 550px;
+            height: 100%;
+            background-color: var(--parchment);
+            border: 2px solid var(--ink);
+            outline: 4px solid var(--ink);
+            outline-offset: 4px;
+            padding: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .content-wrap {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--ink);
+            /* Bottom padding keeps text far away from the corner buttons */
+            padding: 4vh 3vw 8vh 3vw; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;
+            text-align: center; 
+            overflow: hidden; 
+        }
+
+        /* --- THE RIGHT PAGE (INITIAL HIDDEN STATE) --- */
+        .right-page {
+            max-width: 0;
+            padding: 0;
+            border-width: 0;
+            outline-width: 0;
+            opacity: 0;
+            margin-left: 0;
+            overflow: hidden;
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1); 
+            box-shadow: none;
+        }
+
+        .right-page .content-wrap {
+            min-width: 40vw; 
+        }
+
+        /* --- THE RIGHT PAGE (OPEN STATE) --- */
+        #book-toggle:checked ~ .book-spread {
+            gap: 2vw; 
+        }
+
+        #book-toggle:checked ~ .book-spread .right-page {
+            max-width: 550px; 
+            width: 45vw;
+            padding: 8px;
+            border-width: 2px;
+            outline-width: 4px;
+            opacity: 1;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        /* --- THE BOTTOM CORNER PAGE TURNER (CATCHWORD) --- */
+        .page-turner {
+            position: absolute;
+            bottom: -2px; 
+            right: -2px;
+            background: var(--parchment);
+            color: var(--ink);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--ink);
+            font-family: 'IM Fell English', serif;
+            font-variant: small-caps;
+            font-size: clamp(0.9rem, 2vmin, 1.2rem);
+            letter-spacing: 1px;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .page-turner:hover {
+            background: var(--accent);
+            color: var(--parchment);
+            padding-right: 1.5rem; 
+        }
+
+        .page-turner::after {
+            content: "Turn Page ☞";
+        }
+        
+        #book-toggle:checked ~ .book-spread .page-turner {
+            right: auto;
+            left: -2px; 
+        }
+        
+        #book-toggle:checked ~ .book-spread .page-turner::after {
+            content: "☜ Close Book";
+        }
+        
+        #book-toggle:checked ~ .book-spread .page-turner:hover {
+            padding-right: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        /* --- Left Page: Title --- */
+        .pre-title {
+            font-family: 'IM Fell English', serif;
+            font-size: clamp(0.9rem, 2vmin, 1.2rem);
+            font-style: italic;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .main-title {
+            font-family: 'IM Fell English', serif;
+            font-size: clamp(2.5rem, 6vmin, 4.5rem); 
+            font-weight: normal;
+            margin: 1vh 0;
+            line-height: 1;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-family: 'IM Fell English', serif;
+            font-size: clamp(1.2rem, 3vmin, 1.8rem);
+            font-style: italic;
+            margin: 0;
+            color: var(--accent);
+        }
+
+        .ornament {
+            font-size: clamp(1.5rem, 3vmin, 2rem);
+            color: var(--accent);
+            margin: 4vh 0;
+        }
+
+        .act-title {
+            font-family: 'IM Fell English', serif;
+            font-size: clamp(1.5rem, 4vmin, 2.5rem);
+            font-weight: normal;
+            letter-spacing: 5px;
+            margin: 0 0 1.5vh 0;
+            border-bottom: 1px solid var(--ink);
+            border-top: 1px solid var(--ink);
+            padding: 1vh 0;
+            display: inline-block;
+        }
+
+        .act-description {
+            font-size: clamp(0.9rem, 2vmin, 1.15rem);
+            max-width: 85%;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .imprint {
+            font-size: clamp(0.7rem, 1.5vmin, 0.9rem);
+            font-variant: small-caps;
+            letter-spacing: 2px;
+            margin: 4vh 0 0 0;
+        }
+
+        /* --- Right Page: The Catalogue --- */
+        .catalogue-header {
+            margin-bottom: 4vh;
+        }
+
+        .toc-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 3vh;
+            text-align: left;
+            padding: 0 2vw;
+        }
+
+        .toc-item {
+            display: flex;
+            align-items: baseline;
+            width: 100%;
+            font-size: clamp(1rem, 2.2vmin, 1.4rem);
+            text-decoration: none;
+            color: var(--ink);
+            transition: color 0.3s ease;
+        }
+
+        .toc-item:hover {
+            color: var(--accent);
+        }
+
+        .toc-title {
+            flex-shrink: 0;
+            font-variant: small-caps;
+            letter-spacing: 1px;
+        }
+
+        .toc-dots {
+            flex-grow: 1;
+            border-bottom: 2px dotted var(--ink);
+            margin: 0 1vw;
+            opacity: 0.4;
+            transition: opacity 0.3s ease;
+        }
+
+        .toc-item:hover .toc-dots {
+            opacity: 0.8;
+            border-color: var(--accent);
+        }
+
+        .toc-page {
+            flex-shrink: 0;
+            font-style: italic;
+            font-family: 'IM Fell English', serif;
+        }
+
+        /* Disables animation specifically on page load if the hash is present */
+        .no-transition .book-spread,
+        .no-transition .right-page {
+            transition: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- This hidden checkbox controls the animation -->
+    <input type="checkbox" id="book-toggle">
+
+    <div class="book-spread">
+        
+        <!-- LEFT PAGE (TITLE) -->
+        <div class="folio-page left-page">
+            <div class="content-wrap">
+                
+                <header>
+                    <p class="pre-title">The Professional Repertoire of</p>
+                    <h1 class="main-title">Averie Dow</h1>
+                    <p class="subtitle">or, What You Will</p>
+                </header>
+
+                <div class="ornament">❧ ❦ ☙</div>
+
+                <div class="act-section">
+                    <h2 class="act-title">ACT I.</h2>
+                    <p class="act-description">In which I show off my work, humbly.</p>
+                </div>
+
+                <footer class="imprint">
+                    Is this cool portfolio appealing to you, employer? LMK.
+                </footer>
+
+            </div>
+            
+            <!-- The Bottom Right "Catchword" Page Turner -->
+            <label for="book-toggle" class="page-turner"></label>
+        </div>
+
+        <!-- RIGHT PAGE (THE CATALOGUE) -->
+        <div class="folio-page right-page">
+            <div class="content-wrap">
+                
+                <header class="catalogue-header">
+                    <h2 class="act-title" style="border: none; padding-bottom: 0; margin-bottom: 0;">The Catalogue</h2>
+                    <p class="pre-title" style="margin-top: 1vh;">A Directory of Contents</p>
+                    <div class="ornament" style="font-size: clamp(1rem, 2vmin, 1.5rem); margin: 2vh 0;">❦</div>
+                </header>
+
+                <nav class="toc-container">
+                    
+                    <a href="about.html" class="toc-item">
+                        <span class="toc-title">I. Dramatis Personae</span>
+                        <span class="toc-dots"></span>
+                        <span class="toc-page">About</span>
+                    </a>
+                    
+                    <a href="works.html" class="toc-item">
+                        <span class="toc-title">II. The Repertoire</span>
+                        <span class="toc-dots"></span>
+                        <span class="toc-page">Works</span>
+                    </a>
+                    
+                    <a href="skills.html" class="toc-item">
+                        <span class="toc-title">III. Dauntless Endeavors</span>
+                        <span class="toc-dots"></span>
+                        <span class="toc-page">Skills</span>
+                    </a>
+                    
+                    <a href="academic.html" class="toc-item">
+                        <span class="toc-title">IV. Academic Laurels</span>
+                        <span class="toc-dots"></span>
+                        <span class="toc-page">Honors</span>
+                    </a>
+                    
+                    <a href="contact.html" class="toc-item">
+                        <span class="toc-title">V. Send Missive</span>
+                        <span class="toc-dots"></span>
+                        <span class="toc-page">Contact</span>
+                    </a>
+
+                </nav>
+
+                <footer class="imprint">
+                    Select a Chapter ☞
+                </footer>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script to auto-open the book if returning from a sub-page -->
+    <script>
+        if (window.location.hash === '#open') {
+            // Adds a class to temporarily kill the slide animation so it pops open instantly
+            document.body.classList.add('no-transition');
+            document.getElementById('book-toggle').checked = true;
+            
+            // Re-enables animation after a split second so the close button still looks smooth
+            setTimeout(() => {
+                document.body.classList.remove('no-transition');
+            }, 100);
+        }
+    </script>
+</body>
+</html>

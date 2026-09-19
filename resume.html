@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Averie Dow - Interactive Resume</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        background: '#0a0a0a',
+                        surface: '#171717',
+                        accent: '#ff007f',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+        
+        ::selection {
+            background-color: #ff007f;
+            color: #ffffff;
+        }
+
+        .hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+
+        .hover-underline-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 4px;
+            bottom: -4px;
+            left: 0;
+            background-color: #ff007f;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col">
+
+    <nav class="w-full max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-50">
+        <a href="index.html" class="text-2xl font-black tracking-tighter text-white hover:text-accent transition-colors duration-300">
+            Averie Dow<span class="text-accent">.</span>
+        </a>
+        <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide text-gray-400">
+            <a href="about.html" class="hover:text-white transition-colors duration-300">About</a>
+            <a href="projects.html" class="hover:text-white transition-colors duration-300">Projects</a>
+            <a href="resume.html" class="text-white transition-colors duration-300">Resume</a>
+            <a href="contact.html" class="hover:text-white transition-colors duration-300">Contact</a>
+        </div>
+    </nav>
+
+    <main class="flex-grow w-full max-w-6xl mx-auto px-6 py-12 flex flex-col">
+        
+        <!-- Header & Download Section -->
+        <section class="mb-16 pb-12 border-b border-surface flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+            <div class="max-w-3xl">
+                <p class="text-xl md:text-2xl font-medium leading-relaxed text-gray-300 mb-4">
+                    Interactive resume for your viewing pleasure.
+                </p>
+                <div class="text-sm font-semibold text-gray-400 flex flex-wrap gap-x-4 gap-y-2 uppercase tracking-widest">
+                    <span>Located wherever</span> • 
+                    <span>913.526.6923</span> • 
+                    <a href="mailto:averie.a.dow@gmail.com" class="hover:text-accent transition-colors">averie.a.dow@gmail.com</a> • 
+                    <a href="https://linkedin.com/in/averiedow" target="_blank" class="hover:text-accent transition-colors">linkedin.com/in/averiedow</a>
+                </div>
+            </div>
+            
+            <a href="assets/Dow_Averie_Resume_August_2026.pdf" download class="group flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-background transition-all duration-300 flex-shrink-0">
+                <svg class="w-5 h-5 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                Download PDF
+            </a>
+        </section>
+
+        <!-- Interactive Filters with Search Bar -->
+        <section class="mb-12 sticky top-0 bg-background/90 backdrop-blur-md py-4 z-40 border-b border-surface">
+            <div class="flex flex-col xl:flex-row justify-between gap-6 items-start xl:items-end">
+                <div class="flex flex-col md:flex-row gap-6 w-full xl:w-auto">
+                    <!-- Year Filter -->
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">Filter by Time</p>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="setFilter('year', 'all', this)" class="filter-year-btn active-filter px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-accent text-accent transition-colors">All Time</button>
+                            <button onclick="setFilter('year', '2026', this)" class="filter-year-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-surface text-gray-400 hover:border-gray-500 transition-colors">2026</button>
+                            <button onclick="setFilter('year', '2024', this)" class="filter-year-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-surface text-gray-400 hover:border-gray-500 transition-colors">2024 - 2025</button>
+                            <button onclick="setFilter('year', '2023', this)" class="filter-year-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-surface text-gray-400 hover:border-gray-500 transition-colors">2023 & Older</button>
+                        </div>
+                    </div>
+
+                    <!-- Skill Filter -->
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">Filter by Focus</p>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="setFilter('skill', 'all', this)" class="filter-skill-btn active-filter px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-accent text-accent transition-colors">All Skills</button>
+                            <button onclick="setFilter('skill', 'design', this)" class="filter-skill-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-surface text-gray-400 hover:border-gray-500 transition-colors">UX/UI Design</button>
+                            <button onclick="setFilter('skill', 'dev', this)" class="filter-skill-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-surface text-gray-400 hover:border-gray-500 transition-colors">Development & Data</button>
+                            <button onclick="setFilter('skill', 'research', this)" class="filter-skill-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-surface text-gray-400 hover:border-gray-500 transition-colors">Research & Access</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Keyword Search -->
+                <div class="w-full xl:w-72 flex-shrink-0">
+                    <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">Keyword Search</p>
+                    <div class="relative">
+                        <svg class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <input type="text" id="skillSearch" onkeyup="handleSearch(event)" placeholder="Search tools or skills..." class="w-full bg-surface border border-gray-800 rounded-full py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-accent transition-colors placeholder-gray-600">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Resume Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
+            
+            <!-- Left Column: Experience & Projects -->
+            <div class="lg:col-span-2 space-y-12">
+                <h2 class="text-2xl font-black uppercase tracking-tight text-white border-l-4 border-accent pl-4">Experience & Projects</h2>
+
+                <div id="resume-container" class="space-y-10">
+                    
+                    <!-- Echostar -->
+                    <div class="resume-item fade-in relative pl-8 border-l border-surface before:absolute before:w-3 before:h-3 before:bg-accent before:rounded-full before:-left-[6.5px] before:top-2 hover:before:bg-accent transition-all" 
+                         data-years="2026" 
+                         data-skills="design dev research"
+                         data-keywords="learning experience designer echostar html css javascript articulate rise canva adobe illustrator wcag digital accessibility inclusive design adult learning instructional design scriptwriting corporate learning video scripts internal newsletters text content design">
+                        <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">June 2026 - Present</p>
+                        <h3 class="text-xl md:text-2xl font-bold text-white uppercase tracking-tight">Learning Experience Designer</h3>
+                        <p class="text-gray-400 text-sm font-medium mt-1 mb-4">Echostar Corporation</p>
+                        <ul class="space-y-2 text-gray-300 list-disc list-outside ml-4">
+                            <li>Develops four digital instructor-led training (ILT) courses monthly, delivering engaging, learner-centered training for call center agents.</li>
+                            <li>Builds four/month digital modules in Articulate Rise using HTML, CSS, JavaScript, Al-assisted development, and adult learning principles.</li>
+                            <li>Designs company-wide digital signage (five/week) in Canva and Adobe Illustrator for domestic and international employee communications.</li>
+                            <li>Writes training video scripts and internal newsletters, translating complex topics into clear, engaging corporate learning content.</li>
+                            <li>Reviews digital content, web experiences, and visual assets for WCAG accessibility, ensuring inclusive, user-friendly communications.</li>
+                        </ul>
+                    </div>
+
+                    <!-- CU Boulder OIT -->
+                    <div class="resume-item fade-in relative pl-8 border-l border-surface before:absolute before:w-3 before:h-3 before:bg-surface before:rounded-full before:-left-[6.5px] before:top-2 hover:before:bg-accent transition-all" 
+                         data-years="2026 2024" 
+                         data-skills="design research"
+                         data-keywords="jira microsoft office web design html systems critique douglas county libraries self-management team coordination ux research personal health informatics interaction design user interface prototyping figma user experience ux problem solving wcag accessibility user testing ticket creation ui wi-fi graphics">
+                        <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Aug. 2024 - May 2026</p>
+                        <h3 class="text-xl md:text-2xl font-bold text-white uppercase tracking-tight">User Experience Designer</h3>
+                        <p class="text-gray-400 text-sm font-medium mt-1 mb-4">University of Colorado Boulder Office of Information Technology</p>
+                        <ul class="space-y-2 text-gray-300 list-disc list-outside ml-4">
+                            <li>Produces two high-fidelity design deliverables per month in Figma, supporting campus-wide institutional platforms and offices while managing three concurrent design projects biweekly.</li>
+                            <li>Developed 10+ page high-fidelity prototype in Figma and conducted five usability tests to streamline campus IT ticket creation.</li>
+                            <li>Designed Wi-Fi graphics for CU social media for a digital audience of approximately 250k followers, including students and staff.</li>
+                            <li>Led redesign of a prebuilt digital product by synthesizing user research and collaborating with CU Boulder Police Department, ensuring adherence to Web Content Accessibility Guidelines, including color contrast and screen-reader-friendly layouts.</li>
+                        </ul>
+                    </div>
+
+                    <!-- ATLAS Institute -->
+                    <div class="resume-item fade-in relative pl-8 border-l border-surface before:absolute before:w-3 before:h-3 before:bg-surface before:rounded-full before:-left-[6.5px] before:top-2 hover:before:bg-accent transition-all" 
+                         data-years="2026 2024" 
+                         data-skills="design research"
+                         data-keywords="a-frame virtual reality framework adobe photoshop adobe lightroom adobe premiere pro usability testing user research digital accessibility wcag card sorting mockups validation iterative design concept testing">
+                        <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Feb. 2024 - May 2026</p>
+                        <h3 class="text-xl md:text-2xl font-bold text-white uppercase tracking-tight">UX Researcher & Designer</h3>
+                        <p class="text-gray-400 text-sm font-medium mt-1 mb-4">ATLAS Institute</p>
+                        <ul class="space-y-2 text-gray-300 list-disc list-outside ml-4">
+                            <li>Executes UX research (interviews, usability tests, surveys) to uncover needs, create design improvements, and validate design concepts.</li>
+                            <li>Completes digital accessibility audits and recommends brand-aligned solutions to include users and excel at WCAG standards.</li>
+                            <li>Developed three high-fidelity final prototypes through the iterative design process, including card sorting and mockups.</li>
+                        </ul>
+                    </div>
+
+                    <!-- House Rules Project -->
+                    <div class="resume-item fade-in relative pl-8 border-l border-surface before:absolute before:w-3 before:h-3 before:bg-surface before:rounded-full before:-left-[6.5px] before:top-2 hover:before:bg-accent transition-all" 
+                         data-years="2026" 
+                         data-skills="design dev research"
+                         data-keywords="house rules paper party games literature reviews the tea app user data privacy user research personal health informatics whimsical low-fidelity prototyping cheyenne mountain zoo redesign health informatics human computer interaction wireframing prototyping beautiful soup taylor swift song popularity data analysis web scraping pandas seaborn data analysis microsoft excel python ai chatgpt claude thematic analysis">
+                        <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Jan. 2026 - Present (Project)</p>
+                        <h3 class="text-xl md:text-2xl font-bold text-white uppercase tracking-tight">House Rules: Digital Paper Party Games</h3>
+                        <p class="text-gray-400 text-sm font-medium mt-1 mb-4">University of Colorado Boulder Information Science</p>
+                        <ul class="space-y-2 text-gray-300 list-disc list-outside ml-4">
+                            <li>Designed and prototyped a social gaming platform for digitizing paper-based party games, using ChatGPT and Claude to execute vibe coding workflows that accelerated high-fidelity UX/UI development.</li>
+                            <li>Leveraged Claude for thematic analysis of exploratory research on social gaming behaviors, identifying key opportunities for accessibility and "house rule" personalization.</li>
+                            <li>Synthesized user-centered concepts that allow for deep social connection through the integration of custom prompts, photos, and inside jokes.</li>
+                        </ul>
+                    </div>
+
+                    <!-- CU Admissions - Student Ambassador Team Lead -->
+                    <div class="resume-item fade-in relative pl-8 border-l border-surface before:absolute before:w-3 before:h-3 before:bg-surface before:rounded-full before:-left-[6.5px] before:top-2 hover:before:bg-accent transition-all" 
+                         data-years="2026 2024 2023" 
+                         data-skills="design research"
+                         data-keywords="student ambassador team lead interpersonal skills interpersonal communication problem solving written communication oral communication presentations teamwork easily adaptable public speaking higher education admissions admissions counseling customer service administration enrollment services storytelling analysis">
+                        <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Oct. 2023 - May 2026</p>
+                        <h3 class="text-xl md:text-2xl font-bold text-white uppercase tracking-tight">Student Ambassador - Team Lead</h3>
+                        <p class="text-gray-400 text-sm font-medium mt-1 mb-4">University of Colorado Boulder Student Ambassadors</p>
+                        <ul class="space-y-2 text-gray-300 list-disc list-outside ml-4">
+                            <li>Provides in-depth student experience and analysis of University of Colorado Boulder academics, student life, admissions, and related topics.</li>
+                            <li>Leads guests on tours of campus and public speaks to answer the most frequently asked admissions questions at CU Boulder.</li>
+                            <li>Demonstrates high-level customer service and higher education knowledge while adapting storytelling structures to diverse audiences.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Jeans to Jurses -->
+                    <div class="resume-item fade-in relative pl-8 border-l border-surface before:absolute before:w-3 before:h-3 before:bg-surface before:rounded-full before:-left-[6.5px] before:top-2 hover:before:bg-accent transition-all" 
+                         data-years="2026" 
+                         data-skills="design dev"
+                         data-keywords="web design website designer cms administration user engagement text content accessibility fashion merchandise graphic design user interface design typographic hierarchy layout principles visual hierarchy">
+                        <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Jan. 2026 - Apr. 2026</p>
+                        <h3 class="text-xl md:text-2xl font-bold text-white uppercase tracking-tight">Website Designer</h3>
+                        <p class="text-gray-400 text-sm font-medium mt-1 mb-4">Jeans to Jurses · Freelance</p>
+                        <ul class="space-y-2 text-gray-300 list-disc list-outside ml-4">
+                            <li>Successfully designed a six-page fashion merchandise website that improved user engagement and accessibility.</li>
+                            <li>Collaborated with stakeholders to gather insights and implement effective design strategies.</li>
+                            <li>Utilized CMS administration skills to enhance the existing website's functionality.</li>
+                            <li>Developed clear and accessible text content to cater to a wide range of users.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Gamma Phi Beta -->
+                    <div class="resume-item fade-in relative pl-8 border-l border-surface before:absolute before:w-3 before:h-3 before:bg-surface before:rounded-full before:-left-[6.5px] before:top-2 hover:before:bg-accent transition-all" 
+                         data-years="2024 2023" 
+                         data-skills="design research"
+                         data-keywords="event planning event management marketing community outreach interview skills training interpersonal leadership team motivation team leadership presentation skills formal recruitment budgeting networking sorority">
+                        <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Sep. 2023 - Nov. 2025</p>
+                        <h3 class="text-xl md:text-2xl font-bold text-white uppercase tracking-tight">Beta Rho Sisterhood Chair & Educator Assistant</h3>
+                        <p class="text-gray-400 text-sm font-medium mt-1 mb-4">Gamma Phi Beta International Sorority</p>
+                        <ul class="space-y-2 text-gray-300 list-disc list-outside ml-4">
+                            <li>Voted into leadership position by a group of 400+ peers to plan bimonthly events for all 300+ members of the Beta Rho chapter.</li>
+                            <li>Maximized the Sisterhood budget to create numerous events, processing member feedback and partnering with 3+ local chapters.</li>
+                            <li>Coordinated group expectations and opportunities for new members alongside a team of three advisors.</li>
+                            <li>Supported weekly meetings, led presentations, and recruited future members through a four-day formal recruitment process.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Knight Lab -->
+                    <div class="resume-item fade-in relative pl-8 border-l border-surface before:absolute before:w-3 before:h-3 before:bg-surface before:rounded-full before:-left-[6.5px] before:top-2 hover:before:bg-accent transition-all" 
+                         data-years="2024" 
+                         data-skills="design dev"
+                         data-keywords="knight lab neuroscience usability testing user-centered design front-end development wireframing prototyping user interviews website building figma user interface design user experience ux javascript cascading style sheets css html module-based visual learning pages coding">
+                        <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">Feb. 2024 - Jan. 2025</p>
+                        <h3 class="text-xl md:text-2xl font-bold text-white uppercase tracking-tight">Website Designer</h3>
+                        <p class="text-gray-400 text-sm font-medium mt-1 mb-4">Knight Lab · Internship</p>
+                        <ul class="space-y-2 text-gray-300 list-disc list-outside ml-4">
+                            <li>Coded a website dedicated to teaching the neuroscience of learning through six module-based units.</li>
+                            <li>Collaborated with a biology research team to create six website navigations and six visual-learning-based pages.</li>
+                            <li>Applied front-end HTML and modern website building practices to deliver an educational digital experience.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Kode With Klossy -->
+                    <div class="resume-item fade-in relative pl-8 border-l border-surface before:absolute before:w-3 before:h-3 before:bg-surface before:rounded-full before:-left-[6.5px] before:top-2 hover:before:bg-accent transition-all" 
+                         data-years="2023" 
+                         data-skills="dev"
+                         data-keywords="mobile applications front-end development data visualization power bi bookselling analysis xcode swiftui swift programming language ios html css javascript mobile application development coding app architecture">
+                        <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">May 2022 - May 2023</p>
+                        <h3 class="text-xl md:text-2xl font-bold text-white uppercase tracking-tight">Scholar - Mobile App & Web Development</h3>
+                        <p class="text-gray-400 text-sm font-medium mt-1 mb-4">Kode With Klossy</p>
+                        <ul class="space-y-2 text-gray-300 list-disc list-outside ml-4">
+                            <li>Completed intensive scholar programs focused on Mobile App Development (SwiftUI) and Front-End Web Development (HTML).</li>
+                            <li>Developed front-end skills and built collaborative projects exploring user interfaces and mobile architecture.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Column: Education & Skills -->
+            <div class="space-y-12">
+                
+                <!-- Education -->
+                <div class="resume-item fade-in" data-years="2026 2024 2023" data-skills="design dev research" data-keywords="literature reviews world history world religions anthropology nordic countries dis study abroad cypher query language nosql lucene mongodb neo4j fundamentals data analytics statistics for information science data science pinterest computer science programming sql python information technology writing">
+                    <h2 class="text-2xl font-black uppercase tracking-tight text-white border-l-4 border-accent pl-4 mb-8">Education</h2>
+                    <div class="bg-surface p-6 rounded-2xl border border-transparent hover:border-accent/30 transition-colors">
+                        <h3 class="text-lg font-bold text-white uppercase leading-tight mb-2">Bachelor of Science in Information Science</h3>
+                        <p class="text-accent font-bold text-sm tracking-widest mb-4">University of Colorado Boulder</p>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><strong>Graduation:</strong> May 2026</li>
+                            <li><strong>Minor:</strong> Creative Technology and Design</li>
+                            <li><strong>Certificate:</strong> User Experience</li>
+                        </ul>
+                        <div class="mt-6 pt-6 border-t border-gray-800">
+                            <p class="text-sm text-gray-300"><strong class="text-white">Honors:</strong> CMCI Dean's Scholar, Gerald C. Bean, Walker, Schlessman, and Stewart Family Scholarships Recipient. Dean's List.</p>
+                            <p class="text-sm text-gray-300 mt-2"><strong class="text-white">Certifications:</strong> NEO4J - Cypher Fundamentals & Neo4j Fundamentals.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                <div class="resume-item fade-in" data-years="2026 2024 2023" data-skills="design dev research" data-keywords="figma html css js adobe cc canva python pandas numpy sql tableau swift xcode user research testing accessibility auditing wcag data visualization design systems content management systems cms cross-functional collaboration public-facing comms project coordination event management">
+                    <h2 class="text-2xl font-black uppercase tracking-tight text-white border-l-4 border-accent pl-4 mb-8">Skills Database</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-xs font-bold text-accent uppercase tracking-widest mb-3">Software & Tools</h3>
+                            <div class="flex flex-wrap gap-2 text-sm text-gray-300">
+                                <span class="bg-surface px-3 py-1 rounded">Figma</span>
+                                <span class="bg-surface px-3 py-1 rounded">HTML/CSS/JS</span>
+                                <span class="bg-surface px-3 py-1 rounded">Adobe CC</span>
+                                <span class="bg-surface px-3 py-1 rounded">Canva</span>
+                                <span class="bg-surface px-3 py-1 rounded">Python (Pandas, NumPy)</span>
+                                <span class="bg-surface px-3 py-1 rounded">SQL</span>
+                                <span class="bg-surface px-3 py-1 rounded">Tableau</span>
+                                <span class="bg-surface px-3 py-1 rounded">Swift / Xcode</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xs font-bold text-accent uppercase tracking-widest mb-3">Data-Driven Design</h3>
+                            <div class="flex flex-wrap gap-2 text-sm text-gray-300">
+                                <span class="bg-surface px-3 py-1 rounded">User Research & Testing</span>
+                                <span class="bg-surface px-3 py-1 rounded">Accessibility Auditing (WCAG)</span>
+                                <span class="bg-surface px-3 py-1 rounded">Data Visualization</span>
+                                <span class="bg-surface px-3 py-1 rounded">Design Systems</span>
+                                <span class="bg-surface px-3 py-1 rounded">Content Management Systems (CMS)</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xs font-bold text-accent uppercase tracking-widest mb-3">Leadership & Comms</h3>
+                            <div class="flex flex-wrap gap-2 text-sm text-gray-300">
+                                <span class="bg-surface px-3 py-1 rounded">Cross-Functional Collaboration</span>
+                                <span class="bg-surface px-3 py-1 rounded">Public-Facing Comms</span>
+                                <span class="bg-surface px-3 py-1 rounded">Project Coordination</span>
+                                <span class="bg-surface px-3 py-1 rounded">Event Management</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full border-t border-surface mt-10">
+        <div class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center text-sm text-gray-600">
+            <p>&copy; AVERIE DOW MADE THIS.</p>
+            <p>It's like you're obsessed with me or something.</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentYear = 'all';
+        let currentSkill = 'all';
+        let currentSearch = '';
+
+        function setFilter(type, value, element) {
+            if (type === 'year') currentYear = value;
+            if (type === 'skill') currentSkill = value;
+
+            // Remove active styles from all buttons of this specific filter type
+            document.querySelectorAll(`.filter-${type}-btn`).forEach(btn => {
+                btn.classList.remove('border-accent', 'text-accent', 'active-filter');
+                btn.classList.add('border-surface', 'text-gray-400');
+            });
+            
+            // Set clicked button to active
+            element.classList.remove('border-surface', 'text-gray-400');
+            element.classList.add('border-accent', 'text-accent', 'active-filter');
+
+            applyFilters();
+        }
+
+        function handleSearch(e) {
+            currentSearch = e.target.value.toLowerCase().trim();
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const items = document.querySelectorAll('.resume-item');
+            
+            items.forEach(item => {
+                const itemYears = item.getAttribute('data-years') || '';
+                const itemSkills = item.getAttribute('data-skills') || '';
+                const itemKeywords = item.getAttribute('data-keywords') ? item.getAttribute('data-keywords').toLowerCase() : '';
+                
+                const matchYear = currentYear === 'all' || itemYears.includes(currentYear);
+                const matchSkill = currentSkill === 'all' || itemSkills.includes(currentSkill);
+                const matchSearch = currentSearch === '' || itemKeywords.includes(currentSearch);
+                
+                // Show if it matches all active filters
+                if (matchYear && matchSkill && matchSearch) {
+                    item.style.display = 'block';
+                    
+                    // Re-trigger fade-in animation for a smooth transition
+                    item.classList.remove('fade-in');
+                    void item.offsetWidth; 
+                    item.classList.add('fade-in');
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

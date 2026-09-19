@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Averie Dow - Digital Strategist & Architect. Portfolio and professional background.">
+    <meta name="author" content="Averie Dow">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Dramatis Personae | Averie Dow">
+    <meta property="og:description" content="Professional portfolio and background for Averie Dow.">
+    <meta property="og:type" content="website">
+    
+    <title>Dramatis Personae | Averie Dow</title>
+
+    <style>
+        /* Typography imports */
+        @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=IM+Fell+English:ital@0;1&display=swap');
+
+        :root {
+            /* Palette */
+            --parchment: #F4EBE1; 
+            --ink: #2C2621;       
+            --accent: #8B261D;    
+        }
+
+        /* Resets & Base */
+        * { 
+            box-sizing: border-box; 
+        }
+
+        body {
+            background-color: var(--parchment);
+            color: var(--ink);
+            font-family: 'EB Garamond', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+            margin: 0;
+            padding: 3vh 4vw;
+            /* Subtle texture */
+            background-image: radial-gradient(var(--ink) 0.5px, transparent 0.5px);
+            background-size: 100px 100px;
+            overflow: hidden; 
+        }
+
+        /* --- Layout --- */
+        .book-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2vw; 
+            height: 100%;
+            width: 100%;
+            max-width: 1150px;
+        }
+
+        .page-half {
+            position: relative; 
+            width: 50%; 
+            height: 100%;
+            background-color: var(--parchment);
+            border: 2px solid var(--ink);
+            outline: 4px solid var(--ink);
+            outline-offset: 4px;
+            padding: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+
+        .content-wrap {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--ink);
+            /* Increased bottom padding to 8vh keeps content safely above the corner button */
+            padding: 4vh 3vw 8vh 3vw; 
+            display: flex;
+            flex-direction: column;
+            text-align: left; 
+            overflow-y: auto; 
+            scrollbar-width: thin;
+            scrollbar-color: var(--ink) var(--parchment);
+        }
+
+        /* --- Headers & Text --- */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3vh;
+            border-bottom: 2px double var(--ink);
+            padding-bottom: 2vh;
+        }
+
+        h1.primary-title {
+            font-family: 'IM Fell English', serif;
+            font-size: clamp(1.8rem, 4vmin, 3rem); 
+            font-weight: normal;
+            margin: 0 0 1vh 0;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .sub-heading {
+            font-family: 'IM Fell English', serif;
+            font-size: clamp(1rem, 2vmin, 1.5rem);
+            font-style: italic;
+            margin: 0;
+            color: var(--accent);
+        }
+
+        /* --- Left Page Specifics --- */
+        .headshot-placeholder {
+            /* Shrunk from 80% to 60% and added a max-width to keep it compact */
+            width: 60%;
+            max-width: 220px; 
+            aspect-ratio: 3/4;
+            margin: 2vh auto;
+            border: 2px solid var(--ink);
+            padding: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(44, 38, 33, 0.05) 10px,
+                rgba(44, 38, 33, 0.05) 20px
+            );
+        }
+
+        .quick-facts {
+            text-align: center;
+            margin-top: 2vh;
+        }
+
+        .quick-facts p {
+            font-size: clamp(0.9rem, 2vmin, 1.1rem);
+            margin: 1vh 0;
+            font-variant: small-caps;
+            letter-spacing: 1px;
+        }
+
+        .quick-facts em {
+            color: var(--accent);
+            font-style: italic;
+            font-family: 'IM Fell English', serif;
+            text-transform: none;
+        }
+
+        /* --- Right Page Specifics (Bio) --- */
+        .illuminated-letter::first-letter {
+            font-family: 'IM Fell English', serif;
+            font-size: clamp(3.5rem, 8vmin, 5rem);
+            color: var(--accent);
+            float: left;
+            line-height: 0.7;
+            margin: 0.1em 0.1em 0.1em 0;
+            text-transform: uppercase;
+        }
+
+        .bio-para {
+            font-size: clamp(0.95rem, 2vmin, 1.15rem);
+            line-height: 1.6;
+            margin: 0 0 2vh 0;
+            text-align: justify; 
+        }
+
+        .flourish {
+            text-align: center;
+            font-size: clamp(1rem, 2vmin, 1.5rem);
+            color: var(--accent);
+            margin: 3vh 0;
+        }
+
+        /* --- Navigation --- */
+        .back-btn {
+            position: absolute;
+            bottom: -2px; 
+            left: -2px; 
+            background: var(--parchment);
+            color: var(--ink);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--ink);
+            font-family: 'IM Fell English', serif;
+            font-variant: small-caps;
+            font-size: clamp(0.8rem, 1.8vmin, 1rem);
+            letter-spacing: 1px;
+            cursor: pointer;
+            z-index: 10;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--accent);
+            color: var(--parchment);
+            padding-left: 1.5rem; 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main layout wrapper -->
+    <div class="book-container">
+        
+        <!-- Left Side: Visuals & TLDR -->
+        <div class="page-half">
+            <div class="content-wrap">
+                
+                <header class="page-header">
+                    <h1 class="primary-title">Dramatis Personae</h1>
+                    <p class="sub-heading">The Cast of Characters</p>
+                </header>
+
+                <div class="headshot-placeholder">
+                    <img src="assets/Dow_averie_headshot.png" alt="Portrait of Averie Dow" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+
+                <div class="quick-facts">
+                    <p><em>Name:</em> Averie Dow</p>
+                    <p><em>Vocation:</em> A Creative with Tech skills. Front-end and dev in one hire.</p>
+                    <p><em>Location:</em> Unattached. For now.</p>
+                </div>
+
+            </div>
+            
+            <!-- Placed strictly outside the content-wrap so it never overlaps the text -->
+            <a href="index.html#open" class="back-btn">☜ Return to Catalogue</a>
+        </div>
+
+        <!-- Right Side: The Narrative -->
+        <div class="page-half">
+            <div class="content-wrap">
+                
+                <h2 class="primary-title" style="text-align: center; font-size: clamp(1.5rem, 3vmin, 2.2rem); border-bottom: 1px solid var(--ink); padding-bottom: 1vh; margin-bottom: 3vh;">
+                    Much Ado About Me
+                </h2>
+
+                <p class="bio-para illuminated-letter">
+Hello!
+                </p>
+
+                <p class="bio-para">
+                    I believe that strong reasons make strong actions. In a professional landscape often crowded with fleeting trends and brute-force expenditures, I prioritize rigorous, impartial analysis. Whether I am negotiating project scopes, streamlining a convoluted user journey, or architecting a ground-up brand strategy, I lean on clear communication and a frugal, efficient approach to resources.
+                </p>
+
+                <div class="flourish">❧ ❦ ☙</div>
+
+                <p class="bio-para">
+                    Ultimately, my philosophy is simple: action is eloquence. A beautifully designed strategy is meaningless if it fails to execute or accommodate the end user. I take extreme ownership of my work, knowing that the final result must speak for itself.
+                </p>
+                
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
