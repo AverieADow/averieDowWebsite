@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Star Background -->
+  <polygon points="32,2 40,20 60,22 45,36 49,56 32,46 15,56 19,36 4,22 24,20" fill="#0a0a0a" stroke="#ff007f" stroke-width="2" stroke-linejoin="round" />
+
+  <!-- "AD" Text scaled down further -->
+  <text x="50%" y="53%" dominant-baseline="central" text-anchor="middle" 
+        font-family="system-ui, -apple-system, sans-serif" 
+        font-weight="900" font-size="14" fill="#ffffff" letter-spacing="-0.5">
+    AD<tspan fill="#ff007f">.</tspan>
+  </text>
+</svg>

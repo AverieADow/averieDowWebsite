@@ -4,19 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Averie Dow - Portfolio</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' width='64' height='64'><text x='50%' y='55%' dominant-baseline='central' text-anchor='middle' font-family='system-ui, -apple-system, sans-serif' font-weight='900' font-size='40' fill='%23ff007f' stroke='%230a0a0a' stroke-width='2' letter-spacing='-1'>AD<tspan fill='%23ff007f'>.</tspan></text></svg>">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Jost', 'sans-serif'],
                     },
                     colors: {
                         background: '#0a0a0a',
                         surface: '#171717',
-                        accent: '#ff007f', /* Neon Pink */
+                        accent: '#ff007f',
                     },
                     animation: {
                         'marquee': 'marquee 25s linear infinite',
@@ -33,7 +37,7 @@
     </script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Jost', sans-serif;
             background-color: #0a0a0a;
             color: #ffffff;
         }
@@ -69,192 +73,255 @@
 </head>
 <body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col">
 
-    <nav class="w-full max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-50">
-        <a href="index.html" class="text-2xl font-black tracking-tighter text-white hover:text-accent transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="w-full max-w-6xl mx-auto px-6 py-6 md:py-8 flex justify-between items-center relative z-50">
+        <a href="index.html" class="text-2xl font-black tracking-tight text-white hover:text-accent transition-colors duration-300">
             Averie Dow<span class="text-accent">.</span>
         </a>
-        <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide text-gray-400">
+
+        <!-- Desktop Navigation Links -->
+        <div class="hidden md:flex space-x-8 text-sm tracking-wide text-gray-400">
             <a href="about.html" class="hover:text-white transition-colors duration-300">About</a>
             <a href="projects.html" class="hover:text-white transition-colors duration-300">Projects</a>
             <a href="resume.html" class="hover:text-white transition-colors duration-300">Resume</a>
             <a href="contact.html" class="hover:text-white transition-colors duration-300">Contact</a>
         </div>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="menu-btn" class="md:hidden text-gray-400 hover:text-white focus:outline-none z-50" aria-label="Toggle Navigation Menu">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
     </nav>
+
+    <!-- Backdrop Overlay -->
+    <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+
+    <!-- Mobile Slide-out Menu Drawer from Right & Solid Black -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[#0a0a0a] border-l border-gray-800 z-50 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out md:hidden shadow-2xl">
+        <div>
+            <div class="flex justify-between items-center mb-12">
+                <span class="text-lg font-bold tracking-tight text-white">Menu</span>
+                <button id="menu-close" class="text-gray-400 hover:text-white focus:outline-none" aria-label="Close Navigation Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="flex flex-col space-y-6 text-xl tracking-wide text-gray-300">
+                <a href="about.html" class="hover:text-accent transition-colors duration-300">About</a>
+                <a href="projects.html" class="hover:text-accent transition-colors duration-300">Projects</a>
+                <a href="resume.html" class="hover:text-accent transition-colors duration-300">Resume</a>
+                <a href="contact.html" class="hover:text-accent transition-colors duration-300">Contact</a>
+            </div>
+        </div>
+        
+        <div class="text-xs text-gray-600 tracking-wider uppercase">
+            Averie Dow &bull; Portfolio
+        </div>
+    </div>
+
+    <!-- Script to handle right slide-out menu animations -->
+    <script>
+        const btn = document.getElementById('menu-btn');
+        const closeBtn = document.getElementById('menu-close');
+        const menu = document.getElementById('mobile-menu');
+        const backdrop = document.getElementById('menu-backdrop');
+
+        function openMenu() {
+            menu.classList.remove('translate-x-full');
+            backdrop.classList.remove('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            menu.classList.add('translate-x-full');
+            backdrop.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+        }
+
+        btn.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        backdrop.addEventListener('click', closeMenu);
+    </script>
 
     <main class="flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col justify-center">
         
+        <!-- Hero Section -->
         <section class="pt-8 pb-16 md:pt-12 md:pb-24 lg:pt-16 lg:pb-32 flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-8">
-            <div class="lg:w-2/3">
-                <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] uppercase">
+            <div class="lg:w-2/3 w-full">
+                <h1 class="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight leading-[0.95] uppercase">
                     I Make <br>
                     <span class="text-accent">Creative</span> <br>
                     <span class="text-white">Tech</span>
                     <span class="text-accent">Solutions.</span>
                 </h1>
 
-                <!-- Direct quick contact info under solutions -->
-                <div class="mt-8 md:mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm md:text-base font-semibold text-gray-400 tracking-wide">
+                <div class="mt-8 md:mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm md:text-base text-gray-400 tracking-wide">
                     <a href="mailto:averie.a.dow@gmail.com" class="hover:text-accent transition-colors duration-300">averie.a.dow@gmail.com</a>
                     <span class="text-surface">/</span>
                     <a href="tel:+1234567890" class="hover:text-accent transition-colors duration-300">+1 913.526.6923</a>
                 </div>
             </div>
             
-            <div class="lg:w-1/3 flex flex-col gap-8 w-full lg:mt-6 border-l-2 border-surface pl-6 md:pl-8">
+            <div class="lg:w-1/3 flex flex-col gap-8 w-full lg:mt-6 lg:border-l-2 lg:border-surface lg:pl-8">
                 <div>
                     <p class="text-accent font-bold text-xs tracking-widest uppercase mb-1">June 2026 — Present</p>
                     <h3 class="text-xl font-bold text-white uppercase tracking-tight">Learning Experience Designer</h3>
-                    <p class="text-gray-500 text-sm font-medium mt-1">Echostar</p>
+                    <p class="text-gray-500 text-sm mt-1">Echostar</p>
                 </div>
                 <div>
                     <p class="text-gray-500 font-bold text-xs tracking-widest uppercase mb-1">2024 — 2026</p>
                     <h3 class="text-xl font-bold text-white uppercase tracking-tight">UX Designer</h3>
-                    <p class="text-gray-500 text-sm font-medium mt-1">CU Boulder IT</p>
+                    <p class="text-gray-500 text-sm mt-1">CU Boulder IT</p>
                 </div>
                 <div>
-                    <p class="text-gray-500 font-bold text-xs tracking-widest uppercase mb-1">2004 — Present </p>
+                    <p class="text-gray-500 font-bold text-xs tracking-widest uppercase mb-1">2004 — Present</p>
                     <h3 class="text-xl font-bold text-white uppercase tracking-tight">Nerd</h3>
-                    <p class="text-gray-500 text-sm font-medium mt-1">Freelance</p>
+                    <p class="text-gray-500 text-sm mt-1">Freelance</p>
                 </div>
             </div>
         </section>
 
-        <section id="about" class="py-20 border-t border-surface">
-            <div class="max-w-3xl">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-8">About Me</h2>
-                <p class="text-2xl md:text-4xl font-medium leading-tight text-gray-300">
-                    I'm Averie Dow, a creative technologist who gets a kick out of untangling messy design and development problems. I love finding creative solutions to weird challenges, and I thrive on the fact that my work is constantly shape-shifting.
-                </p>
-                <div class="mt-12 text-gray-300 font-black tracking-widest flex flex-wrap gap-4 text-sm uppercase">
-                    <span class="hover:text-accent transition-colors duration-300 cursor-default">Web Development</span>
-                    <span class="text-surface">/</span>
-                    <span class="hover:text-accent transition-colors duration-300 cursor-default">Graphic Design</span>
-                    <span class="text-surface">/</span>
-                    <span class="hover:text-accent transition-colors duration-300 cursor-default">UI/UX Design</span>
-                    <span class="text-surface">/</span>
-                    <span class="hover:text-accent transition-colors duration-300 cursor-default">AI Integration, Ethics, & Policy</span>
+        <!-- About Section with Picture Slot -->
+        <section id="about" class="py-16 md:py-20 border-t border-surface">
+            <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-6 md:mb-8">About Me</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+                <div class="lg:col-span-2">
+                    <p class="text-xl md:text-3xl leading-relaxed text-gray-300">
+                        Hello! I'm Averie Dow, a creative technologist who LOVES messy design and development problems. I love finding creative solutions to weird challenges, removing annoyances, and thriving on work that is constantly shape-shifting.
+                    </p>
+                    <div class="mt-8 md:mt-12 text-gray-300 tracking-wider flex flex-wrap gap-3 md:gap-4 text-xs md:text-sm uppercase">
+                        <span class="hover:text-accent transition-colors duration-300 cursor-default">Web Development</span>
+                        <span class="text-surface">/</span>
+                        <span class="hover:text-accent transition-colors duration-300 cursor-default">Graphic Design</span>
+                        <span class="text-surface">/</span>
+                        <span class="hover:text-accent transition-colors duration-300 cursor-default">UI/UX Design</span>
+                        <span class="text-surface">/</span>
+                        <span class="hover:text-accent transition-colors duration-300 cursor-default">AI Integration, Ethics, & Policy</span>
+                    </div>
+                </div>
+
+                <!-- Picture Slot -->
+                <div class="w-full flex justify-center">
+                    <div class="w-full max-w-xs aspect-[4/5] rounded-2xl bg-surface overflow-hidden border border-gray-800 shadow-xl flex items-center justify-center relative group">
+                        <img src="assets/Dow_averie_headshot.png" alt="Averie Dow" class="w-full h-full object-cover   transition-all duration-500">
+                        <div class="absolute inset-0 flex items-center justify-center text-gray-600 text-xs uppercase tracking-widest pointer-events-none -z-10">
+                            Photo Placeholder
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Praise & Press Teaser Section -->
-        <section class="py-20 border-t border-surface overflow-hidden relative">
+        <section class="py-16 md:py-20 border-t border-surface overflow-hidden relative">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 relative z-10">
                 <h2 class="text-xs font-bold uppercase tracking-widest text-accent">Praise & Press</h2>
                 <a href="reviews.html" class="text-sm font-bold uppercase tracking-widest text-white border-b-2 border-accent pb-1 hover:text-accent transition-colors">Read all reviews</a>
             </div>
 
-            <!-- Marquee Container -->
             <div class="flex overflow-hidden relative w-[100vw] left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
-                <!-- Marquee Track -->
                 <div class="flex animate-marquee whitespace-nowrap min-w-full hover:[animation-play-state:paused]">
-                    
-                    <div class="px-8">
-                        <p class="text-2xl md:text-4xl font-black text-gray-400 italic">"Her ability to communicate nuance was out of this world! 🚀"</p>
+                    <div class="px-6 md:px-8">
+                        <p class="text-xl md:text-3xl text-gray-400 italic">"Her ability to communicate nuance was out of this world! 🚀"</p>
                     </div>
-                    <div class="px-8 flex items-center">
+                    <div class="px-6 md:px-8 flex items-center">
                         <span class="w-3 h-3 rounded-full bg-accent"></span>
                     </div>
-                    <div class="px-8">
-                        <p class="text-2xl md:text-4xl font-black text-gray-400 italic">"Absolutely outstanding."</p>
+                    <div class="px-6 md:px-8">
+                        <p class="text-xl md:text-3xl text-gray-400 italic">"Absolutely outstanding."</p>
                     </div>
-                    <div class="px-8 flex items-center">
+                    <div class="px-6 md:px-8 flex items-center">
                         <span class="w-3 h-3 rounded-full bg-accent"></span>
                     </div>
-                    <div class="px-8">
-                        <p class="text-2xl md:text-4xl font-black text-gray-400 italic">"A fabulous human being!"</p>
+                    <div class="px-6 md:px-8">
+                        <p class="text-xl md:text-3xl text-gray-400 italic">"A fabulous human being!"</p>
                     </div>
-                    <div class="px-8 flex items-center">
+                    <div class="px-6 md:px-8 flex items-center">
                         <span class="w-3 h-3 rounded-full bg-accent"></span>
                     </div>
-                    <div class="px-8">
-                        <p class="text-2xl md:text-4xl font-black text-gray-400 italic">"Highly reliable, organized, skilled, and talented."</p>
+                    <div class="px-6 md:px-8">
+                        <p class="text-xl md:text-3xl text-gray-400 italic">"Highly reliable, organized, skilled, and talented."</p>
                     </div>
-                    <div class="px-8 flex items-center">
-                        <span class="w-3 h-3 rounded-full bg-accent"></span>
-                    </div>
-
-                    <!-- Duplicate for infinite looping -->
-                    <div class="px-8">
-                        <p class="text-2xl md:text-4xl font-black text-gray-400 italic">"Her ability to communicate nuance was out of this world! 🚀"</p>
-                    </div>
-                    <div class="px-8 flex items-center">
-                        <span class="w-3 h-3 rounded-full bg-accent"></span>
-                    </div>
-                    <div class="px-8">
-                        <p class="text-2xl md:text-4xl font-black text-gray-400 italic">"Absolutely outstanding."</p>
-                    </div>
-                    <div class="px-8 flex items-center">
-                        <span class="w-3 h-3 rounded-full bg-accent"></span>
-                    </div>
-                    <div class="px-8">
-                        <p class="text-2xl md:text-4xl font-black text-gray-400 italic">"A fabulous human being!"</p>
-                    </div>
-                    <div class="px-8 flex items-center">
-                        <span class="w-3 h-3 rounded-full bg-accent"></span>
-                    </div>
-                    <div class="px-8">
-                        <p class="text-2xl md:text-4xl font-black text-gray-400 italic">"Highly reliable, organized, skilled, and talented."</p>
-                    </div>
-                    <div class="px-8 flex items-center">
+                    <div class="px-6 md:px-8 flex items-center">
                         <span class="w-3 h-3 rounded-full bg-accent"></span>
                     </div>
 
+                    <div class="px-6 md:px-8">
+                        <p class="text-xl md:text-3xl text-gray-400 italic">"Her ability to communicate nuance was out of this world! 🚀"</p>
+                    </div>
+                    <div class="px-6 md:px-8 flex items-center">
+                        <span class="w-3 h-3 rounded-full bg-accent"></span>
+                    </div>
+                    <div class="px-6 md:px-8">
+                        <p class="text-xl md:text-3xl text-gray-400 italic">"Absolutely outstanding."</p>
+                    </div>
+                    <div class="px-6 md:px-8 flex items-center">
+                        <span class="w-3 h-3 rounded-full bg-accent"></span>
+                    </div>
+                    <div class="px-6 md:px-8">
+                        <p class="text-xl md:text-3xl text-gray-400 italic">"A fabulous human being!"</p>
+                    </div>
+                    <div class="px-6 md:px-8 flex items-center">
+                        <span class="w-3 h-3 rounded-full bg-accent"></span>
+                    </div>
+                    <div class="px-6 md:px-8">
+                        <p class="text-xl md:text-3xl text-gray-400 italic">"Highly reliable, organized, skilled, and talented."</p>
+                    </div>
+                    <div class="px-6 md:px-8 flex items-center">
+                        <span class="w-3 h-3 rounded-full bg-accent"></span>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="projects" class="py-20 border-t border-surface">
-            <div class="flex justify-between items-end mb-16">
+        <!-- Selected Works Section -->
+        <section id="projects" class="py-16 md:py-20 border-t border-surface">
+            <div class="flex justify-between items-end mb-12 md:mb-16">
                 <h2 class="text-xs font-bold uppercase tracking-widest text-accent">Selected Works</h2>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Project 1 with distinct image container -->
                 <a href="plannedParenthood.html" class="group block overflow-hidden rounded-2xl bg-surface transition-transform duration-500 hover:-translate-y-2 border border-transparent hover:border-accent/50 flex flex-col">
-                    <!-- CLEAR IMAGE CONTAINER -->
                     <div class="w-full aspect-video overflow-hidden bg-[#222]">
                         <img src="assets/plannedParenthood.jpeg" alt="Planned Parenthood Project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                     </div>
-                    
-                    <div class="p-8 flex flex-col gap-3 flex-grow">
+                    <div class="p-6 md:p-8 flex flex-col gap-3 flex-grow">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-3xl font-bold text-white">Planned Parenthood Usability Audit</h3>
-                            <svg class="w-8 h-8 text-gray-500 group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            <h3 class="text-2xl md:text-3xl font-bold text-white">Planned Parenthood Usability Audit</h3>
+                            <svg class="w-8 h-8 text-gray-500 group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </div>
-                        <p class="text-gray-400 group-hover:text-gray-200 transition-colors">A comprehensive UX audit to reduce decision friction and improve accessibility.</p>
+                        <p class="text-gray-400 group-hover:text-gray-200 transition-colors text-sm md:text-base">A comprehensive UX audit to reduce decision friction and improve accessibility.</p>
                     </div>
                 </a>
 
-                <!-- Project 2 with distinct image container -->
                 <a href="project-tea.html" class="group block overflow-hidden rounded-2xl bg-surface transition-transform duration-500 hover:-translate-y-2 border border-transparent hover:border-accent/50 flex flex-col">
-                    <!-- CLEAR IMAGE CONTAINER -->
                     <div class="w-full aspect-video overflow-hidden bg-[#222]">
-                        <img src="assets/tea.webp" alt="Nova Fin Project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <img src="assets/tea.webp" alt="The Tea App Project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                     </div>
-                    
-                    <div class="p-8 flex flex-col gap-3 flex-grow">
+                    <div class="p-6 md:p-8 flex flex-col gap-3 flex-grow">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-3xl font-bold text-white">The Tea App and Data Ethics</h3>
-                            <svg class="w-8 h-8 text-gray-500 group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            <h3 class="text-2xl md:text-3xl font-bold text-white">The Tea App and Data Ethics</h3>
+                            <svg class="w-8 h-8 text-gray-500 group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </div>
-                        <p class="text-gray-400 group-hover:text-gray-200 transition-colors">A comprehensive policy review on the women's safety app turned doxxing platform.</p>
+                        <p class="text-gray-400 group-hover:text-gray-200 transition-colors text-sm md:text-base">A comprehensive policy review on the women's safety app turned doxxing platform.</p>
                     </div>
                 </a>
 
-                <!-- Project 3 with distinct image container -->
                 <a href="project-sephora.html" class="group block overflow-hidden rounded-2xl bg-surface md:col-span-2 transition-transform duration-500 hover:-translate-y-2 border border-transparent hover:border-accent/50 flex flex-col">
-                    <!-- CLEAR IMAGE CONTAINER -->
-                    <div class="w-full aspect-[21/9] overflow-hidden bg-[#222]">
-                        <img src="assets/4871 - Sephora WCAG AAA Audit/1.png" alt="Orbit OS Project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-[#222]">
+                        <img src="assets/4871 - Sephora WCAG AAA Audit/1.png" alt="Sephora Project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                     </div>
-                    
-                    <div class="p-8 flex flex-col gap-3 flex-grow">
+                    <div class="p-6 md:p-8 flex flex-col gap-3 flex-grow">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-3xl md:text-5xl font-bold text-white">Sephora WCAG AAA Accessibility Audit</h3>
-                            <svg class="w-8 h-8 text-gray-500 group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            <h3 class="text-2xl md:text-5xl font-bold text-white">Sephora WCAG AAA Accessibility Audit</h3>
+                            <svg class="w-8 h-8 text-gray-500 group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </div>
-                        <p class="text-gray-400 group-hover:text-gray-200 transition-colors max-w-xl">An exhaustive evaluation of the Sephora checkout flow against strict WCAG 2.2 AAA standards.</p>
+                        <p class="text-gray-400 group-hover:text-gray-200 transition-colors max-w-xl text-sm md:text-base">An exhaustive evaluation of the Sephora checkout flow against strict WCAG 2.2 AAA standards.</p>
                     </div>
                 </a>
             </div>
@@ -262,28 +329,57 @@
 
     </main>
 
+    <!-- Footer -->
     <footer id="contact" class="w-full border-t border-surface mt-10">
-        <div class="max-w-6xl mx-auto px-6 py-20 flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
+        <div class="max-w-6xl mx-auto px-6 py-16 md:py-20 flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
             <div>
-                <h2 class="text-5xl md:text-7xl font-black tracking-tighter mb-4">Let's Gab.</h2>
-                <a href="mailto:averie.a.dow@gmail.com" class="text-2xl text-gray-400 hover:text-white transition-colors duration-300 hover-underline-animation">averie.a.dow@gmail.com</a>
+                <a href="contact.html" class="inline-block text-4xl md:text-7xl font-bold tracking-tight mb-4 hover:text-accent transition-colors duration-300">Let's Gab.</a>
                 <br>
-                <a href="tel:9135266923" class="text-2xl text-gray-400 hover:text-white transition-colors duration-300 hover-underline-animation mt-2 inline-block">913.526.6923</a>
+                <a href="mailto:averie.a.dow@gmail.com" class="text-lg md:text-2xl text-gray-400 hover:text-white transition-colors duration-300 hover-underline-animation">averie.a.dow@gmail.com</a>
+                <br>
+                <a href="tel:9135266923" class="text-lg md:text-2xl text-gray-400 hover:text-white transition-colors duration-300 hover-underline-animation mt-2 inline-block">913.526.6923</a>
             </div>
             
-            <div class="flex flex-col gap-4 text-right w-full md:w-auto">
-                <a href="https://www.linkedin.com/in/averiedow/" target="_blank" rel="noopener noreferrer" class="text-xl font-bold text-gray-400 hover:text-accent transition-colors duration-300 flex items-center justify-start md:justify-end gap-2 group">
+            <div class="flex flex-col gap-4 text-left md:text-right w-full md:w-auto">
+                <a href="https://www.linkedin.com/in/averiedow/" target="_blank" rel="noopener noreferrer" class="text-lg md:text-xl font-bold text-gray-400 hover:text-accent transition-colors duration-300 flex items-center justify-start md:justify-end gap-2 group">
                     LinkedIn
                     <svg class="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </a>
             </div>
         </div>
         
-        <div class="w-full max-w-6xl mx-auto px-6 py-6 border-t border-surface flex justify-between items-center text-sm text-gray-600">
+        <div class="w-full max-w-6xl mx-auto px-6 py-6 border-t border-surface flex flex-col sm:flex-row justify-between items-center gap-4 text-xs md:text-sm text-gray-600">
             <p>&copy; AVERIE DOW MADE THIS.</p>
             <p>It's like you're obsessed with me or something.</p>
         </div>
     </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="fixed bottom-6 right-6 bg-surface text-white border border-gray-800 p-3 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 hover:border-accent hover:text-accent z-50 focus:outline-none" aria-label="Scroll to top">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+        </svg>
+    </button>
+
+    <!-- Script to handle Scroll to Top visibility and action -->
+    <script>
+        const scrollBtn = document.getElementById('scroll-to-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                scrollBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                scrollBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        });
+
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
 
 </body>
 </html>

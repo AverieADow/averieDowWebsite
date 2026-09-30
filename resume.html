@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Averie Dow - Interactive Resume</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' width='64' height='64'><text x='50%' y='55%' dominant-baseline='central' text-anchor='middle' font-family='system-ui, -apple-system, sans-serif' font-weight='900' font-size='40' fill='%23ff007f' stroke='%230a0a0a' stroke-width='2' letter-spacing='-1'>AD<tspan fill='%23ff007f'>.</tspan></text></svg>">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Jost', 'sans-serif'],
                     },
                     colors: {
                         background: '#0a0a0a',
@@ -24,7 +28,7 @@
     </script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Jost', sans-serif;
             background-color: #0a0a0a;
             color: #ffffff;
         }
@@ -69,25 +73,88 @@
 </head>
 <body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col">
 
-    <nav class="w-full max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-50">
-        <a href="index.html" class="text-2xl font-black tracking-tighter text-white hover:text-accent transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="w-full max-w-6xl mx-auto px-6 py-6 md:py-8 flex justify-between items-center relative z-50">
+        <a href="index.html" class="text-2xl font-black tracking-tight text-white hover:text-accent transition-colors duration-300">
             Averie Dow<span class="text-accent">.</span>
         </a>
-        <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide text-gray-400">
+
+        <!-- Desktop Navigation Links -->
+        <div class="hidden md:flex space-x-8 text-sm tracking-wide text-gray-400">
             <a href="about.html" class="hover:text-white transition-colors duration-300">About</a>
             <a href="projects.html" class="hover:text-white transition-colors duration-300">Projects</a>
             <a href="resume.html" class="text-white transition-colors duration-300">Resume</a>
             <a href="contact.html" class="hover:text-white transition-colors duration-300">Contact</a>
         </div>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="menu-btn" class="md:hidden text-gray-400 hover:text-white focus:outline-none z-50" aria-label="Toggle Navigation Menu">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
     </nav>
+
+    <!-- Backdrop Overlay -->
+    <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+
+    <!-- Mobile Slide-out Menu Drawer from Right & Solid Black -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[#0a0a0a] border-l border-gray-800 z-50 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out md:hidden shadow-2xl">
+        <div>
+            <div class="flex justify-between items-center mb-12">
+                <span class="text-lg font-bold tracking-tight text-white">Menu</span>
+                <button id="menu-close" class="text-gray-400 hover:text-white focus:outline-none" aria-label="Close Navigation Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="flex flex-col space-y-6 text-xl tracking-wide text-gray-300">
+                <a href="about.html" class="hover:text-accent transition-colors duration-300">About</a>
+                <a href="projects.html" class="hover:text-accent transition-colors duration-300">Projects</a>
+                <a href="resume.html" class="text-accent transition-colors duration-300">Resume</a>
+                <a href="contact.html" class="hover:text-accent transition-colors duration-300">Contact</a>
+            </div>
+        </div>
+        
+        <div class="text-xs text-gray-600 tracking-wider uppercase">
+            Averie Dow &bull; Portfolio
+        </div>
+    </div>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        const mobileBtn = document.getElementById('menu-btn');
+        const closeBtn = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const backdrop = document.getElementById('menu-backdrop');
+
+        function openMenu() {
+            mobileMenu.classList.remove('translate-x-full');
+            backdrop.classList.remove('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.add('translate-x-full');
+            backdrop.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+        }
+
+        mobileBtn.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        backdrop.addEventListener('click', closeMenu);
+    </script>
 
     <main class="flex-grow w-full max-w-6xl mx-auto px-6 py-12 flex flex-col">
         
         <!-- Header & Download Section -->
         <section class="mb-16 pb-12 border-b border-surface flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
             <div class="max-w-3xl">
+                <h1 class="text-4xl md:text-6xl font-black tracking-tight text-white uppercase mb-4">Interactive Resume</h1>
                 <p class="text-xl md:text-2xl font-medium leading-relaxed text-gray-300 mb-4">
-                    Interactive resume for your viewing pleasure.
+                    For your viewing pleasure.
                 </p>
                 <div class="text-sm font-semibold text-gray-400 flex flex-wrap gap-x-4 gap-y-2 uppercase tracking-widest">
                     <span>Located wherever</span> • 
@@ -359,6 +426,7 @@
         </div>
     </main>
 
+    <!-- Footer -->
     <footer class="w-full border-t border-surface mt-10">
         <div class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center text-sm text-gray-600">
             <p>&copy; AVERIE DOW MADE THIS.</p>
@@ -366,34 +434,59 @@
         </div>
     </footer>
 
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="fixed bottom-6 right-6 bg-surface text-white border border-gray-800 p-3 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 hover:border-accent hover:text-accent z-50 focus:outline-none" aria-label="Scroll to top">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+        </svg>
+    </button>
+
+    <!-- Resume & Scroll Script -->
     <script>
-        let currentYear = 'all';
-        let currentSkill = 'all';
-        let currentSearch = '';
+        // --- Scroll to Top Logic ---
+        const scrollBtn = document.getElementById('scroll-to-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                scrollBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                scrollBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        });
+
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // --- Resume Filters Logic ---
+        let filterYear = 'all';
+        let filterSkill = 'all';
+        let searchQuery = '';
 
         function setFilter(type, value, element) {
-            if (type === 'year') currentYear = value;
-            if (type === 'skill') currentSkill = value;
+            if (type === 'year') filterYear = value;
+            if (type === 'skill') filterSkill = value;
 
-            // Remove active styles from all buttons of this specific filter type
             document.querySelectorAll(`.filter-${type}-btn`).forEach(btn => {
                 btn.classList.remove('border-accent', 'text-accent', 'active-filter');
                 btn.classList.add('border-surface', 'text-gray-400');
             });
             
-            // Set clicked button to active
             element.classList.remove('border-surface', 'text-gray-400');
             element.classList.add('border-accent', 'text-accent', 'active-filter');
 
-            applyFilters();
+            applyResumeFilters();
         }
 
         function handleSearch(e) {
-            currentSearch = e.target.value.toLowerCase().trim();
-            applyFilters();
+            searchQuery = e.target.value.toLowerCase().trim();
+            applyResumeFilters();
         }
 
-        function applyFilters() {
+        function applyResumeFilters() {
             const items = document.querySelectorAll('.resume-item');
             
             items.forEach(item => {
@@ -401,15 +494,12 @@
                 const itemSkills = item.getAttribute('data-skills') || '';
                 const itemKeywords = item.getAttribute('data-keywords') ? item.getAttribute('data-keywords').toLowerCase() : '';
                 
-                const matchYear = currentYear === 'all' || itemYears.includes(currentYear);
-                const matchSkill = currentSkill === 'all' || itemSkills.includes(currentSkill);
-                const matchSearch = currentSearch === '' || itemKeywords.includes(currentSearch);
+                const matchYear = filterYear === 'all' || itemYears.includes(filterYear);
+                const matchSkill = filterSkill === 'all' || itemSkills.includes(filterSkill);
+                const matchSearch = searchQuery === '' || itemKeywords.includes(searchQuery);
                 
-                // Show if it matches all active filters
                 if (matchYear && matchSkill && matchSearch) {
                     item.style.display = 'block';
-                    
-                    // Re-trigger fade-in animation for a smooth transition
                     item.classList.remove('fade-in');
                     void item.offsetWidth; 
                     item.classList.add('fade-in');

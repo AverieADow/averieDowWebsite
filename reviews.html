@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reviews & Interviews - Averie Dow</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' width='64' height='64'><text x='50%' y='55%' dominant-baseline='central' text-anchor='middle' font-family='system-ui, -apple-system, sans-serif' font-weight='900' font-size='40' fill='%23ff007f' stroke='%230a0a0a' stroke-width='2' letter-spacing='-1'>AD<tspan fill='%23ff007f'>.</tspan></text></svg>">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Jost', 'sans-serif'],
                     },
                     colors: {
                         background: '#0a0a0a',
@@ -24,7 +28,7 @@
     </script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Jost', sans-serif;
             background-color: #0a0a0a;
             color: #ffffff;
         }
@@ -72,23 +76,84 @@
 </head>
 <body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col">
 
-    <nav class="w-full max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-50">
-        <a href="index.html" class="text-2xl font-black tracking-tighter text-white hover:text-accent transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="w-full max-w-6xl mx-auto px-6 py-6 md:py-8 flex justify-between items-center relative z-50">
+        <a href="index.html" class="text-2xl font-black tracking-tight text-white hover:text-accent transition-colors duration-300">
             Averie Dow<span class="text-accent">.</span>
         </a>
-        <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide text-gray-400">
+
+        <!-- Desktop Navigation Links -->
+        <div class="hidden md:flex space-x-8 text-sm tracking-wide text-gray-400">
             <a href="about.html" class="hover:text-white transition-colors duration-300">About</a>
             <a href="projects.html" class="hover:text-white transition-colors duration-300">Projects</a>
-            <a href="reviews.html" class="text-white transition-colors duration-300">Reviews</a>
             <a href="resume.html" class="hover:text-white transition-colors duration-300">Resume</a>
             <a href="contact.html" class="hover:text-white transition-colors duration-300">Contact</a>
         </div>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="menu-btn" class="md:hidden text-gray-400 hover:text-white focus:outline-none z-50" aria-label="Toggle Navigation Menu">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
     </nav>
 
-    <main class="flex-grow w-full max-w-6xl mx-auto px-6 py-12 md:py-20 flex flex-col">
+    <!-- Backdrop Overlay -->
+    <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+
+    <!-- Mobile Slide-out Menu Drawer from Right & Solid Black -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[#0a0a0a] border-l border-gray-800 z-50 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out md:hidden shadow-2xl">
+        <div>
+            <div class="flex justify-between items-center mb-12">
+                <span class="text-lg font-bold tracking-tight text-white">Menu</span>
+                <button id="menu-close" class="text-gray-400 hover:text-white focus:outline-none" aria-label="Close Navigation Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="flex flex-col space-y-6 text-xl tracking-wide text-gray-300">
+                <a href="about.html" class="hover:text-accent transition-colors duration-300">About</a>
+                <a href="projects.html" class="hover:text-accent transition-colors duration-300">Projects</a>
+                <a href="resume.html" class="hover:text-accent transition-colors duration-300">Resume</a>
+                <a href="contact.html" class="hover:text-accent transition-colors duration-300">Contact</a>
+            </div>
+        </div>
+        
+        <div class="text-xs text-gray-600 tracking-wider uppercase">
+            Averie Dow &bull; Portfolio
+        </div>
+    </div>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        const mobileBtn = document.getElementById('menu-btn');
+        const closeBtn = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const backdrop = document.getElementById('menu-backdrop');
+
+        function openMenu() {
+            mobileMenu.classList.remove('translate-x-full');
+            backdrop.classList.remove('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.add('translate-x-full');
+            backdrop.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+        }
+
+        mobileBtn.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        backdrop.addEventListener('click', closeMenu);
+    </script>
+
+    <main class="flex-grow w-full max-w-6xl mx-auto px-6 py-12 md:py-20 flex flex-col overflow-x-hidden">
         
         <header class="mb-16 md:mb-24">
-            <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] uppercase mb-6">
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.9] uppercase mb-6">
                 Word on <br>
                 the <span class="text-accent">Street.</span>
             </h1>
@@ -115,7 +180,7 @@
             </div>
 
             <!-- Press Card 1 -->
-            <a href="https://www.colorado.edu/cmdinow/2026/03/09/if-you-generate-it" target="_blank" class="group block masonry-item bg-gradient-to-br from-[#171717] to-[#0a0a0a] p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent transition-all transform hover:-translate-y-1">
+            <a href="https://www.colorado.edu/cmdinow/2026/03/09/if-you-generate-it" target="_blank" rel="noopener noreferrer" class="group block masonry-item bg-gradient-to-br from-[#171717] to-[#0a0a0a] p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent transition-all transform hover:-translate-y-1">
                 <div class="flex justify-between items-start mb-6">
                     <span class="px-3 py-1 bg-accent/10 text-accent border border-accent/20 rounded-full text-xs font-bold uppercase tracking-widest">Press</span>
                     <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
@@ -144,7 +209,7 @@
             </div>
 
             <!-- Press Card 2 -->
-            <a href="https://www.colorado.edu/cmdinow/2026/04/21/2-minutes-averie-dow" target="_blank" class="group block masonry-item bg-gradient-to-br from-[#171717] to-[#0a0a0a] p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent transition-all transform hover:-translate-y-1">
+            <a href="https://www.colorado.edu/cmdinow/2026/04/21/2-minutes-averie-dow" target="_blank" rel="noopener noreferrer" class="group block masonry-item bg-gradient-to-br from-[#171717] to-[#0a0a0a] p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent transition-all transform hover:-translate-y-1">
                 <div class="flex justify-between items-start mb-6">
                     <span class="px-3 py-1 bg-accent/10 text-accent border border-accent/20 rounded-full text-xs font-bold uppercase tracking-widest">Interview</span>
                     <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
@@ -161,12 +226,62 @@
 
     </main>
 
-    <footer class="w-full border-t border-surface mt-10">
-        <div class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center text-sm text-gray-600">
+    <!-- Footer -->
+    <footer id="contact" class="w-full border-t border-surface mt-10">
+        <div class="max-w-6xl mx-auto px-6 py-20 flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
+            <div class="w-full md:w-auto overflow-hidden">
+                <a href="contact.html" class="inline-block text-5xl md:text-7xl font-black tracking-tight mb-4 hover:text-accent transition-colors duration-300">Let's Gab.</a>
+                <br>
+                <a href="mailto:averie.a.dow@gmail.com" class="text-xl md:text-2xl text-gray-400 hover:text-white transition-colors duration-300 hover-underline-animation break-all">averie.a.dow@gmail.com</a>
+                <br>
+                <a href="tel:9135266923" class="text-xl md:text-2xl text-gray-400 hover:text-white transition-colors duration-300 hover-underline-animation mt-2 inline-block break-words">913.526.6923</a>
+            </div>
+            
+            <div class="flex flex-col gap-4 text-left md:text-right w-full md:w-auto">
+                <a href="https://www.linkedin.com/in/averiedow/" target="_blank" rel="noopener noreferrer" class="text-xl font-bold text-gray-400 hover:text-accent transition-colors duration-300 flex items-center justify-start md:justify-end gap-2 group">
+                    LinkedIn
+                    <svg class="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </a>
+            </div>
+        </div>
+        
+        <div class="w-full max-w-6xl mx-auto px-6 py-6 border-t border-surface flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-sm text-gray-600">
             <p>&copy; AVERIE DOW MADE THIS.</p>
             <p>It's like you're obsessed with me or something.</p>
         </div>
     </footer>
+
+    <!-- Scroll to Top Button (High z-index, guaranteed clickability) -->
+    <button id="scroll-to-top" class="fixed bottom-6 right-6 bg-surface text-white border border-gray-800 p-3 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 hover:border-accent hover:text-accent z-[9999] focus:outline-none" aria-label="Scroll to top">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+        </svg>
+    </button>
+
+    <!-- Scroll to Top Script -->
+    <script>
+        const scrollBtn = document.getElementById('scroll-to-top');
+
+        function checkScroll() {
+            const yOffset = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            if (yOffset > 300) {
+                scrollBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                scrollBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        window.addEventListener('scroll', checkScroll, { passive: true });
+        document.addEventListener('scroll', checkScroll, { passive: true });
+
+        scrollBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
 
 </body>
 </html>
