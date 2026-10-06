@@ -21,6 +21,9 @@
                         background: '#0a0a0a',
                         surface: '#171717',
                         accent: '#ff007f', /* Neon Pink */
+                        accessibleMuted: '#9ca3af',   /* Tailwind gray-400 (7.0:1 on #0a0a0a) */
+                        accessibleBody: '#d1d5db',    /* Tailwind gray-300 (11.5:1 on #0a0a0a) */
+                        accessibleHigh: '#f3f4f6'     /* Tailwind gray-100 (17.5:1 on #0a0a0a) */
                     }
                 }
             }
@@ -32,11 +35,32 @@
             font-family: 'Jost', sans-serif;
             background-color: #0a0a0a;
             color: #ffffff;
+            font-size: 16px;
         }
         
         ::selection {
             background-color: #ff007f;
             color: #ffffff;
+        }
+
+        /* WCAG 2.4.1: Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 1rem;
+            background: #ff007f;
+            color: #ffffff;
+            padding: 0.75rem 1.25rem;
+            font-weight: 700;
+            font-size: 0.875rem; /* 14px */
+            z-index: 9999;
+            border-radius: 0 0 0.5rem 0.5rem;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus {
+            top: 0;
+            outline: 2px solid #ffffff;
+            outline-offset: 2px;
         }
 
         .hover-underline-animation {
@@ -57,66 +81,245 @@
             transition: transform 0.25s ease-out;
         }
 
-        .hover-underline-animation:hover::after {
+        .hover-underline-animation:hover::after,
+        .hover-underline-animation:focus-visible::after {
             transform: scaleX(1);
             transform-origin: bottom left;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html.scroll-smooth {
+                scroll-behavior: auto;
+            }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 <body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col">
 
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Navigation -->
-    <nav class="w-full max-w-6xl mx-auto px-6 py-6 md:py-8 flex justify-between items-center relative z-50">
-        <a href="index.html" class="text-2xl font-black tracking-tight text-white hover:text-accent transition-colors duration-300">
-            Averie Dow<span class="text-accent">.</span>
-        </a>
+    <header class="w-full">
+        <nav aria-label="Main Navigation" class="w-full max-w-6xl mx-auto px-6 py-6 md:py-8 flex justify-between items-center relative z-50">
+            <a href="index.html" class="text-2xl font-black tracking-tight text-white hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">
+                Averie Dow<span class="text-accent" aria-hidden="true">.</span>
+            </a>
 
-        <!-- Desktop Navigation Links -->
-        <div class="hidden md:flex space-x-8 text-sm tracking-wide text-gray-400">
-            <a href="about.html" class="hover:text-white transition-colors duration-300">About</a>
-            <a href="projects.html" class="text-white transition-colors duration-300">Projects</a>
-            <a href="resume.html" class="hover:text-white transition-colors duration-300">Resume</a>
-            <a href="contact.html" class="hover:text-white transition-colors duration-300">Contact</a>
-        </div>
+            <!-- Desktop Navigation Links -->
+            <ul class="hidden md:flex space-x-8 text-base tracking-wide text-accessibleBody">
+                <li><a href="about.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">About</a></li>
+                <li><a href="projects.html" aria-current="page" class="text-white font-bold border-b-2 border-accent transition-colors duration-300">Projects</a></li>
+                <li><a href="resume.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">Resume</a></li>
+                <li><a href="contact.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">Contact</a></li>
+            </ul>
 
-        <!-- Mobile Hamburger Button -->
-        <button id="menu-btn" class="md:hidden text-gray-400 hover:text-white focus:outline-none z-50" aria-label="Toggle Navigation Menu">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-        </button>
-    </nav>
+            <!-- Mobile Hamburger Button -->
+            <button id="menu-btn" 
+                    type="button"
+                    class="md:hidden text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent p-2 rounded z-50" 
+                    aria-label="Open Navigation Menu"
+                    aria-expanded="false"
+                    aria-controls="mobile-menu">
+                <svg class="w-7 h-7" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
 
     <!-- Backdrop Overlay -->
-    <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+    <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" aria-hidden="true"></div>
 
-    <!-- Mobile Slide-out Menu Drawer from Right & Solid Black -->
-    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[#0a0a0a] border-l border-gray-800 z-50 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out md:hidden shadow-2xl">
+    <!-- Mobile Slide-out Menu Drawer -->
+    <div id="mobile-menu" 
+         role="dialog" 
+         aria-modal="true" 
+         aria-label="Mobile Navigation Menu"
+         class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[#0a0a0a] border-l border-gray-800 z-50 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out md:hidden shadow-2xl" 
+         inert>
         <div>
             <div class="flex justify-between items-center mb-12">
-                <span class="text-lg font-bold tracking-tight text-white">Menu</span>
-                <button id="menu-close" class="text-gray-400 hover:text-white focus:outline-none" aria-label="Close Navigation Menu">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span class="text-xl font-bold tracking-tight text-white">Menu</span>
+                <button id="menu-close" type="button" class="text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent p-2 rounded" aria-label="Close Navigation Menu">
+                    <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
             
-            <div class="flex flex-col space-y-6 text-xl tracking-wide text-gray-300">
-                <a href="about.html" class="hover:text-accent transition-colors duration-300">About</a>
-                <a href="projects.html" class="text-accent transition-colors duration-300">Projects</a>
-                <a href="resume.html" class="hover:text-accent transition-colors duration-300">Resume</a>
-                <a href="contact.html" class="hover:text-accent transition-colors duration-300">Contact</a>
-            </div>
+            <nav aria-label="Mobile Navigation Links">
+                <ul class="flex flex-col space-y-6 text-xl tracking-wide text-accessibleHigh">
+                    <li><a href="about.html" class="hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">About</a></li>
+                    <li><a href="projects.html" aria-current="page" class="text-accent font-bold transition-colors duration-300">Projects</a></li>
+                    <li><a href="resume.html" class="hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">Resume</a></li>
+                    <li><a href="contact.html" class="hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">Contact</a></li>
+                </ul>
+            </nav>
         </div>
         
-        <div class="text-xs text-gray-600 tracking-wider uppercase">
+        <div class="text-sm text-accessibleMuted tracking-wider uppercase font-semibold">
             Averie Dow &bull; Portfolio
         </div>
     </div>
 
-    <!-- Script to handle right slide-out menu animations -->
+    <!-- Main Landmark -->
+    <main id="main-content" tabindex="-1" class="flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col py-12 md:py-20 focus:outline-none">
+        
+        <header class="mb-16 md:mb-24">
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.9] uppercase mb-6">
+                All <br>
+                <span class="text-accent">Projects.</span>
+            </h1>
+            <p class="text-xl md:text-2xl font-medium leading-relaxed text-accessibleBody max-w-2xl">
+                A comprehensive archive of my work spanning UX research, web development, accessibility audits, and ethical tech systems.
+            </p>
+        </header>
+
+        <section aria-label="Projects Archive" class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            
+            <!-- Featured Case Study: Echostar Learning Infrastructure (Full Width) -->
+            <article class="md:col-span-2">
+                <a href="project-echostar.html" class="group block overflow-hidden rounded-2xl bg-surface transition-transform duration-500 hover:-translate-y-2 border border-transparent hover:border-accent/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent flex flex-col">
+                    <div class="w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-[#1c1c1c] relative flex items-center justify-center p-8 md:p-12 border-b border-gray-800">
+                        <div class="text-center max-w-2xl">
+                            <h2 class="text-3xl md:text-5xl font-black text-white uppercase tracking-tight">How To: Train 2,000+ Agents</h2>
+                            <p class="text-accessibleMuted text-base md:text-lg mt-3">Interactive Sandboxes &middot; The 6-Hour Survey Fix &middot; AI Publishing</p>
+                        </div>
+                    </div>
+                    <div class="p-8 flex flex-col gap-3 flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <span class="text-accent font-bold text-xs md:text-sm uppercase tracking-widest block mb-1">Enterprise UX &middot; Web Development &middot; AI</span>
+                                <h3 class="text-3xl md:text-4xl font-bold text-white group-hover:text-accent transition-colors">Echostar Learning Infrastructure</h3>
+                            </div>
+                            <svg class="w-8 h-8 text-accessibleMuted group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </div>
+                        <p class="text-accessibleBody group-hover:text-white transition-colors text-base md:text-lg">
+                            How I replaced passive slides with live HTML/JS software sandboxes, fixed a critical enterprise survey failure in under 6 hours, and automated weekly newsletters for 2,000+ call center agents.
+                        </p>
+                        
+                    </div>
+                </a>
+            </article>
+
+            <!-- Main Project 1: Planned Parenthood -->
+            <article class="h-full">
+                <a href="plannedParenthood.html" class="group block h-full overflow-hidden rounded-2xl bg-surface transition-transform duration-500 hover:-translate-y-2 border border-transparent hover:border-accent/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent flex flex-col">
+                    <div class="w-full aspect-video overflow-hidden bg-[#222]">
+                        <img src="assets/plannedParenthood.jpeg" alt="Planned Parenthood mobile app mockup interfaces on a clean backdrop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    </div>
+                    <div class="p-8 flex flex-col gap-3 flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl md:text-3xl font-bold text-white group-hover:text-accent transition-colors">Planned Parenthood Usability Audit</h3>
+                            <svg class="w-8 h-8 text-accessibleMuted group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </div>
+                        <p class="text-accessibleBody group-hover:text-white transition-colors text-base">A comprehensive UX audit to reduce decision friction and improve accessibility.</p>
+                    </div>
+                </a>
+            </article>
+
+            <!-- Main Project 2: The Tea App -->
+            <article class="h-full">
+                <a href="project-tea.html" class="group block h-full overflow-hidden rounded-2xl bg-surface transition-transform duration-500 hover:-translate-y-2 border border-transparent hover:border-accent/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent flex flex-col">
+                    <div class="w-full aspect-video overflow-hidden bg-[#222]">
+                        <img src="assets/tea.webp" alt="The Tea App branding graphics and user profile layout" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    </div>
+                    <div class="p-8 flex flex-col gap-3 flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl md:text-3xl font-bold text-white group-hover:text-accent transition-colors">The Tea App and Data Ethics</h3>
+                            <svg class="w-8 h-8 text-accessibleMuted group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </div>
+                        <p class="text-accessibleBody group-hover:text-white transition-colors text-base">A comprehensive policy review on the women's safety app turned doxxing platform.</p>
+                    </div>
+                </a>
+            </article>
+
+            <!-- Main Project 3: Sephora WCAG AAA Audit (Spans 2 columns) -->
+            <article class="md:col-span-2">
+                <a href="project-sephora.html" class="group block overflow-hidden rounded-2xl bg-surface transition-transform duration-500 hover:-translate-y-2 border border-transparent hover:border-accent/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent flex flex-col">
+                    <div class="w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-[#222]">
+                        <img src="assets/4871 - Sephora WCAG AAA Audit/1.png" alt="Sephora e-commerce checkout interface audit breakdown screen" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    </div>
+                    <div class="p-8 flex flex-col gap-3 flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl md:text-4xl font-bold text-white group-hover:text-accent transition-colors">Sephora WCAG AAA Accessibility Audit</h3>
+                            <svg class="w-8 h-8 text-accessibleMuted group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </div>
+                        <p class="text-accessibleBody group-hover:text-white transition-colors max-w-2xl text-base md:text-lg">An exhaustive evaluation of the Sephora checkout flow against strict WCAG 2.2 AAA standards.</p>
+                    </div>
+                </a>
+            </article>
+
+            <!-- Custom Placeholder 1 -->
+            <div class="group block overflow-hidden rounded-2xl bg-surface flex flex-col border border-gray-800 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-not-allowed">
+                <div class="w-full aspect-video overflow-hidden bg-[#111] flex items-center justify-center p-6 text-center relative">
+                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+                    <span class="font-black text-gray-600 uppercase tracking-widest text-sm relative z-10 font-mono">In Development</span>
+                </div>
+                <div class="p-8 flex flex-col gap-3 flex-grow justify-center border-t border-gray-800/50">
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-300 leading-tight">everything I did for CU Boulder UX coming soon</h3>
+                </div>
+            </div>
+
+            <!-- Custom Placeholder 2 -->
+            <div class="group block overflow-hidden rounded-2xl bg-surface flex flex-col border border-gray-800 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-not-allowed">
+                <div class="w-full aspect-video overflow-hidden bg-[#111] flex items-center justify-center p-6 text-center relative">
+                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+                    <span class="font-black text-gray-600 uppercase tracking-widest text-sm relative z-10 font-mono">Compiling Assets</span>
+                </div>
+                <div class="p-8 flex flex-col gap-3 flex-grow justify-center border-t border-gray-800/50">
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-300 leading-tight">a REALLY good graphic design gallery goes here</h3>
+                </div>
+            </div>
+
+            <!-- LinkedIn Callout Banner -->
+            <div class="md:col-span-2 mt-8 rounded-2xl bg-gradient-to-br from-surface to-[#0a0a0a] border border-gray-800 p-12 md:p-20 flex flex-col items-center justify-center text-center relative overflow-hidden group">
+                <div class="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" aria-hidden="true"></div>
+                
+                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight mb-6 relative z-10">
+                    I'm Working on it.
+                </h2>
+                <p class="text-lg md:text-2xl text-accessibleBody mb-8 relative z-10 max-w-xl">
+                    View my other projects, work history, and career updates on LinkedIn.
+                </p>
+                
+                <a href="https://www.linkedin.com/in/averiedow/" target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-3 px-8 py-4 bg-accent text-white font-bold text-sm md:text-base uppercase tracking-widest hover:bg-white hover:text-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-white transition-colors duration-300 rounded-full">
+                    <span>Connect on LinkedIn</span>
+                    <span class="sr-only">(opens in a new tab)</span>
+                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full border-t border-surface mt-10">
+        <div class="w-full max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-sm text-accessibleMuted">
+            <p>&copy; AVERIE DOW MADE THIS.</p>
+            <p>It's like you're obsessed with me or something.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" 
+            type="button" 
+            class="fixed bottom-6 right-6 bg-surface text-white border border-gray-700 p-3 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 hover:border-accent hover:text-accent focus-visible:opacity-100 focus-visible:pointer-events-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent z-50" 
+            aria-label="Scroll back to top">
+        <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+        </svg>
+    </button>
+
+    <!-- Interactive Scripts -->
     <script>
+        // Drawer Menu Logic
         const btn = document.getElementById('menu-btn');
         const closeBtn = document.getElementById('menu-close');
         const menu = document.getElementById('mobile-menu');
@@ -126,145 +329,31 @@
             menu.classList.remove('translate-x-full');
             backdrop.classList.remove('opacity-0', 'pointer-events-none');
             document.body.style.overflow = 'hidden';
+            btn.setAttribute('aria-expanded', 'true');
+            menu.removeAttribute('inert');
+            closeBtn.focus();
         }
 
         function closeMenu() {
             menu.classList.add('translate-x-full');
             backdrop.classList.add('opacity-0', 'pointer-events-none');
             document.body.style.overflow = '';
+            btn.setAttribute('aria-expanded', 'false');
+            menu.setAttribute('inert', '');
+            btn.focus();
         }
 
         btn.addEventListener('click', openMenu);
         closeBtn.addEventListener('click', closeMenu);
         backdrop.addEventListener('click', closeMenu);
-    </script>
 
-    <main class="flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col py-12 md:py-20">
-        
-        <header class="mb-16 md:mb-24">
-            <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.9] uppercase mb-6">
-                All <br>
-                <span class="text-accent">Projects.</span>
-            </h1>
-            <p class="text-xl md:text-2xl font-medium leading-relaxed text-gray-400 max-w-2xl">
-                A comprehensive archive of my work spanning UX research, accessibility audits, and ethical tech policy design.
-            </p>
-        </header>
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+                closeMenu();
+            }
+        });
 
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            
-            <!-- Main Project 1: Planned Parenthood -->
-            <a href="plannedParenthood.html" class="group block overflow-hidden rounded-2xl bg-surface transition-transform duration-500 hover:-translate-y-2 border border-transparent hover:border-accent/50 flex flex-col">
-                <div class="w-full aspect-video overflow-hidden bg-[#222]">
-                    <img src="assets/plannedParenthood.jpeg" alt="Planned Parenthood Project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                </div>
-                <div class="p-8 flex flex-col gap-3 flex-grow">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="text-3xl font-bold text-white">Planned Parenthood Usability Audit</h3>
-                        <svg class="w-8 h-8 text-gray-500 group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </div>
-                    <p class="text-gray-400 group-hover:text-gray-200 transition-colors">A comprehensive UX audit to reduce decision friction and improve accessibility.</p>
-                </div>
-            </a>
-
-            <!-- Main Project 2: The Tea App -->
-            <a href="project-tea.html" class="group block overflow-hidden rounded-2xl bg-surface transition-transform duration-500 hover:-translate-y-2 border border-transparent hover:border-accent/50 flex flex-col">
-                <div class="w-full aspect-video overflow-hidden bg-[#222]">
-                    <img src="assets/tea.webp" alt="The Tea App Project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                </div>
-                <div class="p-8 flex flex-col gap-3 flex-grow">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="text-3xl font-bold text-white">The Tea App and Data Ethics</h3>
-                        <svg class="w-8 h-8 text-gray-500 group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </div>
-                    <p class="text-gray-400 group-hover:text-gray-200 transition-colors">A comprehensive policy review on the women's safety app turned doxxing platform.</p>
-                </div>
-            </a>
-
-            <!-- Main Project 3: Sephora -->
-            <a href="project-sephora.html" class="group block overflow-hidden rounded-2xl bg-surface transition-transform duration-500 hover:-translate-y-2 border border-transparent hover:border-accent/50 flex flex-col">
-                <div class="w-full aspect-video overflow-hidden bg-[#222]">
-                    <img src="assets/4871 - Sephora WCAG AAA Audit/1.png" alt="Sephora WCAG Audit Project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                </div>
-                <div class="p-8 flex flex-col gap-3 flex-grow">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="text-3xl font-bold text-white">Sephora WCAG AAA Accessibility Audit</h3>
-                        <svg class="w-8 h-8 text-gray-500 group-hover:text-accent transform -rotate-45 group-hover:rotate-0 transition-all duration-300 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </div>
-                    <p class="text-gray-400 group-hover:text-gray-200 transition-colors">An exhaustive evaluation of the Sephora checkout flow against strict WCAG 2.2 AAA standards.</p>
-                </div>
-            </a>
-
-            
-            <!-- Custom Placeholder 1 -->
-            <div class="group block overflow-hidden rounded-2xl bg-surface flex flex-col border border-gray-800 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-not-allowed">
-                <div class="w-full aspect-video overflow-hidden bg-[#111] flex items-center justify-center p-6 text-center relative">
-                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
-                    <span class="font-black text-gray-700 uppercase tracking-widest text-sm relative z-10">Locked File</span>
-                </div>
-                <div class="p-8 flex flex-col gap-3 flex-grow justify-center border-t border-gray-800/50">
-                    <h3 class="text-2xl md:text-3xl font-bold text-gray-400 leading-tight">trying to find something from work i can share</h3>
-                </div>
-            </div>
-
-            <!-- Custom Placeholder 2 -->
-            <div class="group block overflow-hidden rounded-2xl bg-surface flex flex-col border border-gray-800 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-not-allowed">
-                <div class="w-full aspect-video overflow-hidden bg-[#111] flex items-center justify-center p-6 text-center relative">
-                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
-                    <span class="font-black text-gray-700 uppercase tracking-widest text-sm relative z-10">In Development</span>
-                </div>
-                <div class="p-8 flex flex-col gap-3 flex-grow justify-center border-t border-gray-800/50">
-                    <h3 class="text-2xl md:text-3xl font-bold text-gray-400 leading-tight">everything I did for CU Boulder UX coming soon</h3>
-                </div>
-            </div>
-
-            <!-- Custom Placeholder 3 -->
-            <div class="group block overflow-hidden rounded-2xl bg-surface flex flex-col border border-gray-800 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-not-allowed">
-                <div class="w-full aspect-video overflow-hidden bg-[#111] flex items-center justify-center p-6 text-center relative">
-                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
-                    <span class="font-black text-gray-700 uppercase tracking-widest text-sm relative z-10">Compiling Assets</span>
-                </div>
-                <div class="p-8 flex flex-col gap-3 flex-grow justify-center border-t border-gray-800/50">
-                    <h3 class="text-2xl md:text-3xl font-bold text-gray-400 leading-tight">a REALLY good graphic design gallery goes here</h3>
-                </div>
-            </div>
-
-            <div class="md:col-span-2 mt-8 rounded-2xl bg-gradient-to-br from-surface to-[#0a0a0a] border border-gray-800 p-12 md:p-20 flex flex-col items-center justify-center text-center relative overflow-hidden group">
-                <div class="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                
-                <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight mb-6 relative z-10">
-                    I'm Working on it.
-                </h2>
-                <p class="text-lg md:text-2xl text-gray-400 mb-8 relative z-10">
-                    View my other projects, work history, and career updated on LinkedIn.
-                </p>
-                
-                <a href="https://www.linkedin.com/in/averiedow/" target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-3 px-8 py-4 bg-accent text-white font-bold text-sm md:text-base uppercase tracking-widest hover:bg-white hover:text-background transition-colors duration-300 rounded-full">
-                    <span>Connect on LinkedIn</span>
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                </a>
-            </div>
-
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="w-full border-t border-surface mt-10">
-        <div class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center text-sm text-gray-600">
-            <p>&copy; AVERIE DOW MADE THIS.</p>
-            <p>It's like you're obsessed with me or something.</p>
-        </div>
-    </footer>
-
-    <!-- Scroll to Top Button -->
-    <button id="scroll-to-top" class="fixed bottom-6 right-6 bg-surface text-white border border-gray-800 p-3 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 hover:border-accent hover:text-accent z-50 focus:outline-none" aria-label="Scroll to top">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
-        </svg>
-    </button>
-
-    <!-- Scroll to Top Logic -->
-    <script>
+        // Scroll to Top Logic
         const scrollBtn = document.getElementById('scroll-to-top');
 
         window.addEventListener('scroll', () => {
@@ -278,7 +367,7 @@
         scrollBtn.addEventListener('click', () => {
             window.scrollTo({
                 top: 0,
-                behavior: 'smooth'
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
             });
         });
     </script>

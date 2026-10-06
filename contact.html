@@ -21,6 +21,9 @@
                         background: '#0a0a0a',
                         surface: '#171717',
                         accent: '#ff007f',
+                        accessibleMuted: '#9ca3af',   // Tailwind gray-400 (7.0:1 contrast on #0a0a0a - AAA Large / AA Normal)
+                        accessibleBody: '#d1d5db',    // Tailwind gray-300 (11.5:1 contrast - soft on the eyes)
+                        accessibleHigh: '#e5e7eb'     // Tailwind gray-200 (14.2:1 contrast - crisp legibility)
                     }
                 }
             }
@@ -36,6 +39,25 @@
         ::selection {
             background-color: #ff007f;
             color: #ffffff;
+        }
+
+        /* Keyboard Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 1rem;
+            background: #ff007f;
+            color: #ffffff;
+            padding: 0.75rem 1.25rem;
+            font-weight: 700;
+            z-index: 9999;
+            border-radius: 0 0 0.5rem 0.5rem;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus {
+            top: 0;
+            outline: 2px solid #ffffff;
+            outline-offset: 2px;
         }
 
         .hover-underline-animation {
@@ -56,65 +78,233 @@
             transition: transform 0.25s ease-out;
         }
 
-        .hover-underline-animation:hover::after {
+        .hover-underline-animation:hover::after,
+        .hover-underline-animation:focus-visible::after {
             transform: scaleX(1);
             transform-origin: bottom left;
+        }
+
+        /* Respect system motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            html.scroll-smooth {
+                scroll-behavior: auto;
+            }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 <body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col">
 
-    <!-- Navigation -->
-    <nav class="w-full max-w-6xl mx-auto px-6 py-6 md:py-8 flex justify-between items-center relative z-50">
-        <a href="index.html" class="text-2xl font-black tracking-tight text-white hover:text-accent transition-colors duration-300">
-            Averie Dow<span class="text-accent">.</span>
-        </a>
+    <!-- WCAG 2.4.1: Bypass Block Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-        <!-- Desktop Navigation Links -->
-        <div class="hidden md:flex space-x-8 text-sm tracking-wide text-gray-400">
-            <a href="about.html" class="hover:text-white transition-colors duration-300">About</a>
-            <a href="projects.html" class="hover:text-white transition-colors duration-300">Projects</a>
-            <a href="resume.html" class="hover:text-white transition-colors duration-300">Resume</a>
-            <a href="contact.html" class="text-white transition-colors duration-300">Contact</a>
-        </div>
+    <!-- Navigation Landmark -->
+    <header class="w-full">
+        <nav aria-label="Main Navigation" class="w-full max-w-6xl mx-auto px-6 py-6 md:py-8 flex justify-between items-center relative z-50">
+            <a href="index.html" class="text-2xl font-black tracking-tight text-white hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">
+                Averie Dow<span class="text-accent" aria-hidden="true">.</span>
+            </a>
 
-        <!-- Mobile Hamburger Button -->
-        <button id="menu-btn" class="md:hidden text-gray-400 hover:text-white focus:outline-none z-50" aria-label="Toggle Navigation Menu">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-        </button>
-    </nav>
+            <!-- Desktop Navigation Links -->
+            <ul class="hidden md:flex space-x-8 text-sm tracking-wide text-accessibleBody">
+                <li><a href="about.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">About</a></li>
+                <li><a href="projects.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">Projects</a></li>
+                <li><a href="resume.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">Resume</a></li>
+                <li><a href="contact.html" aria-current="page" class="text-white font-bold border-b-2 border-accent transition-colors duration-300">Contact</a></li>
+            </ul>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="menu-btn" 
+                    type="button"
+                    class="md:hidden text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent p-2 rounded z-50" 
+                    aria-label="Open Navigation Menu"
+                    aria-expanded="false"
+                    aria-controls="mobile-menu">
+                <svg class="w-7 h-7" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
 
     <!-- Backdrop Overlay -->
-    <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+    <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" aria-hidden="true"></div>
 
-    <!-- Mobile Slide-out Menu Drawer from Right & Solid Black -->
-    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[#0a0a0a] border-l border-gray-800 z-50 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out md:hidden shadow-2xl">
+    <!-- Mobile Slide-out Menu Drawer -->
+    <div id="mobile-menu" 
+         role="dialog"
+         aria-modal="true"
+         aria-label="Mobile Navigation Menu"
+         class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[#0a0a0a] border-l border-gray-800 z-50 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out md:hidden shadow-2xl"
+         inert>
         <div>
             <div class="flex justify-between items-center mb-12">
                 <span class="text-lg font-bold tracking-tight text-white">Menu</span>
-                <button id="menu-close" class="text-gray-400 hover:text-white focus:outline-none" aria-label="Close Navigation Menu">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button id="menu-close" type="button" class="text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent p-2 rounded" aria-label="Close Navigation Menu">
+                    <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
             
-            <div class="flex flex-col space-y-6 text-xl tracking-wide text-gray-300">
-                <a href="about.html" class="hover:text-accent transition-colors duration-300">About</a>
-                <a href="projects.html" class="hover:text-accent transition-colors duration-300">Projects</a>
-                <a href="resume.html" class="hover:text-accent transition-colors duration-300">Resume</a>
-                <a href="contact.html" class="text-accent transition-colors duration-300">Contact</a>
-            </div>
+            <nav aria-label="Mobile Navigation Links">
+                <ul class="flex flex-col space-y-6 text-xl tracking-wide text-accessibleHigh">
+                    <li><a href="about.html" class="hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">About</a></li>
+                    <li><a href="projects.html" class="hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">Projects</a></li>
+                    <li><a href="resume.html" class="hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">Resume</a></li>
+                    <li><a href="contact.html" aria-current="page" class="text-accent font-bold transition-colors duration-300">Contact</a></li>
+                </ul>
+            </nav>
         </div>
         
-        <div class="text-xs text-gray-600 tracking-wider uppercase">
+        <div class="text-xs text-accessibleMuted tracking-wider uppercase">
             Averie Dow &bull; Portfolio
         </div>
     </div>
 
-    <!-- Mobile Menu Script -->
+    <!-- Main Landmark -->
+    <main id="main-content" tabindex="-1" class="flex-grow w-full max-w-6xl mx-auto px-6 py-12 md:py-24 flex flex-col justify-center focus:outline-none">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+            
+            <!-- Left Side: Contact Information -->
+            <section aria-labelledby="contact-heading" class="space-y-10">
+                <div>
+                    <h1 id="contact-heading" class="text-6xl md:text-8xl font-black tracking-tight uppercase leading-[0.9] mb-6">
+                        Let's <br>
+                        <span class="text-accent">Gab.</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl font-medium leading-relaxed text-accessibleBody max-w-md">
+                        Have a messy design problem, a freelance project, or just want to chat about creative technology? Send me a message.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h2 class="text-xs font-bold text-accessibleMuted uppercase tracking-widest mb-2">Email</h2>
+                        <a href="mailto:averie.a.dow@gmail.com" class="text-2xl md:text-3xl font-bold text-white hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300 hover-underline-animation break-all">averie.a.dow@gmail.com</a>
+                    </div>
+                    
+                    <div>
+                        <h2 class="text-xs font-bold text-accessibleMuted uppercase tracking-widest mb-2">Phone</h2>
+                        <a href="tel:9135266923" class="text-2xl md:text-3xl font-bold text-white hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300 hover-underline-animation">913.526.6923</a>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xs font-bold text-accessibleMuted uppercase tracking-widest mb-2">Socials</h2>
+                        <a href="https://linkedin.com/in/averiedow" target="_blank" rel="noopener noreferrer" class="text-lg font-bold text-accessibleHigh hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded flex items-center gap-2 group w-max">
+                            LinkedIn
+                            <span class="sr-only">(opens in a new tab)</span>
+                            <svg class="w-5 h-5 text-accent opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Side: Contact Form -->
+            <section aria-labelledby="form-heading" class="bg-surface p-8 md:p-10 rounded-3xl border border-gray-800/50 relative overflow-hidden">
+                <h2 id="form-heading" class="sr-only">Send Averie a Message</h2>
+                
+                <div class="absolute -top-24 -right-24 w-48 h-48 bg-accent rounded-full blur-[100px] opacity-20 pointer-events-none" aria-hidden="true"></div>
+
+                <form action="https://formsubmit.co/averie.a.dow@gmail.com" method="POST" class="space-y-6 relative z-10" novalidate>
+                    
+                    <input type="hidden" name="_subject" value="New Contact Form Submission - AverieDow.com">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_next" value="contact.html">
+                    <input type="hidden" name="_captcha" value="false">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="name" class="text-xs font-bold uppercase tracking-widest text-accessibleHigh pl-2">
+                                Name <span class="text-accent" aria-hidden="true">*</span>
+                            </label>
+                            <input type="text" 
+                                   id="name" 
+                                   name="name" 
+                                   required 
+                                   aria-required="true"
+                                   autocomplete="name" 
+                                   placeholder="Bill Shakespeare" 
+                                   class="w-full bg-background border border-gray-700 rounded-xl px-5 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent transition-all duration-300">
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label for="email" class="text-xs font-bold uppercase tracking-widest text-accessibleHigh pl-2">
+                                Email <span class="text-accent" aria-hidden="true">*</span>
+                            </label>
+                            <input type="email" 
+                                   id="email" 
+                                   name="email" 
+                                   required 
+                                   aria-required="true"
+                                   autocomplete="email" 
+                                   placeholder="billshakes@gmail.com" 
+                                   class="w-full bg-background border border-gray-700 rounded-xl px-5 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="subject" class="text-xs font-bold uppercase tracking-widest text-accessibleHigh pl-2">
+                            Subject <span class="text-accent" aria-hidden="true">*</span>
+                        </label>
+                        <input type="text" 
+                               id="subject" 
+                               name="subject" 
+                               required 
+                               aria-required="true"
+                               placeholder="UX Design Opportunity" 
+                               class="w-full bg-background border border-gray-700 rounded-xl px-5 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent transition-all duration-300">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="message" class="text-xs font-bold uppercase tracking-widest text-accessibleHigh pl-2">
+                            Message <span class="text-accent" aria-hidden="true">*</span>
+                        </label>
+                        <textarea id="message" 
+                                  name="message" 
+                                  required 
+                                  aria-required="true"
+                                  rows="5" 
+                                  placeholder="Tell me about your project..." 
+                                  class="w-full bg-background border border-gray-700 rounded-xl px-5 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent transition-all duration-300 resize-none"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-accent text-white font-black uppercase tracking-widest text-sm py-5 rounded-xl hover:bg-white hover:text-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transform hover:-translate-y-1 transition-all duration-300 mt-4 flex justify-center items-center gap-3 group">
+                        Send Message
+                        <svg class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                    </button>
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer Landmark -->
+    <footer class="w-full border-t border-surface mt-10">
+        <div class="w-full max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-sm text-accessibleMuted">
+            <p>&copy; AVERIE DOW MADE THIS.</p>
+            <p>It's like you're obsessed with me or something.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" 
+            type="button"
+            class="fixed bottom-6 right-6 bg-surface text-white border border-gray-700 p-3 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 hover:border-accent hover:text-accent focus-visible:opacity-100 focus-visible:pointer-events-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent z-50" 
+            aria-label="Scroll back to top">
+        <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+        </svg>
+    </button>
+
+    <!-- Accessible Mobile Drawer & Scroll Scripts -->
     <script>
         const mobileBtn = document.getElementById('menu-btn');
         const closeBtn = document.getElementById('menu-close');
@@ -125,121 +315,35 @@
             mobileMenu.classList.remove('translate-x-full');
             backdrop.classList.remove('opacity-0', 'pointer-events-none');
             document.body.style.overflow = 'hidden';
+            
+            mobileBtn.setAttribute('aria-expanded', 'true');
+            mobileMenu.removeAttribute('inert');
+            closeBtn.focus();
         }
 
         function closeMenu() {
             mobileMenu.classList.add('translate-x-full');
             backdrop.classList.add('opacity-0', 'pointer-events-none');
             document.body.style.overflow = '';
+            
+            mobileBtn.setAttribute('aria-expanded', 'false');
+            mobileMenu.setAttribute('inert', '');
+            mobileBtn.focus();
         }
 
         mobileBtn.addEventListener('click', openMenu);
         closeBtn.addEventListener('click', closeMenu);
         backdrop.addEventListener('click', closeMenu);
-    </script>
 
-    <main class="flex-grow w-full max-w-6xl mx-auto px-6 py-12 md:py-24 flex flex-col justify-center">
-        
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-            
-            <!-- Left Side: Contact Information -->
-            <div class="space-y-10">
-                <div>
-                    <h1 class="text-6xl md:text-8xl font-black tracking-tight uppercase leading-[0.9] mb-6">
-                        Let's <br>
-                        <span class="text-accent">Gab.</span>
-                    </h1>
-                    <p class="text-xl md:text-2xl font-medium leading-relaxed text-gray-400 max-w-md">
-                        Have a messy design problem, a freelance project, or just want to chat about creative technology? Send me a message.
-                    </p>
-                </div>
+        // WCAG 2.1.2: Close menu on ESC key press
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileBtn.getAttribute('aria-expanded') === 'true') {
+                closeMenu();
+            }
+        });
 
-                <div class="space-y-6">
-                    <div>
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Email</p>
-                        <a href="mailto:averie.a.dow@gmail.com" class="text-2xl md:text-3xl font-bold text-white hover:text-accent transition-colors duration-300 hover-underline-animation break-all">averie.a.dow@gmail.com</a>
-                    </div>
-                    
-                    <div>
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Phone</p>
-                        <a href="tel:9135266923" class="text-2xl md:text-3xl font-bold text-white hover:text-accent transition-colors duration-300 hover-underline-animation">913.526.6923</a>
-                    </div>
-
-                    <div>
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Socials</p>
-                        <a href="https://linkedin.com/in/averiedow" target="_blank" class="text-lg font-bold text-gray-300 hover:text-white transition-colors flex items-center gap-2 group w-max">
-                            LinkedIn
-                            <svg class="w-5 h-5 text-accent opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Side: Contact Form -->
-            <div class="bg-surface p-8 md:p-10 rounded-3xl border border-gray-800/50 relative overflow-hidden">
-                <!-- Decorative background accent -->
-                <div class="absolute -top-24 -right-24 w-48 h-48 bg-accent rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
-
-                <form action="https://formsubmit.co/averie.a.dow@gmail.com" method="POST" class="space-y-6 relative z-10">
-                    
-                    <!-- FormSubmit Configuration -->
-                    <input type="hidden" name="_subject" value="New Contact Form Submission - AverieDow.com">
-                    <input type="hidden" name="_template" value="table">
-                    <!-- Redirects user back to contact page after sending instead of showing FormSubmit branding -->
-                    <input type="hidden" name="_next" value="https://averiedow.com/contact.html">
-                    <input type="hidden" name="_captcha" value="false">
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label for="name" class="text-xs font-bold uppercase tracking-widest text-gray-400 pl-2">Name</label>
-                            <input type="text" id="name" name="name" required placeholder="Bill Shakespeare" class="w-full bg-background border border-gray-800 rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300">
-                        </div>
-                        
-                        <div class="space-y-2">
-                            <label for="email" class="text-xs font-bold uppercase tracking-widest text-gray-400 pl-2">Email</label>
-                            <input type="email" id="email" name="email" required placeholder="billshakes@gmail.com" class="w-full bg-background border border-gray-800 rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300">
-                        </div>
-                    </div>
-
-                    <div class="space-y-2">
-                        <label for="subject" class="text-xs font-bold uppercase tracking-widest text-gray-400 pl-2">Subject</label>
-                        <input type="text" id="subject" name="subject" required placeholder="UX Design Opportunity" class="w-full bg-background border border-gray-800 rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300">
-                    </div>
-
-                    <div class="space-y-2">
-                        <label for="message" class="text-xs font-bold uppercase tracking-widest text-gray-400 pl-2">Message</label>
-                        <textarea id="message" name="message" required rows="5" placeholder="Tell me about your project..." class="w-full bg-background border border-gray-800 rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 resize-none"></textarea>
-                    </div>
-
-                    <button type="submit" class="w-full bg-accent text-white font-black uppercase tracking-widest text-sm py-5 rounded-xl hover:bg-white hover:text-background transform hover:-translate-y-1 transition-all duration-300 mt-4 flex justify-center items-center gap-3 group">
-                        Send Message
-                        <svg class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-                    </button>
-                </form>
-            </div>
-
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="w-full border-t border-surface mt-10">
-        <div class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center text-sm text-gray-600">
-            <p>&copy; AVERIE DOW MADE THIS.</p>
-            <p>It's like you're obsessed with me or something.</p>
-        </div>
-    </footer>
-
-    <!-- Scroll to Top Button -->
-    <button id="scroll-to-top" class="fixed bottom-6 right-6 bg-surface text-white border border-gray-800 p-3 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 hover:border-accent hover:text-accent z-50 focus:outline-none" aria-label="Scroll to top">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
-        </svg>
-    </button>
-
-    <!-- Scroll to Top Script -->
-    <script>
+        // Scroll-to-Top Button Visibility
         const scrollBtn = document.getElementById('scroll-to-top');
-
         window.addEventListener('scroll', () => {
             if (window.scrollY > 400) {
                 scrollBtn.classList.remove('opacity-0', 'pointer-events-none');
@@ -251,7 +355,7 @@
         scrollBtn.addEventListener('click', () => {
             window.scrollTo({
                 top: 0,
-                behavior: 'smooth'
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
             });
         });
     </script>

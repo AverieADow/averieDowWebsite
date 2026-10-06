@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reviews & Interviews - Averie Dow</title>
+    <title>Reviews &amp; Interviews - Averie Dow</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' width='64' height='64'><text x='50%' y='55%' dominant-baseline='central' text-anchor='middle' font-family='system-ui, -apple-system, sans-serif' font-weight='900' font-size='40' fill='%23ff007f' stroke='%230a0a0a' stroke-width='2' letter-spacing='-1'>AD<tspan fill='%23ff007f'>.</tspan></text></svg>">
@@ -21,6 +21,9 @@
                         background: '#0a0a0a',
                         surface: '#171717',
                         accent: '#ff007f',
+                        accessibleMuted: '#9ca3af',   /* Tailwind gray-400 (7.0:1 on #0a0a0a) */
+                        accessibleBody: '#d1d5db',    /* Tailwind gray-300 (11.5:1 on #0a0a0a) */
+                        accessibleHigh: '#f3f4f6'     /* Tailwind gray-100 (17.5:1 on #0a0a0a) */
                     }
                 }
             }
@@ -36,6 +39,25 @@
         ::selection {
             background-color: #ff007f;
             color: #ffffff;
+        }
+
+        /* WCAG 2.4.1: Bypass Block Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 1rem;
+            background: #ff007f;
+            color: #ffffff;
+            padding: 0.75rem 1.25rem;
+            font-weight: 700;
+            z-index: 9999;
+            border-radius: 0 0 0.5rem 0.5rem;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus {
+            top: 0;
+            outline: 2px solid #ffffff;
+            outline-offset: 2px;
         }
 
         .hover-underline-animation {
@@ -56,7 +78,8 @@
             transition: transform 0.25s ease-out;
         }
 
-        .hover-underline-animation:hover::after {
+        .hover-underline-animation:hover::after,
+        .hover-underline-animation:focus-visible::after {
             transform: scaleX(1);
             transform-origin: bottom left;
         }
@@ -72,62 +95,211 @@
             break-inside: avoid;
             margin-bottom: 2rem;
         }
+
+        /* WCAG 2.3.3: Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            html.scroll-smooth {
+                scroll-behavior: auto;
+            }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col">
 
-    <!-- Navigation -->
-    <nav class="w-full max-w-6xl mx-auto px-6 py-6 md:py-8 flex justify-between items-center relative z-50">
-        <a href="index.html" class="text-2xl font-black tracking-tight text-white hover:text-accent transition-colors duration-300">
-            Averie Dow<span class="text-accent">.</span>
-        </a>
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-        <!-- Desktop Navigation Links -->
-        <div class="hidden md:flex space-x-8 text-sm tracking-wide text-gray-400">
-            <a href="about.html" class="hover:text-white transition-colors duration-300">About</a>
-            <a href="projects.html" class="hover:text-white transition-colors duration-300">Projects</a>
-            <a href="resume.html" class="hover:text-white transition-colors duration-300">Resume</a>
-            <a href="contact.html" class="hover:text-white transition-colors duration-300">Contact</a>
-        </div>
+    <!-- Header & Navigation Landmark -->
+    <header class="w-full">
+        <nav aria-label="Main Navigation" class="w-full max-w-6xl mx-auto px-6 py-6 md:py-8 flex justify-between items-center relative z-50">
+            <a href="index.html" class="text-2xl font-black tracking-tight text-white hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">
+                Averie Dow<span class="text-accent" aria-hidden="true">.</span>
+            </a>
 
-        <!-- Mobile Hamburger Button -->
-        <button id="menu-btn" class="md:hidden text-gray-400 hover:text-white focus:outline-none z-50" aria-label="Toggle Navigation Menu">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-        </button>
-    </nav>
+            <!-- Desktop Links -->
+            <ul class="hidden md:flex space-x-8 text-sm tracking-wide text-accessibleBody">
+                <li><a href="about.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">About</a></li>
+                <li><a href="projects.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">Projects</a></li>
+                <li><a href="resume.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">Resume</a></li>
+                <li><a href="contact.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">Contact</a></li>
+            </ul>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="menu-btn" 
+                    type="button" 
+                    class="md:hidden text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent p-2 rounded z-50" 
+                    aria-label="Open Navigation Menu" 
+                    aria-expanded="false" 
+                    aria-controls="mobile-menu">
+                <svg class="w-7 h-7" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
 
     <!-- Backdrop Overlay -->
-    <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+    <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" aria-hidden="true"></div>
 
-    <!-- Mobile Slide-out Menu Drawer from Right & Solid Black -->
-    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[#0a0a0a] border-l border-gray-800 z-50 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out md:hidden shadow-2xl">
+    <!-- Mobile Slide-out Menu Drawer -->
+    <div id="mobile-menu" 
+         role="dialog" 
+         aria-modal="true" 
+         aria-label="Mobile Navigation Menu" 
+         class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[#0a0a0a] border-l border-gray-800 z-50 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out md:hidden shadow-2xl" 
+         inert>
         <div>
             <div class="flex justify-between items-center mb-12">
                 <span class="text-lg font-bold tracking-tight text-white">Menu</span>
-                <button id="menu-close" class="text-gray-400 hover:text-white focus:outline-none" aria-label="Close Navigation Menu">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button id="menu-close" type="button" class="text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent p-2 rounded" aria-label="Close Navigation Menu">
+                    <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
             
-            <div class="flex flex-col space-y-6 text-xl tracking-wide text-gray-300">
-                <a href="about.html" class="hover:text-accent transition-colors duration-300">About</a>
-                <a href="projects.html" class="hover:text-accent transition-colors duration-300">Projects</a>
-                <a href="resume.html" class="hover:text-accent transition-colors duration-300">Resume</a>
-                <a href="contact.html" class="hover:text-accent transition-colors duration-300">Contact</a>
-            </div>
+            <nav aria-label="Mobile Navigation Links">
+                <ul class="flex flex-col space-y-6 text-xl tracking-wide text-accessibleHigh">
+                    <li><a href="about.html" class="hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">About</a></li>
+                    <li><a href="projects.html" class="hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">Projects</a></li>
+                    <li><a href="resume.html" class="hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">Resume</a></li>
+                    <li><a href="contact.html" class="hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">Contact</a></li>
+                </ul>
+            </nav>
         </div>
         
-        <div class="text-xs text-gray-600 tracking-wider uppercase">
+        <div class="text-xs text-accessibleMuted tracking-wider uppercase">
             Averie Dow &bull; Portfolio
         </div>
     </div>
 
-    <!-- Mobile Menu Script -->
+    <!-- Main Landmark -->
+    <main id="main-content" tabindex="-1" class="flex-grow w-full max-w-6xl mx-auto px-6 py-12 md:py-20 flex flex-col overflow-x-hidden focus:outline-none">
+        
+        <header class="mb-16 md:mb-24">
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.9] uppercase mb-6">
+                Word on <br>
+                the <span class="text-accent">Street.</span>
+            </h1>
+            <p class="text-xl md:text-2xl font-medium leading-relaxed text-accessibleBody max-w-2xl">
+                A collection of feedback, recommendations, and press features from people who have survived working with me.
+            </p>
+        </header>
+
+        <!-- Reviews & Interviews Masonry Grid -->
+        <section aria-label="Endorsements and Press Archive" class="masonry-grid">
+            
+            <!-- Review Card 1 (Courtney Page Fell) -->
+            <figure class="masonry-item bg-surface p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent/50 focus-within:border-accent transition-colors">
+                <svg class="w-10 h-10 text-accent mb-6" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                <blockquote class="text-xl font-bold text-white leading-relaxed mb-8">
+                    "Your public-speaking skills and your ability to communicate the nuance about the student feedback on this experience were out of this world! 🚀<br><br>If anyone is in need of a junior UX Designer who has great presentation and public-speaking skills and who is also a fabulous human being... look no further!"
+                </blockquote>
+                <figcaption class="border-t border-gray-800 pt-6">
+                    <h2 class="text-white font-bold uppercase tracking-widest text-sm">Courtney Page Fell</h2>
+                    <p class="text-accent text-xs uppercase tracking-widest mt-1">Associate Director of User Experience at CU Boulder</p>
+                </figcaption>
+            </figure>
+
+            <!-- Press Card 1 -->
+            <article class="masonry-item">
+                <a href="https://www.colorado.edu/cmdinow/2026/03/09/if-you-generate-it" target="_blank" rel="noopener noreferrer" class="group block bg-gradient-to-br from-[#171717] to-[#0a0a0a] p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent transition-all transform hover:-translate-y-1">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="px-3 py-1 bg-accent/10 text-accent border border-accent/20 rounded-full text-xs font-bold uppercase tracking-widest">Press</span>
+                        <svg class="w-6 h-6 text-accessibleMuted group-hover:text-accent transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-black text-white mb-4 leading-tight group-hover:text-accent transition-colors">
+                        If You Generate It...
+                        <span class="sr-only">(opens in a new tab)</span>
+                    </h2>
+                    <p class="text-accessibleBody mb-8 leading-relaxed">Read my featured interview on CMDI Now.</p>
+                    <div class="border-t border-gray-800 pt-6">
+                        <p class="text-white font-bold uppercase tracking-widest text-sm">CU Boulder CMDI Now</p>
+                        <time datetime="2026-03-09" class="text-accessibleMuted text-xs uppercase tracking-widest mt-1 block">March 09, 2026</time>
+                    </div>
+                </a>
+            </article>
+
+            <!-- Review Card 2 (Hana Leigh) -->
+            <figure class="masonry-item bg-surface p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent/50 focus-within:border-accent transition-colors">
+                <svg class="w-10 h-10 text-accent mb-6" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                <blockquote class="text-base md:text-lg font-medium text-accessibleBody leading-relaxed mb-8">
+                    "To have Averie on your team is to have a highly reliable, organized, skilled, and talented individual who will contribute to the greater good of any organization!"
+                </blockquote>
+                <figcaption class="border-t border-gray-800 pt-6">
+                    <h2 class="text-white font-bold uppercase tracking-widest text-sm">Hana Leigh</h2>
+                    <p class="text-accent text-xs uppercase tracking-widest mt-1">Graduate Recruitment Coordinator | Brown University</p>
+                    <p class="text-accessibleMuted text-xs mt-1">Managed Averie directly at CU Boulder</p>
+                </figcaption>
+            </figure>
+
+            <!-- Press Card 2 -->
+            <article class="masonry-item">
+                <a href="https://www.colorado.edu/cmdinow/2026/04/21/2-minutes-averie-dow" target="_blank" rel="noopener noreferrer" class="group block bg-gradient-to-br from-[#171717] to-[#0a0a0a] p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent transition-all transform hover:-translate-y-1">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="px-3 py-1 bg-accent/10 text-accent border border-accent/20 rounded-full text-xs font-bold uppercase tracking-widest">Interview</span>
+                        <svg class="w-6 h-6 text-accessibleMuted group-hover:text-accent transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-black text-white mb-4 leading-tight group-hover:text-accent transition-colors">
+                        2 Minutes with Averie Dow
+                        <span class="sr-only">(opens in a new tab)</span>
+                    </h2>
+                    <p class="text-accessibleBody mb-8 leading-relaxed">A quick-fire interview detailing my process and journey into creative technology.</p>
+                    <div class="border-t border-gray-800 pt-6">
+                        <p class="text-white font-bold uppercase tracking-widest text-sm">CU Boulder CMDI Now</p>
+                        <time datetime="2026-04-21" class="text-accessibleMuted text-xs uppercase tracking-widest mt-1 block">April 21, 2026</time>
+                    </div>
+                </a>
+            </article>
+
+        </section>
+
+    </main>
+
+    <!-- Footer Landmark -->
+    <footer id="contact" class="w-full border-t border-surface mt-10">
+        <div class="max-w-6xl mx-auto px-6 py-20 flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
+            <div class="w-full md:w-auto overflow-hidden">
+                <a href="contact.html" class="inline-block text-5xl md:text-7xl font-black tracking-tight mb-4 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">Let's Gab.</a>
+                <br>
+                <a href="mailto:averie.a.dow@gmail.com" class="text-xl md:text-2xl text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300 hover-underline-animation break-all">averie.a.dow@gmail.com</a>
+                <br>
+                <a href="tel:9135266923" class="text-xl md:text-2xl text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300 hover-underline-animation mt-2 inline-block break-words">913.526.6923</a>
+            </div>
+            
+            <div class="flex flex-col gap-4 text-left md:text-right w-full md:w-auto">
+                <a href="https://www.linkedin.com/in/averiedow/" target="_blank" rel="noopener noreferrer" class="text-xl font-bold text-accessibleBody hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300 flex items-center justify-start md:justify-end gap-2 group">
+                    LinkedIn
+                    <span class="sr-only">(opens in a new tab)</span>
+                    <svg class="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </a>
+            </div>
+        </div>
+        
+        <div class="w-full max-w-6xl mx-auto px-6 py-6 border-t border-surface flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-sm text-accessibleMuted">
+            <p>&copy; AVERIE DOW MADE THIS.</p>
+            <p>It's like you're obsessed with me or something.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" 
+            type="button" 
+            class="fixed bottom-6 right-6 bg-surface text-white border border-gray-700 p-3 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 hover:border-accent hover:text-accent focus-visible:opacity-100 focus-visible:pointer-events-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent z-[9999]" 
+            aria-label="Scroll back to top">
+        <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+        </svg>
+    </button>
+
+    <!-- Accessible Scripts -->
     <script>
+        // Drawer Menu Logic
         const mobileBtn = document.getElementById('menu-btn');
         const closeBtn = document.getElementById('menu-close');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -137,129 +309,31 @@
             mobileMenu.classList.remove('translate-x-full');
             backdrop.classList.remove('opacity-0', 'pointer-events-none');
             document.body.style.overflow = 'hidden';
+            mobileBtn.setAttribute('aria-expanded', 'true');
+            mobileMenu.removeAttribute('inert');
+            closeBtn.focus();
         }
 
         function closeMenu() {
             mobileMenu.classList.add('translate-x-full');
             backdrop.classList.add('opacity-0', 'pointer-events-none');
             document.body.style.overflow = '';
+            mobileBtn.setAttribute('aria-expanded', 'false');
+            mobileMenu.setAttribute('inert', '');
+            mobileBtn.focus();
         }
 
         mobileBtn.addEventListener('click', openMenu);
         closeBtn.addEventListener('click', closeMenu);
         backdrop.addEventListener('click', closeMenu);
-    </script>
 
-    <main class="flex-grow w-full max-w-6xl mx-auto px-6 py-12 md:py-20 flex flex-col overflow-x-hidden">
-        
-        <header class="mb-16 md:mb-24">
-            <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.9] uppercase mb-6">
-                Word on <br>
-                the <span class="text-accent">Street.</span>
-            </h1>
-            <p class="text-xl md:text-2xl font-medium leading-relaxed text-gray-400 max-w-2xl">
-                A collection of feedback, recommendations, and press features from people who have survived working with me.
-            </p>
-        </header>
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileBtn.getAttribute('aria-expanded') === 'true') {
+                closeMenu();
+            }
+        });
 
-        <!-- Reviews & Interviews Masonry Grid -->
-        <section class="masonry-grid">
-            
-            <!-- Review Card 1 (Courtney Page Fell) -->
-            <div class="masonry-item bg-surface p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent/50 transition-colors">
-                <svg class="w-10 h-10 text-accent mb-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-                <p class="text-xl font-bold text-white leading-relaxed mb-8">
-                    "Your public-speaking skills and your ability to communicate the nuance about the student feedback on this experience were out of this world! 🚀<br><br>If anyone is in need of a junior UX Designer who has great presentation and public-speaking skills and who is also a fabulous human being... look no further!"
-                </p>
-                <div class="flex items-center gap-4 border-t border-gray-800 pt-6">
-                    <div>
-                        <h4 class="text-white font-bold uppercase tracking-widest text-sm">Courtney Page Fell</h4>
-                        <p class="text-accent text-xs uppercase tracking-widest mt-1">Associate Director of User Experience at CU Boulder</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Press Card 1 -->
-            <a href="https://www.colorado.edu/cmdinow/2026/03/09/if-you-generate-it" target="_blank" rel="noopener noreferrer" class="group block masonry-item bg-gradient-to-br from-[#171717] to-[#0a0a0a] p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent transition-all transform hover:-translate-y-1">
-                <div class="flex justify-between items-start mb-6">
-                    <span class="px-3 py-1 bg-accent/10 text-accent border border-accent/20 rounded-full text-xs font-bold uppercase tracking-widest">Press</span>
-                    <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                </div>
-                <h3 class="text-2xl md:text-3xl font-black text-white mb-4 leading-tight group-hover:text-accent transition-colors">If You Generate It...</h3>
-                <p class="text-gray-400 mb-8 leading-relaxed">Read my featured interview on CMDI Now.</p>
-                <div class="border-t border-gray-800 pt-6">
-                    <h4 class="text-white font-bold uppercase tracking-widest text-sm">CU Boulder CMDI Now</h4>
-                    <p class="text-gray-500 text-xs uppercase tracking-widest mt-1">March 09, 2026</p>
-                </div>
-            </a>
-
-            <!-- Review Card 2 (Hana Leigh) -->
-            <div class="masonry-item bg-surface p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent/50 transition-colors">
-                <svg class="w-10 h-10 text-accent mb-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-                <p class="text-base md:text-lg font-medium text-gray-300 leading-relaxed mb-8">
-                    "To have Averie on your team is to have a highly reliable, organized, skilled, and talented individual who will contribute to the greater good of any organization!"
-                </p>
-                <div class="flex items-center gap-4 border-t border-gray-800 pt-6">
-                    <div>
-                        <h4 class="text-white font-bold uppercase tracking-widest text-sm">Hana Leigh</h4>
-                        <p class="text-accent text-xs uppercase tracking-widest mt-1">Graduate Recruitment Coordinator | Brown University</p>
-                        <p class="text-gray-500 text-xs mt-1">Managed Averie directly at CU Boulder</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Press Card 2 -->
-            <a href="https://www.colorado.edu/cmdinow/2026/04/21/2-minutes-averie-dow" target="_blank" rel="noopener noreferrer" class="group block masonry-item bg-gradient-to-br from-[#171717] to-[#0a0a0a] p-8 md:p-10 border border-gray-800 rounded-3xl hover:border-accent transition-all transform hover:-translate-y-1">
-                <div class="flex justify-between items-start mb-6">
-                    <span class="px-3 py-1 bg-accent/10 text-accent border border-accent/20 rounded-full text-xs font-bold uppercase tracking-widest">Interview</span>
-                    <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                </div>
-                <h3 class="text-2xl md:text-3xl font-black text-white mb-4 leading-tight group-hover:text-accent transition-colors">2 Minutes with Averie Dow</h3>
-                <p class="text-gray-400 mb-8 leading-relaxed">A quick-fire interview detailing my process and journey into creative technology.</p>
-                <div class="border-t border-gray-800 pt-6">
-                    <h4 class="text-white font-bold uppercase tracking-widest text-sm">CU Boulder CMDI Now</h4>
-                    <p class="text-gray-500 text-xs uppercase tracking-widest mt-1">April 21, 2026</p>
-                </div>
-            </a>
-
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer id="contact" class="w-full border-t border-surface mt-10">
-        <div class="max-w-6xl mx-auto px-6 py-20 flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
-            <div class="w-full md:w-auto overflow-hidden">
-                <a href="contact.html" class="inline-block text-5xl md:text-7xl font-black tracking-tight mb-4 hover:text-accent transition-colors duration-300">Let's Gab.</a>
-                <br>
-                <a href="mailto:averie.a.dow@gmail.com" class="text-xl md:text-2xl text-gray-400 hover:text-white transition-colors duration-300 hover-underline-animation break-all">averie.a.dow@gmail.com</a>
-                <br>
-                <a href="tel:9135266923" class="text-xl md:text-2xl text-gray-400 hover:text-white transition-colors duration-300 hover-underline-animation mt-2 inline-block break-words">913.526.6923</a>
-            </div>
-            
-            <div class="flex flex-col gap-4 text-left md:text-right w-full md:w-auto">
-                <a href="https://www.linkedin.com/in/averiedow/" target="_blank" rel="noopener noreferrer" class="text-xl font-bold text-gray-400 hover:text-accent transition-colors duration-300 flex items-center justify-start md:justify-end gap-2 group">
-                    LinkedIn
-                    <svg class="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </a>
-            </div>
-        </div>
-        
-        <div class="w-full max-w-6xl mx-auto px-6 py-6 border-t border-surface flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-sm text-gray-600">
-            <p>&copy; AVERIE DOW MADE THIS.</p>
-            <p>It's like you're obsessed with me or something.</p>
-        </div>
-    </footer>
-
-    <!-- Scroll to Top Button (High z-index, guaranteed clickability) -->
-    <button id="scroll-to-top" class="fixed bottom-6 right-6 bg-surface text-white border border-gray-800 p-3 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 hover:border-accent hover:text-accent z-[9999] focus:outline-none" aria-label="Scroll to top">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
-        </svg>
-    </button>
-
-    <!-- Scroll to Top Script -->
-    <script>
+        // Scroll to Top Logic
         const scrollBtn = document.getElementById('scroll-to-top');
 
         function checkScroll() {
@@ -278,7 +352,7 @@
             e.preventDefault();
             window.scrollTo({
                 top: 0,
-                behavior: 'smooth'
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
             });
         });
     </script>

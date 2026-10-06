@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echostar Learning Systems - Averie Dow</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' width='64' height='64'><text x='50%' y='55%' dominant-baseline='central' text-anchor='middle' font-family='system-ui, -apple-system, sans-serif' font-weight='900' font-size='40' fill='%23ff007f' stroke='%230a0a0a' stroke-width='2' letter-spacing='-1'>AD<tspan fill='%23ff007f'>.</tspan></text></svg>">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Jost', 'sans-serif'],
+                    },
+                    colors: {
+                        background: '#0a0a0a',
+                        surface: '#171717',
+                        accent: '#ff007f',
+                        accessibleMuted: '#9ca3af',   /* 7.0:1 contrast on #0a0a0a */
+                        accessibleBody: '#d1d5db',    /* 11.5:1 contrast on #0a0a0a */
+                        accessibleHigh: '#f3f4f6'     /* 17.5:1 contrast on #0a0a0a */
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Jost', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            font-size: 16px; /* Base 16px floor */
+        }
+        
+        ::selection {
+            background-color: #ff007f;
+            color: #ffffff;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 1rem;
+            background: #ff007f;
+            color: #ffffff;
+            padding: 0.75rem 1.25rem;
+            font-weight: 700;
+            font-size: 0.875rem; /* 14px */
+            z-index: 9999;
+            border-radius: 0 0 0.5rem 0.5rem;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus {
+            top: 0;
+            outline: 2px solid #ffffff;
+            outline-offset: 2px;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html.scroll-smooth { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .fade-in { animation: none !important; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col">
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Navigation -->
+    <header class="w-full">
+        <nav aria-label="Main Navigation" class="w-full max-w-6xl mx-auto px-6 py-6 md:py-8 flex justify-between items-center relative z-50">
+            <a href="index.html" class="text-2xl font-black tracking-tight text-white hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors">
+                Averie Dow<span class="text-accent" aria-hidden="true">.</span>
+            </a>
+
+            <ul class="hidden md:flex space-x-8 text-base tracking-wide text-accessibleBody">
+                <li><a href="about.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors">About</a></li>
+                <li><a href="projects.html" aria-current="page" class="text-white font-bold border-b-2 border-accent transition-colors">Projects</a></li>
+                <li><a href="resume.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors">Resume</a></li>
+                <li><a href="contact.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors">Contact</a></li>
+            </ul>
+
+            <button id="menu-btn" type="button" class="md:hidden text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent p-2 rounded z-50" aria-label="Open Navigation Menu" aria-expanded="false" aria-controls="mobile-menu">
+                <svg class="w-7 h-7" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile Overlay & Drawer -->
+    <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" aria-hidden="true"></div>
+    <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile Navigation Menu" class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[#0a0a0a] border-l border-gray-800 z-50 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out md:hidden shadow-2xl" inert>
+        <div>
+            <div class="flex justify-between items-center mb-12">
+                <span class="text-xl font-bold text-white">Menu</span>
+                <button id="menu-close" type="button" class="text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent p-2 rounded" aria-label="Close Navigation Menu">
+                    <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <nav aria-label="Mobile Navigation Links">
+                <ul class="flex flex-col space-y-6 text-xl tracking-wide text-accessibleHigh">
+                    <li><a href="about.html" class="hover:text-accent rounded transition-colors">About</a></li>
+                    <li><a href="projects.html" aria-current="page" class="text-accent font-bold transition-colors">Projects</a></li>
+                    <li><a href="resume.html" class="hover:text-accent rounded transition-colors">Resume</a></li>
+                    <li><a href="contact.html" class="hover:text-accent rounded transition-colors">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="text-sm text-accessibleMuted uppercase tracking-wider font-semibold">Averie Dow &bull; Portfolio</div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content" tabindex="-1" class="flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col justify-center overflow-x-hidden focus:outline-none">
+        
+        <!-- Header -->
+        <section aria-labelledby="project-title" class="pt-10 pb-12 md:pt-16 md:pb-14">
+            <h1 id="project-title" class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.9] uppercase mb-8">
+                How To: Lead Training <br>
+                <span class="text-accent">For 2,000+ Agents.</span>
+            </h1>
+            
+            <dl class="mt-8 pt-6 border-t border-surface grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div>
+                    <dt class="text-accent font-bold text-sm tracking-widest uppercase mb-1">Current Role</dt>
+                    <dd class="text-white font-bold text-base">Learning Experience Designer &amp; Dev</dd>
+                </div>
+                <div>
+                    <dt class="text-accent font-bold text-sm tracking-widest uppercase mb-1">Audience</dt>
+                    <dd class="text-white font-bold text-base">2,000+ Call Center Agents</dd>
+                </div>
+            
+             
+            </dl>
+        </section>
+
+        <!-- Executive Summary -->
+        <section class="pb-16" aria-label="Executive Summary">
+            <div class="bg-surface border border-gray-800 p-8 md:p-10 rounded-2xl relative overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-48 h-48 bg-accent rounded-full blur-[90px] opacity-20 pointer-events-none" aria-hidden="true"></div>
+                <span class="text-accent font-bold uppercase tracking-widest text-sm block mb-3">The Big Picture</span>
+                <p class="text-2xl md:text-3xl font-black text-white leading-tight uppercase mb-4">
+                    Looking at pictures of software doesn’t teach you how to use it.
+                </p>
+                <p class="text-base md:text-lg text-accessibleBody leading-relaxed max-w-3xl">
+                    Standard training tools trap 2,000+ agents in passive slides, leading to real call mistakes. In my role at Echostar, I build lightweight interactive sandboxes, custom mini-games, and clean web templates that give agents safe, hands-on practice before their first live call.
+                </p>
+             
+            </div>
+        </section>
+
+
+        <!-- Interactive 3-Pillar Tabbed Solutions -->
+        <section aria-labelledby="pillars-heading" class="py-16 border-t border-surface">
+            <div class="max-w-6xl">
+                <h2 id="pillars-heading" class="text-3xl md:text-4xl font-black text-white uppercase tracking-tight mb-3">
+                    Three Core Solutions
+                </h2>
+                <p class="text-base md:text-lg text-accessibleMuted max-w-2xl mb-8">
+                    Select a tab or use your arrow keys to explore the work.
+                </p>
+
+                <!-- Tab Buttons -->
+                <div role="tablist" aria-label="Solutions Overview" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <button role="tab" 
+                            aria-selected="true" 
+                            aria-controls="panel-pillar1" 
+                            id="tab-pillar1" 
+                            tabindex="0"
+                            class="pillar-btn p-5 bg-surface border-2 border-accent text-left cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded">
+                        <span class="pillar-title text-xl font-black text-white uppercase block">Tool Sandboxes &amp; Games</span>
+                    </button>
+                    
+                    <button role="tab" 
+                            aria-selected="false" 
+                            aria-controls="panel-pillar2" 
+                            id="tab-pillar2" 
+                            tabindex="-1"
+                            class="pillar-btn p-5 bg-surface border-2 border-gray-800 text-left cursor-pointer hover:border-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded">
+                        <span class="pillar-title text-xl font-black text-accessibleMuted uppercase block">The 6-Hour Survey Fix</span>
+                    </button>
+                    
+                    <button role="tab" 
+                            aria-selected="false" 
+                            aria-controls="panel-pillar3" 
+                            id="tab-pillar3" 
+                            tabindex="-1"
+                            class="pillar-btn p-5 bg-surface border-2 border-gray-800 text-left cursor-pointer hover:border-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded">
+                        <span class="pillar-title text-xl font-black text-accessibleMuted uppercase block">Publishing AI &amp; Search</span>
+                    </button>
+                </div>
+
+                <!-- Panels -->
+                <div class="bg-surface border border-gray-800 p-6 md:p-10 rounded-2xl min-h-[300px] flex flex-col justify-center">
+                    
+                    <!-- Panel 1 -->
+                    <div id="panel-pillar1" role="tabpanel" tabindex="0" aria-labelledby="tab-pillar1" class="pillar-pane block space-y-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded">
+                        <div class="border-b border-gray-800 pb-3">
+                            <h3 class="text-2xl font-black text-white mt-1">Playable Sandboxes &amp; Accessible Games</h3>
+                        </div>
+                        <p class="text-base md:text-lg text-accessibleBody leading-relaxed">
+                            Articulate Rise only supports static images and videos. To train agents on the complex, legacy DISH Business portal, I reverse-engineered the app’s code and built safe, clickable HTML/JS sandboxes right inside their lessons.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                            <div class="bg-background/60 p-5 border border-gray-800 rounded-lg">
+                                <h4 class="text-white font-bold text-base uppercase mb-1">Practice Sandboxes</h4>
+                                <p class="text-accessibleMuted text-sm md:text-base leading-relaxed">Agents type and navigate without fear of breaking customer accounts. Classroom feedback: <em class="text-white">"I wish we could've had this the first time!"</em></p>
+                            </div>
+                            <div class="bg-background/60 p-5 border border-gray-800 rounded-lg">
+                                <h4 class="text-white font-bold text-base uppercase mb-1">Accessible Games</h4>
+                                <p class="text-accessibleMuted text-sm md:text-base leading-relaxed">Call simulations and dress-up knowledge checks built with full keyboard navigation, alt tags, and high-contrast color schemes.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel 2 -->
+                    <div id="panel-pillar2" role="tabpanel" tabindex="0" aria-labelledby="tab-pillar2" class="pillar-pane hidden space-y-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded">
+                        <div class="border-b border-gray-800 pb-3">
+                            <h3 class="text-2xl font-black text-white mt-1">Fixing the Flawed Workaround in 6 Hours</h3>
+                        </div>
+                        <p class="text-base md:text-lg text-accessibleBody leading-relaxed">
+                            My team knew our internal survey software update would block traditional course embeds. Leadership drafted a workaround, but it relied on messy, confusing code that was bound to break for our non-technical designers on launch day.
+                        </p>
+                        
+                        <div class="space-y-4 pt-2 text-base">
+                            <div class="flex items-start gap-3">
+                                <span class="bg-accent text-black font-black px-2.5 py-0.5 text-xs rounded uppercase font-mono tracking-wider">8:00 AM</span>
+                                <p class="text-accessibleBody"><strong class="text-white">The Flaw:</strong> Recognized that the proposed workaround was too brittle and confusing for teammates to maintain under a 4:00 PM deadline.</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="bg-accent text-black font-black px-2.5 py-0.5 text-xs rounded uppercase font-mono tracking-wider">10:00 AM</span>
+                                <p class="text-accessibleBody"><strong class="text-white">The Clean Fix:</strong> Arrived early and coded a clean, modular pop-up block using HTML/JS and Gemini that reliably talks to Rise’s completion gates.</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="bg-accent text-black font-black px-2.5 py-0.5 text-xs rounded uppercase font-mono tracking-wider">1:00 PM</span>
+                                <p class="text-accessibleBody"><strong class="text-white">Documentation:</strong> Secured leadership approval and shared an easy, copy-paste guide (SOP) with plain-language comments for the team.</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="bg-accent text-black font-black px-2.5 py-0.5 text-xs rounded uppercase font-mono tracking-wider">4:00 PM</span>
+                                <p class="text-accessibleBody"><strong class="text-white">On-Time Launch:</strong> The team launched across multiple lines of business on schedule with 100% of compliance records preserved.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel 3 -->
+                    <div id="panel-pillar3" role="tabpanel" tabindex="0" aria-labelledby="tab-pillar3" class="pillar-pane hidden space-y-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded">
+                        <div class="border-b border-gray-800 pb-3">
+                            <h3 class="text-2xl font-black text-white mt-1">Smart Publishing &amp; Course Indexing</h3>
+                        </div>
+                        <p class="text-base md:text-lg text-accessibleBody leading-relaxed">
+                            Replaces repetitive manual layout tasks with smart, automated tooling so designers can focus on content rather than troubleshooting formats.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                            <div class="bg-background/60 p-5 border border-gray-800 rounded-lg">
+                                <h4 class="text-white font-bold text-base uppercase mb-1">AI Newsletter Agent</h4>
+                                <p class="text-accessibleMuted text-sm md:text-base leading-relaxed">Transforms a weekly newsletter previously trapped in 9px Google Slides into a responsive web page, powered by an AI agent that turns raw text into branded markup.</p>
+                            </div>
+                            <div class="bg-background/60 p-5 border border-gray-800 rounded-lg">
+                                <h4 class="text-white font-bold text-base uppercase mb-1">Instant Course Indexer</h4>
+                                <p class="text-accessibleMuted text-sm md:text-base leading-relaxed">Uses a Google Apps Script to parse exported <code class="text-accent font-bold">.xliff</code> files, instantly pinpointing every course mentioning updated tools, terms, or prices.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Mentorship -->
+        <section aria-labelledby="mentorship-heading" class="py-16 border-t border-surface">
+            <div class="max-w-3xl">
+                <h2 id="mentorship-heading" class="text-3xl md:text-4xl font-black text-white uppercase tracking-tight mb-4">
+                    Human-in-the-Loop Leadership
+                </h2>
+                <p class="text-base md:text-lg text-accessibleBody leading-relaxed mb-6">
+                    Tools only work if teams feel confident using them. I support my teammates daily to ensure our team leads the technology—not the other way around.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-surface p-5 border-l-2 border-accent rounded-r-lg">
+                        <h3 class="text-white font-bold text-lg mb-1">Code Literacy</h3>
+                        <p class="text-accessibleMuted text-sm md:text-base leading-relaxed">Teach basic HTML and CSS so designers can comfortably adjust colors, fix links, and inspect layouts without stress.</p>
+                    </div>
+                    <div class="bg-surface p-5 border-l-2 border-accent rounded-r-lg">
+                        <h3 class="text-white font-bold text-lg mb-1">AI Prompt Guardrails</h3>
+                        <p class="text-accessibleMuted text-sm md:text-base leading-relaxed">Maintain clear guidelines for prompting Gemini, ensuring generated code remains accessible, lightweight, and easy to maintain.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results -->
+        <section aria-labelledby="metrics-heading" class="py-16 border-t border-surface">
+            <div class="max-w-6xl">
+                <h2 id="metrics-heading" class="text-3xl md:text-4xl font-black text-white uppercase tracking-tight mb-8">
+                    The Results
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-surface border border-gray-800 p-6 rounded-xl">
+                        <span class="text-accent font-black text-5xl block mb-2">100%</span>
+                        <h3 class="text-xl font-bold text-white mb-2">Data Preserved</h3>
+                        <p class="text-accessibleMuted text-sm md:text-base leading-relaxed">Replaced brittle code in under 6 hours; all surveys and course records launched without a hitch.</p>
+                    </div>
+
+                    <div class="bg-surface border border-gray-800 p-6 rounded-xl">
+                        <span class="text-accent font-black text-5xl block mb-2">2,000+</span>
+                        <h3 class="text-xl font-bold text-white mb-2">Agents Reached</h3>
+                        <p class="text-accessibleMuted text-sm md:text-base leading-relaxed">Replaces illegible 9px slides with accessible, responsive, and engaging training agents actually enjoy.</p>
+                    </div>
+
+                    <div class="bg-surface border border-gray-800 p-6 rounded-xl">
+                        <span class="text-accent font-black text-5xl block mb-2">$0</span>
+                        <h3 class="text-xl font-bold text-white mb-2">Extra Tool Costs</h3>
+                        <p class="text-accessibleMuted text-sm md:text-base leading-relaxed">Codes all sandboxes and games in vanilla web standards, avoiding costly third-party subscriptions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Footer -->
+        <section class="py-16 border-t border-surface flex flex-col sm:flex-row justify-between items-center gap-6">
+            <a href="projects.html" class="inline-flex items-center gap-2 text-accessibleBody hover:text-accent font-bold uppercase tracking-widest text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded p-2 transition-colors">
+                <svg class="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Back to Projects
+            </a>
+            
+            <a href="contact.html" class="inline-flex items-center gap-2 px-6 py-3 bg-accent text-white font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-white transition-all rounded-full">
+                Discuss This Project
+                <svg class="w-3.5 h-3.5" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </a>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="w-full border-t border-surface mt-6">
+        <div class="max-w-6xl mx-auto px-6 py-14 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+            <div class="w-full md:w-auto">
+                <a href="contact.html" class="inline-block text-4xl md:text-6xl font-black tracking-tight mb-2 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors">Let's Gab.</a>
+                <br>
+                <a href="mailto:averie.a.dow@gmail.com" class="text-lg md:text-xl text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors break-all">averie.a.dow@gmail.com</a>
+            </div>
+            
+            <div class="flex flex-col gap-2 text-left md:text-right w-full md:w-auto">
+                <a href="https://www.linkedin.com/in/averiedow/" target="_blank" rel="noopener noreferrer" class="text-lg font-bold text-accessibleBody hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors flex items-center justify-start md:justify-end gap-2">
+                    LinkedIn
+                    <span class="sr-only">(opens in a new tab)</span>
+                    <svg class="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </a>
+            </div>
+        </div>
+        
+        <div class="w-full max-w-6xl mx-auto px-6 py-4 border-t border-surface flex flex-col md:flex-row justify-between items-start md:items-center gap-2 text-sm text-accessibleMuted">
+            <p>&copy; AVERIE DOW MADE THIS.</p>
+            <p>It's like you're obsessed with me or something.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <button id="scroll-to-top" type="button" class="fixed bottom-6 right-6 bg-surface text-white border border-gray-700 p-3 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all hover:border-accent hover:text-accent focus-visible:opacity-100 focus-visible:pointer-events-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent z-[9999]" aria-label="Scroll back to top">
+        <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+    </button>
+
+    <script>
+        // Drawer Menu
+        const mobileBtn = document.getElementById('menu-btn');
+        const closeBtn = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const backdrop = document.getElementById('menu-backdrop');
+
+        function openMenu() {
+            mobileMenu.classList.remove('translate-x-full');
+            backdrop.classList.remove('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = 'hidden';
+            mobileBtn.setAttribute('aria-expanded', 'true');
+            mobileMenu.removeAttribute('inert');
+            closeBtn.focus();
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.add('translate-x-full');
+            backdrop.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+            mobileBtn.setAttribute('aria-expanded', 'false');
+            mobileMenu.setAttribute('inert', '');
+            mobileBtn.focus();
+        }
+
+        mobileBtn.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        backdrop.addEventListener('click', closeMenu);
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileBtn.getAttribute('aria-expanded') === 'true') closeMenu();
+        });
+
+        // WAI-ARIA Tab Controller
+        const pillarTabs = Array.from(document.querySelectorAll('[role="tab"]'));
+
+        function activatePillarTab(tab) {
+            pillarTabs.forEach(t => {
+                t.setAttribute('aria-selected', 'false');
+                t.setAttribute('tabindex', '-1');
+                t.classList.remove('border-accent');
+                t.classList.add('border-gray-800');
+                
+                const title = t.querySelector('.pillar-title');
+                const tag = t.querySelector('.pillar-tag');
+                if (title) { title.classList.remove('text-white'); title.classList.add('text-accessibleMuted'); }
+                if (tag) { tag.classList.remove('text-accent'); tag.classList.add('text-accessibleMuted'); }
+
+                const panel = document.getElementById(t.getAttribute('aria-controls'));
+                if (panel) panel.classList.add('hidden');
+            });
+
+            tab.setAttribute('aria-selected', 'true');
+            tab.setAttribute('tabindex', '0');
+            tab.classList.remove('border-gray-800');
+            tab.classList.add('border-accent');
+
+            const activeTitle = tab.querySelector('.pillar-title');
+            const activeTag = tab.querySelector('.pillar-tag');
+            if (activeTitle) { activeTitle.classList.remove('text-accessibleMuted'); activeTitle.classList.add('text-white'); }
+            if (activeTag) { activeTag.classList.remove('text-accessibleMuted'); activeTag.classList.add('text-accent'); }
+
+            const targetPanel = document.getElementById(tab.getAttribute('aria-controls'));
+            if (targetPanel) {
+                targetPanel.classList.remove('hidden');
+                targetPanel.classList.add('fade-in');
+            }
+        }
+
+        pillarTabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => activatePillarTab(tab));
+
+            tab.addEventListener('keydown', (e) => {
+                let nextIndex = null;
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    nextIndex = (index + 1) % pillarTabs.length;
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    nextIndex = (index - 1 + pillarTabs.length) % pillarTabs.length;
+                } else if (e.key === 'Home') {
+                    nextIndex = 0;
+                } else if (e.key === 'End') {
+                    nextIndex = pillarTabs.length - 1;
+                }
+
+                if (nextIndex !== null) {
+                    e.preventDefault();
+                    pillarTabs[nextIndex].focus();
+                    activatePillarTab(pillarTabs[nextIndex]);
+                }
+            });
+        });
+
+        // Scroll to Top
+        const scrollBtn = document.getElementById('scroll-to-top');
+        function checkScroll() {
+            const yOffset = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            if (yOffset > 300) {
+                scrollBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                scrollBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        window.addEventListener('scroll', checkScroll, { passive: true });
+        scrollBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>

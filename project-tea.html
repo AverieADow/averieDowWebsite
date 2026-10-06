@@ -21,6 +21,9 @@
                         background: '#0a0a0a',
                         surface: '#171717',
                         accent: '#ff007f', /* Neon Pink */
+                        accessibleMuted: '#9ca3af',   /* Tailwind gray-400 (7.0:1 on #0a0a0a) */
+                        accessibleBody: '#d1d5db',    /* Tailwind gray-300 (11.5:1 on #0a0a0a) */
+                        accessibleHigh: '#f3f4f6'     /* Tailwind gray-100 (17.5:1 on #0a0a0a) */
                     }
                 }
             }
@@ -36,6 +39,25 @@
         ::selection {
             background-color: #ff007f;
             color: #ffffff;
+        }
+
+        /* WCAG 2.4.1: Bypass Block Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 1rem;
+            background: #ff007f;
+            color: #ffffff;
+            padding: 0.75rem 1.25rem;
+            font-weight: 700;
+            z-index: 9999;
+            border-radius: 0 0 0.5rem 0.5rem;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus {
+            top: 0;
+            outline: 2px solid #ffffff;
+            outline-offset: 2px;
         }
 
         .hover-underline-animation {
@@ -56,92 +78,100 @@
             transition: transform 0.25s ease-out;
         }
 
-        .hover-underline-animation:hover::after {
+        .hover-underline-animation:hover::after,
+        .hover-underline-animation:focus-visible::after {
             transform: scaleX(1);
             transform-origin: bottom left;
+        }
+
+        /* Reduced Motion Preferences */
+        @media (prefers-reduced-motion: reduce) {
+            html.scroll-smooth {
+                scroll-behavior: auto;
+            }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 <body class="antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col">
 
-    <!-- Navigation -->
-    <nav class="w-full max-w-6xl mx-auto px-6 py-6 md:py-8 flex justify-between items-center relative z-50">
-        <a href="index.html" class="text-2xl font-black tracking-tight text-white hover:text-accent transition-colors duration-300">
-            Averie Dow<span class="text-accent">.</span>
-        </a>
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-        <!-- Desktop Navigation Links -->
-        <div class="hidden md:flex space-x-8 text-sm tracking-wide text-gray-400">
-            <a href="about.html" class="hover:text-white transition-colors duration-300">About</a>
-            <a href="projects.html" class="text-white transition-colors duration-300">Projects</a>
-            <a href="resume.html" class="hover:text-white transition-colors duration-300">Resume</a>
-            <a href="contact.html" class="hover:text-white transition-colors duration-300">Contact</a>
-        </div>
+    <!-- Header & Navigation -->
+    <header class="w-full">
+        <nav aria-label="Main Navigation" class="w-full max-w-6xl mx-auto px-6 py-6 md:py-8 flex justify-between items-center relative z-50">
+            <a href="index.html" class="text-2xl font-black tracking-tight text-white hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">
+                Averie Dow<span class="text-accent" aria-hidden="true">.</span>
+            </a>
 
-        <!-- Mobile Hamburger Button -->
-        <button id="menu-btn" class="md:hidden text-gray-400 hover:text-white focus:outline-none z-50" aria-label="Toggle Navigation Menu">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-        </button>
-    </nav>
+            <!-- Desktop Links -->
+            <ul class="hidden md:flex space-x-8 text-sm tracking-wide text-accessibleBody">
+                <li><a href="about.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">About</a></li>
+                <li><a href="projects.html" aria-current="page" class="text-white font-bold border-b-2 border-accent transition-colors duration-300">Projects</a></li>
+                <li><a href="resume.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">Resume</a></li>
+                <li><a href="contact.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">Contact</a></li>
+            </ul>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="menu-btn" 
+                    type="button" 
+                    class="md:hidden text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent p-2 rounded z-50" 
+                    aria-label="Open Navigation Menu" 
+                    aria-expanded="false" 
+                    aria-controls="mobile-menu">
+                <svg class="w-7 h-7" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
 
     <!-- Backdrop Overlay -->
-    <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+    <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" aria-hidden="true"></div>
 
-    <!-- Mobile Slide-out Menu Drawer from Right & Solid Black -->
-    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[#0a0a0a] border-l border-gray-800 z-50 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out md:hidden shadow-2xl">
+    <!-- Mobile Slide-out Menu Drawer -->
+    <div id="mobile-menu" 
+         role="dialog" 
+         aria-modal="true" 
+         aria-label="Mobile Navigation Menu" 
+         class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[#0a0a0a] border-l border-gray-800 z-50 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out md:hidden shadow-2xl" 
+         inert>
         <div>
             <div class="flex justify-between items-center mb-12">
                 <span class="text-lg font-bold tracking-tight text-white">Menu</span>
-                <button id="menu-close" class="text-gray-400 hover:text-white focus:outline-none" aria-label="Close Navigation Menu">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button id="menu-close" type="button" class="text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent p-2 rounded" aria-label="Close Navigation Menu">
+                    <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
             
-            <div class="flex flex-col space-y-6 text-xl tracking-wide text-gray-300">
-                <a href="about.html" class="hover:text-accent transition-colors duration-300">About</a>
-                <a href="projects.html" class="text-accent transition-colors duration-300">Projects</a>
-                <a href="resume.html" class="hover:text-accent transition-colors duration-300">Resume</a>
-                <a href="contact.html" class="hover:text-accent transition-colors duration-300">Contact</a>
-            </div>
+            <nav aria-label="Mobile Navigation Links">
+                <ul class="flex flex-col space-y-6 text-xl tracking-wide text-accessibleHigh">
+                    <li><a href="about.html" class="hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">About</a></li>
+                    <li><a href="projects.html" aria-current="page" class="text-accent font-bold transition-colors duration-300">Projects</a></li>
+                    <li><a href="resume.html" class="hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">Resume</a></li>
+                    <li><a href="contact.html" class="hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">Contact</a></li>
+                </ul>
+            </nav>
         </div>
         
-        <div class="text-xs text-gray-600 tracking-wider uppercase">
+        <div class="text-xs text-accessibleMuted tracking-wider uppercase">
             Averie Dow &bull; Portfolio
         </div>
     </div>
 
-    <!-- Mobile Menu Script -->
-    <script>
-        const mobileBtn = document.getElementById('menu-btn');
-        const closeBtn = document.getElementById('menu-close');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const backdrop = document.getElementById('menu-backdrop');
-
-        function openMenu() {
-            mobileMenu.classList.remove('translate-x-full');
-            backdrop.classList.remove('opacity-0', 'pointer-events-none');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeMenu() {
-            mobileMenu.classList.add('translate-x-full');
-            backdrop.classList.add('opacity-0', 'pointer-events-none');
-            document.body.style.overflow = '';
-        }
-
-        mobileBtn.addEventListener('click', openMenu);
-        closeBtn.addEventListener('click', closeMenu);
-        backdrop.addEventListener('click', closeMenu);
-    </script>
-
-    <main class="flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col justify-center overflow-x-hidden">
+    <!-- Main Landmark -->
+    <main id="main-content" tabindex="-1" class="flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col justify-center overflow-x-hidden focus:outline-none">
         
-        <section class="pt-12 pb-16 md:pt-20 md:pb-16">
-            <h1 class="text-5xl md:text-7xl lg:text-9xl font-black tracking-tight leading-[0.9] uppercase break-words hyphens-auto mb-8">
+        <!-- Case Study Title & Roles -->
+        <section aria-labelledby="project-title" class="pt-12 pb-16 md:pt-20 md:pb-16">
+            <h1 id="project-title" class="text-5xl md:text-7xl lg:text-9xl font-black tracking-tight leading-[0.9] uppercase break-words hyphens-auto mb-8">
                 The Tea App <br>
                 <span class="text-accent">Ethical Audit.</span>
             </h1>
@@ -150,103 +180,107 @@
                 <div>
                     <p class="text-accent font-bold text-xs tracking-widest uppercase mb-2">Role</p>
                     <p class="text-white font-black tracking-widest text-sm md:text-base uppercase flex flex-wrap gap-2 items-center">
-                        Researcher <span class="text-surface">/</span> Data Analyst <span class="text-surface">/</span> Policy Designer
+                        Researcher <span class="text-surface" aria-hidden="true">/</span> Data Analyst <span class="text-surface" aria-hidden="true">/</span> Policy Designer
                     </p>
                 </div>
             </div>
         </section>
 
-        <section class="pb-20">
-            <div class="w-full aspect-video bg-surface rounded-none border border-gray-800 overflow-hidden relative group">
-                <img src="assets/Tea App - Travia & Dow (2)/1.png" alt="Hero Placeholder" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-            </div>
+        <!-- Hero Graphic -->
+        <section class="pb-20" aria-label="Audit Overview Banner">
+            <figure class="w-full aspect-video bg-surface rounded-none border border-gray-800 overflow-hidden relative group">
+                <img src="assets/Tea App - Travia & Dow (2)/1.png" alt="Title slide of The Tea App ethical audit presentation by Averie Dow and research team" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            </figure>
         </section>
 
-        <section class="py-20 border-t border-surface">
+        <!-- Problem Statement -->
+        <section aria-labelledby="problem-heading" class="py-20 border-t border-surface">
             <div class="flex flex-col lg:flex-row gap-12 lg:gap-24">
                 <div class="lg:w-1/2">
-                    <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-8">The Problem</h2>
-                    <p class="text-2xl md:text-3xl font-medium leading-relaxed text-gray-300">
+                    <h2 id="problem-heading" class="text-xs font-bold uppercase tracking-widest text-accent mb-8">The Problem</h2>
+                    <p class="text-2xl md:text-3xl font-medium leading-relaxed text-accessibleBody">
                         The Tea App emerged as a dating safety platform allowing women to share information and assign "red flags" to men they have dated, rapidly growing to over 11 million users. 
                     </p>
-                    <p class="text-xl md:text-2xl font-medium leading-relaxed text-gray-400 mt-6">
+                    <p class="text-xl md:text-2xl font-medium leading-relaxed text-accessibleMuted mt-6">
                         While initially designed for empowerment and mutual protection, the platform quickly ignited ethical, social, and political debates due to unverified claims, cyberbullying, and doxxing. 
                     </p>
                     <div class="mt-8 p-6 md:p-8 bg-surface border-l-4 border-accent">
                         <p class="text-lg md:text-xl font-bold text-white">
                             The core design problem was a severe tension between promoting physical community safety for women and violating the data privacy, consent, and dignity of the individuals being posted about. 
                         </p>
-                        <p class="text-gray-400 mt-4">
+                        <p class="text-accessibleMuted mt-4">
                             This ethical instability culminated in a massive data breach that exposed users' sensitive personal information, including driver's licenses.
                         </p>
                     </div>
                 </div>
                 
                 <div class="lg:w-1/2 flex flex-col gap-8 justify-center">
-                    <div class="w-full aspect-video bg-surface rounded-none border border-gray-800 overflow-hidden relative group">
-                        <img src="assets/Tea App - Travia & Dow (2)/2.png" alt="Context Image 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                    </div>
-                    <div class="w-full aspect-video bg-surface rounded-none border border-gray-800 overflow-hidden relative group">
-                        <img src="assets/Tea App - Travia & Dow (2)/3.png" alt="Context Image 2" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                    </div>
+                    <figure class="w-full aspect-video bg-surface rounded-none border border-gray-800 overflow-hidden relative group">
+                        <img src="assets/Tea App - Travia & Dow (2)/2.png" alt="Social media analysis highlighting public discourse and online debate surrounding privacy vs safety" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    </figure>
+                    <figure class="w-full aspect-video bg-surface rounded-none border border-gray-800 overflow-hidden relative group">
+                        <img src="assets/Tea App - Travia & Dow (2)/3.png" alt="News report clippings illustrating user data breach and App Store policy compliance warnings" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    </figure>
                 </div>
             </div>
         </section>
 
-        <section class="py-20 border-t border-surface">
+        <!-- Core Metrics Section -->
+        <section aria-labelledby="metrics-heading" class="py-20 border-t border-surface">
             <div class="max-w-6xl">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-12">Core Metrics for Evidence</h2>
+                <h2 id="metrics-heading" class="text-xs font-bold uppercase tracking-widest text-accent mb-12">Core Metrics for Evidence</h2>
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                    <div class="space-y-8 text-lg text-gray-400 leading-relaxed">
+                    <div class="space-y-8 text-lg text-accessibleBody leading-relaxed">
                         <p>To understand user sentiment and the root causes of the app's ethical failures, our team employed a mixed-methods research approach.</p>
                         
                         <div class="pt-4">
                             <h3 class="text-2xl font-bold text-white mb-3">Thematic Analysis</h3>
-                            <p>We gathered user comments from Reddit and online forums, mitigating algorithmic bias by varying search criteria, and conducted manual qualitative coding. We then used AI-assisted thematic analysis (via ChatGPT) to map out primary themes and subthemes.</p>
+                            <p class="text-accessibleMuted">We gathered user comments from Reddit and online forums, mitigating algorithmic bias by varying search criteria, and conducted manual qualitative coding. We then used AI-assisted thematic analysis (via ChatGPT) to map out primary themes and subthemes.</p>
                         </div>
                         
                         <div class="pt-4">
                             <h3 class="text-2xl font-bold text-white mb-3">Survey Data Deployment</h3>
-                            <p>Identifying data privacy as the dominant theme, we designed and deployed a Qualtrics survey focusing on doxxing, safety, and privacy.</p>
+                            <p class="text-accessibleMuted">Identifying data privacy as the dominant theme, we designed and deployed a Qualtrics survey focusing on doxxing, safety, and privacy.</p>
                         </div>
                     </div>
                     
+                    <!-- Accessible Metrics Display -->
                     <div class="bg-surface p-8 md:p-12 border border-gray-800 flex flex-col justify-center">
-                        <h3 class="text-sm font-bold uppercase tracking-widest text-accent mb-8">Hover to Reveal Survey Findings</h3>
+                        <h3 class="text-sm font-bold uppercase tracking-widest text-accent mb-8">Survey Findings on Notification Policies</h3>
                         
                         <div class="space-y-8">
-                            <div class="group cursor-default">
+                            <div>
                                 <div class="flex justify-between items-end mb-2">
-                                    <span class="text-white font-bold">Men should be notified</span>
+                                    <span class="text-white font-bold text-sm md:text-base">Men should be notified</span>
                                     <span class="text-accent font-black text-2xl">39%</span>
                                 </div>
-                                <div class="w-full bg-[#222] h-2">
-                                    <div class="bg-accent h-2 w-0 group-hover:w-[39%] transition-all duration-1000 ease-out"></div>
+                                <div class="w-full bg-[#222] h-3 rounded-full overflow-hidden" role="progressbar" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100" aria-label="Percentage of respondents who believe men should be notified">
+                                    <div class="bg-accent h-3 w-[39%]"></div>
                                 </div>
                             </div>
 
-                            <div class="group cursor-default">
+                            <div>
                                 <div class="flex justify-between items-end mb-2">
-                                    <span class="text-white font-bold">Would consider notification policy</span>
+                                    <span class="text-white font-bold text-sm md:text-base">Would consider notification policy</span>
                                     <span class="text-accent font-black text-2xl">43%</span>
                                 </div>
-                                <div class="w-full bg-[#222] h-2">
-                                    <div class="bg-accent h-2 w-0 group-hover:w-[43%] transition-all duration-1000 ease-out"></div>
+                                <div class="w-full bg-[#222] h-3 rounded-full overflow-hidden" role="progressbar" aria-valuenow="43" aria-valuemin="0" aria-valuemax="100" aria-label="Percentage of respondents who would consider a notification policy">
+                                    <div class="bg-accent h-3 w-[43%]"></div>
                                 </div>
                             </div>
 
-                            <div class="group cursor-default">
+                            <div>
                                 <div class="flex justify-between items-end mb-2">
-                                    <span class="text-white font-bold">Firmly believe men should NOT be notified</span>
+                                    <span class="text-white font-bold text-sm md:text-base">Firmly believe men should NOT be notified</span>
                                     <span class="text-accent font-black text-2xl">18%</span>
                                 </div>
-                                <div class="w-full bg-[#222] h-2">
-                                    <div class="bg-accent h-2 w-0 group-hover:w-[18%] transition-all duration-1000 ease-out"></div>
+                                <div class="w-full bg-[#222] h-3 rounded-full overflow-hidden" role="progressbar" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100" aria-label="Percentage of respondents who firmly believe men should not be notified">
+                                    <div class="bg-accent h-3 w-[18%]"></div>
                                 </div>
                             </div>
                             
-                            <p class="text-sm text-gray-500 mt-6 pt-6 border-t border-gray-800">
+                            <p class="text-sm text-accessibleMuted mt-6 pt-6 border-t border-gray-800">
                                 The survey revealed highly divided views on consent and anonymity across the user base.
                             </p>
                         </div>
@@ -255,99 +289,101 @@
             </div>
         </section>
 
-        <section class="py-20 border-t border-surface">
+        <!-- Iterative Ideation Section -->
+        <section aria-labelledby="ideation-heading" class="py-20 border-t border-surface">
             <div class="max-w-6xl">
                 <div class="mb-12 max-w-2xl">
-                    <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-4">Iterative Ideation</h2>
-                    <p class="text-lg text-gray-400">
+                    <h2 id="ideation-heading" class="text-xs font-bold uppercase tracking-widest text-accent mb-4">Iterative Ideation</h2>
+                    <p class="text-lg text-accessibleBody">
                         We evaluated the platform's mechanics through multiple ethical lenses—specifically Utilitarianism and Deontology—to balance the real-world safety benefits for women against the platform's violations of individual rights. During our ideation and analysis, we identified key UI/UX and branding failures.
                     </p>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Fixed Height Card 1 -->
-                    <div class="group relative bg-surface border border-gray-800 p-8 h-[350px] overflow-hidden transition-colors hover:border-accent hover:bg-[#1f1f1f] cursor-default">
-                        <h3 class="text-2xl lg:text-3xl font-black uppercase tracking-tight text-white mb-4 relative z-10">Incentivizing Misinformation</h3>
-                        <div class="absolute bottom-8 left-8 right-8 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none">
-                            <p class="text-gray-400 border-t border-gray-800 pt-4 text-base md:text-sm lg:text-base">
+                    <!-- Card 1 -->
+                    <article class="bg-surface border border-gray-800 p-8 flex flex-col justify-between transition-colors hover:border-accent hover:bg-[#1f1f1f] focus-within:border-accent">
+                        <div>
+                            <h3 class="text-2xl font-black uppercase tracking-tight text-white mb-4">Incentivizing Misinformation</h3>
+                            <p class="text-accessibleBody border-t border-gray-800 pt-4 text-sm md:text-base leading-relaxed">
                                 The arbitrary "flag" functionality allowed users to mark individuals without providing reasoning, which promoted uninformed reporting and inaccuracies.
                             </p>
                         </div>
-                    </div>
+                    </article>
 
-                    <!-- Fixed Height Card 2 -->
-                    <div class="group relative bg-surface border border-gray-800 p-8 h-[350px] overflow-hidden transition-colors hover:border-accent hover:bg-[#1f1f1f] cursor-default">
-                        <h3 class="text-2xl lg:text-3xl font-black uppercase tracking-tight text-white mb-4 relative z-10">Problematic Branding</h3>
-                        <div class="absolute bottom-8 left-8 right-8 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none">
-                            <p class="text-gray-400 border-t border-gray-800 pt-4 text-base md:text-sm lg:text-base">
+                    <!-- Card 2 -->
+                    <article class="bg-surface border border-gray-800 p-8 flex flex-col justify-between transition-colors hover:border-accent hover:bg-[#1f1f1f] focus-within:border-accent">
+                        <div>
+                            <h3 class="text-2xl font-black uppercase tracking-tight text-white mb-4">Problematic Branding</h3>
+                            <p class="text-accessibleBody border-t border-gray-800 pt-4 text-sm md:text-base leading-relaxed">
                                 Naming the application "Tea" fundamentally encouraged a culture of casual gossip and negativity rather than thoughtful, accurate reporting.
                             </p>
                         </div>
-                    </div>
+                    </article>
 
-                    <!-- Fixed Height Card 3 -->
-                    <div class="group relative bg-surface border border-gray-800 p-8 h-[350px] overflow-hidden transition-colors hover:border-accent hover:bg-[#1f1f1f] cursor-default">
-                        <h3 class="text-2xl lg:text-3xl font-black uppercase tracking-tight text-white mb-4 relative z-10">Systemic Failure</h3>
-                        <div class="absolute bottom-8 left-8 right-8 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none">
-                            <p class="text-gray-400 border-t border-gray-800 pt-4 text-base md:text-sm lg:text-base">
+                    <!-- Card 3 -->
+                    <article class="bg-surface border border-gray-800 p-8 flex flex-col justify-between transition-colors hover:border-accent hover:bg-[#1f1f1f] focus-within:border-accent">
+                        <div>
+                            <h3 class="text-2xl font-black uppercase tracking-tight text-white mb-4">Systemic Failure</h3>
+                            <p class="text-accessibleBody border-t border-gray-800 pt-4 text-sm md:text-base leading-relaxed">
                                 Any system encouraging privacy violations, even with good intentions, is ethically unstable, a reality confirmed when the app was removed from the App Store in October 2025 for failing Apple's data privacy regulations.
                             </p>
                         </div>
-                    </div>
+                    </article>
                 </div>
             </div>
         </section>
         
-        <section class="py-20 border-t border-surface">
-            <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-12">Solution Architecture Previews</h2>
+        <!-- Architecture Previews -->
+        <section aria-labelledby="architecture-heading" class="py-20 border-t border-surface">
+            <h2 id="architecture-heading" class="text-xs font-bold uppercase tracking-widest text-accent mb-12">Solution Architecture Previews</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Ensure all images are aspect-video strictly -->
-                <div class="group relative overflow-hidden bg-surface border border-gray-800 w-full aspect-video">
-                    <img src="assets/Tea App - Travia & Dow (2)/5.png" alt="Architecture Preview 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                </div>
-                <div class="group relative overflow-hidden bg-surface border border-gray-800 w-full aspect-video">
-                    <img src="assets/Tea App - Travia & Dow (2)/6.png" alt="Architecture Preview 2" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                </div>
-                <div class="group relative overflow-hidden bg-surface border border-gray-800 w-full aspect-video md:col-span-2">
-                    <img src="assets/Tea App - Travia & Dow (2)/7.png" alt="Architecture Preview 3" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                </div>
+                <figure class="group relative overflow-hidden bg-surface border border-gray-800 w-full aspect-video">
+                    <img src="assets/Tea App - Travia & Dow (2)/5.png" alt="System flowchart illustrating user verification through official registries rather than user-submitted claims" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </figure>
+                <figure class="group relative overflow-hidden bg-surface border border-gray-800 w-full aspect-video">
+                    <img src="assets/Tea App - Travia & Dow (2)/6.png" alt="Mobile app wireframes showing opt-in private messaging to protect individual identity and consent" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </figure>
+                <figure class="group relative overflow-hidden bg-surface border border-gray-800 w-full aspect-video md:col-span-2">
+                    <img src="assets/Tea App - Travia & Dow (2)/7.png" alt="Complete architectural overview comparing the original unverified posting workflow with the proposed verified safety model" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </figure>
             </div>
         </section>
 
-        <section class="py-20 border-t border-surface">
+        <!-- Final Recommendations -->
+        <section aria-labelledby="recommendations-heading" class="py-20 border-t border-surface">
             <div class="max-w-4xl">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-6">Final Recommendations & Thoughts</h2>
+                <h2 id="recommendations-heading" class="text-xs font-bold uppercase tracking-widest text-accent mb-6">Final Recommendations &amp; Thoughts</h2>
                 <p class="text-xl text-white font-medium mb-12 leading-relaxed">
                     To resolve the tension between safety and privacy, I recommended a complete pivot away from user-generated doxxing toward a regulated, verified safety tool.
                 </p>
                 
                 <div class="space-y-12">
-                    <div class="group border-l-4 border-transparent hover:border-accent pl-6 md:pl-10 transition-colors duration-300">
+                    <article class="group border-l-4 border-transparent hover:border-accent focus-within:border-accent pl-6 md:pl-10 transition-colors duration-300">
                         <h3 class="text-2xl md:text-4xl font-black uppercase tracking-tight mb-4">
-                            <span class="text-gray-600 mr-4">01</span>Location-Based Verification
+                            <span class="text-accessibleMuted mr-4" aria-hidden="true">01</span>Location-Based Verification
                         </h3>
-                        <p class="text-lg text-gray-400">
+                        <p class="text-lg text-accessibleBody">
                             Instead of allowing users to manually add individuals to a database, the proposed application relies on local, verified sex offender and crime registries.
                         </p>
-                    </div>
+                    </article>
 
-                    <div class="group border-l-4 border-transparent hover:border-accent pl-6 md:pl-10 transition-colors duration-300">
+                    <article class="group border-l-4 border-transparent hover:border-accent focus-within:border-accent pl-6 md:pl-10 transition-colors duration-300">
                         <h3 class="text-2xl md:text-4xl font-black uppercase tracking-tight mb-4">
-                            <span class="text-gray-600 mr-4">02</span>Private, Opt-in Communication
+                            <span class="text-accessibleMuted mr-4" aria-hidden="true">02</span>Private, Opt-in Communication
                         </h3>
-                        <p class="text-lg text-gray-400">
+                        <p class="text-lg text-accessibleBody">
                             Users viewing the verified map can select "I know this person" to open themselves up to private messaging from other users, allowing women to communicate about local dangers without publicly doxxing anyone.
                         </p>
-                    </div>
+                    </article>
 
-                    <div class="group border-l-4 border-transparent hover:border-accent pl-6 md:pl-10 transition-colors duration-300">
+                    <article class="group border-l-4 border-transparent hover:border-accent focus-within:border-accent pl-6 md:pl-10 transition-colors duration-300">
                         <h3 class="text-2xl md:text-4xl font-black uppercase tracking-tight mb-4">
-                            <span class="text-gray-600 mr-4">03</span>Direct Support Integration
+                            <span class="text-accessibleMuted mr-4" aria-hidden="true">03</span>Direct Support Integration
                         </h3>
-                        <p class="text-lg text-gray-400">
+                        <p class="text-lg text-accessibleBody">
                             The platform would also allow women to submit direct inquiries to local police departments for low-profile, safe assistance.
                         </p>
-                    </div>
+                    </article>
                 </div>
 
                 <div class="mt-20 p-8 md:p-12 bg-accent/10 border border-accent">
@@ -359,62 +395,111 @@
             </div>
         </section>
 
-        <section class="py-20 border-t border-surface">
-            <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-8">Project Assets</h2>
+        <!-- Project Assets -->
+        <section aria-labelledby="assets-heading" class="py-20 border-t border-surface">
+            <h2 id="assets-heading" class="text-xs font-bold uppercase tracking-widest text-accent mb-8">Project Assets</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <a href="assets/Tea App - Dow, Travia, Cariveau.pdf" download class="group bg-surface border border-gray-800 p-6 flex justify-between items-center transition-colors hover:border-accent hover:bg-[#1f1f1f]">
-                    <span class="text-lg font-bold text-white group-hover:text-accent transition-colors">Audit Report (PDF)</span>
-                    <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                <a href="assets/Tea App - Dow, Travia, Cariveau.pdf" download class="group bg-surface border border-gray-800 p-6 flex justify-between items-center transition-colors hover:border-accent hover:bg-[#1f1f1f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded">
+                    <div>
+                        <span class="text-lg font-bold text-white group-hover:text-accent transition-colors block">Audit Report</span>
+                        <span class="text-xs text-accessibleMuted">Research summary (.pdf)</span>
+                    </div>
+                    <svg class="w-6 h-6 text-accessibleMuted group-hover:text-accent transition-colors flex-shrink-0" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                 </a>
                 
-                <a href="assets/Codebook Analysis Travia, Dow, Cariveau - Codebook (Compilation Themes).csv" download class="group bg-surface border border-gray-800 p-6 flex justify-between items-center transition-colors hover:border-accent hover:bg-[#1f1f1f]">
-                    <span class="text-lg font-bold text-white group-hover:text-accent transition-colors">Survey Data Toplines (CSV)</span>
-                    <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                <a href="assets/Codebook Analysis Travia, Dow, Cariveau - Codebook (Compilation Themes).csv" download class="group bg-surface border border-gray-800 p-6 flex justify-between items-center transition-colors hover:border-accent hover:bg-[#1f1f1f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded">
+                    <div>
+                        <span class="text-lg font-bold text-white group-hover:text-accent transition-colors block">Survey Data Toplines</span>
+                        <span class="text-xs text-accessibleMuted">Raw coding themes (.csv)</span>
+                    </div>
+                    <svg class="w-6 h-6 text-accessibleMuted group-hover:text-accent transition-colors flex-shrink-0" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                 </a>
 
-                <a href="https://www.canva.com/design/DAG0qem1vOo/XTF-RcK8z4iU1rxNymhzPA/edit?utm_content=DAG0qem1vOo&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" download class="group bg-surface border border-gray-800 p-6 flex justify-between items-center transition-colors hover:border-accent hover:bg-[#1f1f1f]">
-                    <span class="text-lg font-bold text-white group-hover:text-accent transition-colors">Ideation Slide Deck</span>
-                    <svg class="w-6 h-6 text-gray-500 group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                <a href="https://www.canva.com/design/DAG0qem1vOo/XTF-RcK8z4iU1rxNymhzPA/edit?utm_content=DAG0qem1vOo&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" target="_blank" rel="noopener noreferrer" class="group bg-surface border border-gray-800 p-6 flex justify-between items-center transition-colors hover:border-accent hover:bg-[#1f1f1f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded">
+                    <div>
+                        <span class="text-lg font-bold text-white group-hover:text-accent transition-colors block">Ideation Slide Deck</span>
+                        <span class="text-xs text-accessibleMuted">Canva Deck <span class="sr-only">(opens in a new tab)</span></span>
+                    </div>
+                    <svg class="w-6 h-6 text-accessibleMuted group-hover:text-accent transition-colors flex-shrink-0" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                 </a>
             </div>
         </section>
 
     </main>
 
-    <!-- Footer -->
+    <!-- Footer Landmark -->
     <footer id="contact" class="w-full border-t border-surface mt-10">
         <div class="max-w-6xl mx-auto px-6 py-20 flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
-            <div>
-                <a href="contact.html" class="inline-block text-5xl md:text-7xl font-black tracking-tight mb-4 hover:text-accent transition-colors duration-300">Let's Gab.</a>
+            <div class="w-full md:w-auto overflow-hidden">
+                <a href="contact.html" class="inline-block text-5xl md:text-7xl font-black tracking-tight mb-4 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300">Let's Gab.</a>
                 <br>
-                <a href="mailto:averie.a.dow@gmail.com" class="text-xl md:text-2xl text-gray-400 hover:text-white transition-colors duration-300 hover-underline-animation break-all">averie.a.dow@gmail.com</a>
+                <a href="mailto:averie.a.dow@gmail.com" class="text-xl md:text-2xl text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300 hover-underline-animation break-all">averie.a.dow@gmail.com</a>
                 <br>
-                <a href="tel:9135266923" class="text-xl md:text-2xl text-gray-400 hover:text-white transition-colors duration-300 hover-underline-animation mt-2 inline-block break-words">913.526.6923</a>
+                <a href="tel:9135266923" class="text-xl md:text-2xl text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300 hover-underline-animation mt-2 inline-block break-words">913.526.6923</a>
             </div>
             
             <div class="flex flex-col gap-4 text-left md:text-right w-full md:w-auto">
-                <a href="https://www.linkedin.com/in/averiedow/" target="_blank" class="text-xl font-bold text-gray-400 hover:text-accent transition-colors duration-300 flex items-center justify-start md:justify-end gap-2 group">
+                <a href="https://www.linkedin.com/in/averiedow/" target="_blank" rel="noopener noreferrer" class="text-xl font-bold text-accessibleBody hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300 flex items-center justify-start md:justify-end gap-2 group">
                     LinkedIn
-                    <svg class="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    <span class="sr-only">(opens in a new tab)</span>
+                    <svg class="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </a>
             </div>
         </div>
         
-        <div class="w-full max-w-6xl mx-auto px-6 py-6 border-t border-surface flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-sm text-gray-600">
+        <div class="w-full max-w-6xl mx-auto px-6 py-6 border-t border-surface flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-sm text-accessibleMuted">
             <p>&copy; AVERIE DOW MADE THIS.</p>
             <p>It's like you're obsessed with me or something.</p>
         </div>
     </footer>
 
-    <!-- Scroll to Top Button (High z-index, guaranteed clickability) -->
-    <button id="scroll-to-top" class="fixed bottom-6 right-6 bg-surface text-white border border-gray-800 p-3 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 hover:border-accent hover:text-accent z-[9999] focus:outline-none" aria-label="Scroll to top">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" 
+            type="button"
+            class="fixed bottom-6 right-6 bg-surface text-white border border-gray-700 p-3 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 hover:border-accent hover:text-accent focus-visible:opacity-100 focus-visible:pointer-events-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent z-[9999]" 
+            aria-label="Scroll back to top">
+        <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
         </svg>
     </button>
 
-    <!-- Scroll to Top Script -->
+    <!-- Interactive Scripts -->
     <script>
+        // Drawer Menu Logic
+        const mobileBtn = document.getElementById('menu-btn');
+        const closeBtn = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const backdrop = document.getElementById('menu-backdrop');
+
+        function openMenu() {
+            mobileMenu.classList.remove('translate-x-full');
+            backdrop.classList.remove('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = 'hidden';
+            mobileBtn.setAttribute('aria-expanded', 'true');
+            mobileMenu.removeAttribute('inert');
+            closeBtn.focus();
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.add('translate-x-full');
+            backdrop.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+            mobileBtn.setAttribute('aria-expanded', 'false');
+            mobileMenu.setAttribute('inert', '');
+            mobileBtn.focus();
+        }
+
+        mobileBtn.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        backdrop.addEventListener('click', closeMenu);
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileBtn.getAttribute('aria-expanded') === 'true') {
+                closeMenu();
+            }
+        });
+
+        // Scroll to Top Logic
         const scrollBtn = document.getElementById('scroll-to-top');
 
         function checkScroll() {
@@ -427,13 +512,12 @@
         }
 
         window.addEventListener('scroll', checkScroll, { passive: true });
-        document.addEventListener('scroll', checkScroll, { passive: true });
 
         scrollBtn.addEventListener('click', (e) => {
             e.preventDefault();
             window.scrollTo({
                 top: 0,
-                behavior: 'smooth'
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
             });
         });
     </script>
