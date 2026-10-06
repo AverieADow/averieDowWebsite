@@ -34,6 +34,7 @@
             font-family: 'Jost', sans-serif;
             background-color: #0a0a0a;
             color: #ffffff;
+            font-size: 16px;
         }
         
         ::selection {
@@ -50,6 +51,7 @@
             color: #ffffff;
             padding: 0.75rem 1.25rem;
             font-weight: 700;
+            font-size: 0.875rem; /* 14px */
             z-index: 9999;
             border-radius: 0 0 0.5rem 0.5rem;
             transition: top 0.2s ease;
@@ -110,7 +112,7 @@
             </a>
 
             <!-- Desktop Navigation Links -->
-            <ul class="hidden md:flex space-x-8 text-sm tracking-wide text-accessibleBody">
+            <ul class="hidden md:flex space-x-8 text-base tracking-wide text-accessibleBody">
                 <li><a href="about.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">About</a></li>
                 <li><a href="projects.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">Projects</a></li>
                 <li><a href="resume.html" class="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded px-1 transition-colors duration-300">Resume</a></li>
@@ -143,7 +145,7 @@
          inert>
         <div>
             <div class="flex justify-between items-center mb-12">
-                <span class="text-lg font-bold tracking-tight text-white">Menu</span>
+                <span class="text-xl font-bold tracking-tight text-white">Menu</span>
                 <button id="menu-close" type="button" class="text-accessibleBody hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent p-2 rounded" aria-label="Close Navigation Menu">
                     <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -161,7 +163,7 @@
             </nav>
         </div>
         
-        <div class="text-xs text-accessibleMuted tracking-wider uppercase">
+        <div class="text-sm text-accessibleMuted tracking-wider uppercase font-semibold">
             Averie Dow &bull; Portfolio
         </div>
     </div>
@@ -185,17 +187,17 @@
 
                 <div class="space-y-6">
                     <div>
-                        <h2 class="text-xs font-bold text-accessibleMuted uppercase tracking-widest mb-2">Email</h2>
+                        <h2 class="text-sm font-bold text-accessibleMuted uppercase tracking-widest mb-2">Email</h2>
                         <a href="mailto:averie.a.dow@gmail.com" class="text-2xl md:text-3xl font-bold text-white hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300 hover-underline-animation break-all">averie.a.dow@gmail.com</a>
                     </div>
                     
                     <div>
-                        <h2 class="text-xs font-bold text-accessibleMuted uppercase tracking-widest mb-2">Phone</h2>
+                        <h2 class="text-sm font-bold text-accessibleMuted uppercase tracking-widest mb-2">Phone</h2>
                         <a href="tel:9135266923" class="text-2xl md:text-3xl font-bold text-white hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded transition-colors duration-300 hover-underline-animation">913.526.6923</a>
                     </div>
 
                     <div>
-                        <h2 class="text-xs font-bold text-accessibleMuted uppercase tracking-widest mb-2">Socials</h2>
+                        <h2 class="text-sm font-bold text-accessibleMuted uppercase tracking-widest mb-2">Socials</h2>
                         <a href="https://linkedin.com/in/averiedow" target="_blank" rel="noopener noreferrer" class="text-lg font-bold text-accessibleHigh hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded flex items-center gap-2 group w-max">
                             LinkedIn
                             <span class="sr-only">(opens in a new tab)</span>
@@ -213,7 +215,8 @@
                 
                 <div class="absolute -top-24 -right-24 w-48 h-48 bg-accent rounded-full blur-[100px] opacity-20 pointer-events-none" aria-hidden="true"></div>
 
-                <form action="https://formsubmit.co/averie.a.dow@gmail.com" method="POST" class="space-y-6 relative z-10" novalidate>
+                <!-- target="_blank" opens submission/confirmation in a new tab -->
+                <form action="https://formsubmit.co/averie.a.dow@gmail.com" method="POST" target="_blank" class="space-y-6 relative z-10" novalidate>
                     
                     <input type="hidden" name="_subject" value="New Contact Form Submission - AverieDow.com">
                     <input type="hidden" name="_template" value="table">
@@ -222,7 +225,7 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label for="name" class="text-xs font-bold uppercase tracking-widest text-accessibleHigh pl-2">
+                            <label for="name" class="text-sm font-bold uppercase tracking-widest text-accessibleHigh pl-2">
                                 Name <span class="text-accent" aria-hidden="true">*</span>
                             </label>
                             <input type="text" 
@@ -232,11 +235,11 @@
                                    aria-required="true"
                                    autocomplete="name" 
                                    placeholder="Bill Shakespeare" 
-                                   class="w-full bg-background border border-gray-700 rounded-xl px-5 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent transition-all duration-300">
+                                   class="w-full bg-background border border-gray-700 rounded-xl px-5 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent transition-all duration-300 text-base">
                         </div>
                         
                         <div class="space-y-2">
-                            <label for="email" class="text-xs font-bold uppercase tracking-widest text-accessibleHigh pl-2">
+                            <label for="email" class="text-sm font-bold uppercase tracking-widest text-accessibleHigh pl-2">
                                 Email <span class="text-accent" aria-hidden="true">*</span>
                             </label>
                             <input type="email" 
@@ -246,12 +249,12 @@
                                    aria-required="true"
                                    autocomplete="email" 
                                    placeholder="billshakes@gmail.com" 
-                                   class="w-full bg-background border border-gray-700 rounded-xl px-5 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent transition-all duration-300">
+                                   class="w-full bg-background border border-gray-700 rounded-xl px-5 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent transition-all duration-300 text-base">
                         </div>
                     </div>
 
                     <div class="space-y-2">
-                        <label for="subject" class="text-xs font-bold uppercase tracking-widest text-accessibleHigh pl-2">
+                        <label for="subject" class="text-sm font-bold uppercase tracking-widest text-accessibleHigh pl-2">
                             Subject <span class="text-accent" aria-hidden="true">*</span>
                         </label>
                         <input type="text" 
@@ -260,11 +263,11 @@
                                required 
                                aria-required="true"
                                placeholder="UX Design Opportunity" 
-                               class="w-full bg-background border border-gray-700 rounded-xl px-5 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent transition-all duration-300">
+                               class="w-full bg-background border border-gray-700 rounded-xl px-5 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent transition-all duration-300 text-base">
                     </div>
 
                     <div class="space-y-2">
-                        <label for="message" class="text-xs font-bold uppercase tracking-widest text-accessibleHigh pl-2">
+                        <label for="message" class="text-sm font-bold uppercase tracking-widest text-accessibleHigh pl-2">
                             Message <span class="text-accent" aria-hidden="true">*</span>
                         </label>
                         <textarea id="message" 
@@ -273,11 +276,12 @@
                                   aria-required="true"
                                   rows="5" 
                                   placeholder="Tell me about your project..." 
-                                  class="w-full bg-background border border-gray-700 rounded-xl px-5 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent transition-all duration-300 resize-none"></textarea>
+                                  class="w-full bg-background border border-gray-700 rounded-xl px-5 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent transition-all duration-300 resize-none text-base"></textarea>
                     </div>
 
                     <button type="submit" class="w-full bg-accent text-white font-black uppercase tracking-widest text-sm py-5 rounded-xl hover:bg-white hover:text-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transform hover:-translate-y-1 transition-all duration-300 mt-4 flex justify-center items-center gap-3 group">
                         Send Message
+                        <span class="sr-only">(opens confirmation in a new tab)</span>
                         <svg class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                     </button>
                 </form>
@@ -335,7 +339,7 @@
         closeBtn.addEventListener('click', closeMenu);
         backdrop.addEventListener('click', closeMenu);
 
-        // WCAG 2.1.2: Close menu on ESC key press
+        // Close menu on ESC key press
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && mobileBtn.getAttribute('aria-expanded') === 'true') {
                 closeMenu();
